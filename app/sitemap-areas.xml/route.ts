@@ -1,3 +1,6 @@
+export const dynamic = "force-static";
+export const revalidate = 86400;
+
 import { NextResponse } from "next/server";
 import { bangaloreAreas, services, site } from "@/app/(config)/site";
 import { slugify } from "@/app/(common-lib)/slugify";

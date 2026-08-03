@@ -1,3 +1,6 @@
+export const dynamic = "force-static";
+export const revalidate = 86400;
+
 import { NextResponse } from "next/server";
 import { blogPosts } from "@/app/(config)/blog";
 import { site } from "@/app/(config)/site";
