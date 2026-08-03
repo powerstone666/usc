@@ -21,16 +21,18 @@ export const metadata: Metadata = {
     template: "%s · Urban Service Company",
   },
   description:
-    "Same-day microwave, AC, washing machine and refrigerator repair in Bengaluru. Verified technicians, transparent quotes, quality assured. Call to book.",
+    "Same-day microwave, AC, washing machine and refrigerator repair in Bengaluru. Verified technicians, transparent quotes, genuine parts, quality assured. Call to book.",
   keywords: [
     "appliance repair bengaluru",
     "microwave repair bengaluru",
     "ac repair bangalore",
     "washing machine repair bengaluru",
     "refrigerator repair bengaluru",
+    "water filter repair bengaluru",
+    "chimney repair bengaluru",
     "urbanservicecompany",
   ],
-  alternates: { canonical: "/" },
+  alternates: { canonical: site.url },
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -39,14 +41,26 @@ export const metadata: Metadata = {
     title: "Urban Service Company — Appliance Repair in Bengaluru",
     description:
       "Same-day microwave, AC, washing machine and refrigerator repair in Bengaluru. Verified technicians, quality assured.",
+    images: [{ url: "/hero.png", width: 1024, height: 1024, alt: site.name }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Urban Service Company — Appliance Repair in Bengaluru",
     description:
       "Same-day microwave, AC, washing machine and refrigerator repair in Bengaluru.",
+    images: [{ url: "/hero.png", alt: site.name }],
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   category: "Home services",
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
