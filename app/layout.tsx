@@ -48,6 +48,10 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   category: "Home services",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export const viewport: Viewport = {
