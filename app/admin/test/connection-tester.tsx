@@ -37,32 +37,31 @@ export function ConnectionTester() {
     setExpanded(null);
     setResults(tests.map((t) => ({ name: t.name, status: "testing" as Status, detail: "" })));
 
-    const newResults = [...results];
-
-    for (let i = 0; i < tests.length; i++) {
+    const promises = tests.map(async (t, i) => {
       const start = Date.now();
       try {
-        const res = await fetch(tests[i].endpoint);
+        const res = await fetch(t.endpoint);
         const data = await res.json();
-        const latency = `${Date.now() - start}ms`;
-        newResults[i] = {
-          name: tests[i].name,
-          status: data.ok ? "ok" : "fail",
+        return {
+          name: t.name,
+          status: data.ok ? "ok" as Status : "fail" as Status,
           detail: data.detail || data.error || "OK",
-          latency,
+          latency: `${Date.now() - start}ms`,
           debug: data.debug,
           hint: data.hint,
         };
       } catch (err) {
-        newResults[i] = {
-          name: tests[i].name,
-          status: "fail",
+        return {
+          name: t.name,
+          status: "fail" as Status,
           detail: err instanceof Error ? err.message : "Request failed",
           latency: `${Date.now() - start}ms`,
         };
       }
-      setResults([...newResults]);
-    }
+    });
+
+    const settled = await Promise.all(promises);
+    setResults(settled);
     setRunning(false);
   }
 

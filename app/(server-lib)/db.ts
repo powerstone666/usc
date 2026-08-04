@@ -1,28 +1,11 @@
 import { Pool } from "pg";
 
-const dbUrl = process.env.DATABASE_URL;
-
-if (!dbUrl) {
-  console.error("[db] DATABASE_URL is not set");
-} else {
-  try {
-    const parsed = new URL(dbUrl);
-    console.log("[db] host:", parsed.hostname, "| port:", parsed.port || "5432", "| user:", parsed.username, "| db:", parsed.pathname, "| pooler:", parsed.hostname.includes("pooler"));
-  } catch {
-    console.error("[db] DATABASE_URL is malformed:", dbUrl.substring(0, 30) + "...");
-  }
-}
-
 export const pool = new Pool({
-  connectionString: dbUrl,
+  connectionString: process.env.DATABASE_URL,
   max: 3,
   idleTimeoutMillis: 20000,
   connectionTimeoutMillis: 5000,
   ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : undefined,
-});
-
-pool.on("error", (err) => {
-  console.error("[db] Pool error:", err.message, "| code:", (err as { code?: string }).code);
 });
 
 export async function query<T extends Record<string, unknown>>(
@@ -34,7 +17,7 @@ export async function query<T extends Record<string, unknown>>(
     return res.rows as T[];
   } catch (err) {
     const e = err as Error & { code?: string };
-    console.error("[db] Query failed:", e.message, "| code:", e.code, "| sql:", text.substring(0, 80));
+    console.error("[db] Query failed:", e.message, "| code:", e.code);
     return [];
   }
 }
@@ -45,7 +28,7 @@ export async function execute(text: string, params: unknown[]): Promise<boolean>
     return true;
   } catch (err) {
     const e = err as Error & { code?: string };
-    console.error("[db] Execute failed:", e.message, "| code:", e.code, "| sql:", text.substring(0, 80));
+    console.error("[db] Execute failed:", e.message, "| code:", e.code);
     return false;
   }
 }
@@ -60,8 +43,8 @@ export async function isDbConfigured(): Promise<boolean> {
       client.release();
     }
   } catch (err) {
-    const e = err as Error & { code?: string; syscall?: string; address?: string; port?: number };
-    console.error("[db] Connection FAILED:", e.message, "| code:", e.code, "| syscall:", e.syscall, "| address:", e.address, "| port:", e.port);
+    const e = err as Error & { code?: string };
+    console.error("[db] Connection FAILED:", e.message, "| code:", e.code);
     return false;
   }
 }
