@@ -49,7 +49,7 @@ export default async function Page({
   const related = blogPosts.filter((p) => p.slug !== slug).slice(0, 3);
   const nearbyAreas = areas.slice(0, 12);
   const relevantServices = services.slice(0, 6);
-  const faqs = post.content.filter(p => p.includes("?")).slice(0, 5);
+  const faqs = post.content.filter(p => p.includes("?")).slice(0, 9);
   const headings = post.content.filter(isHeading);
 
   return (
