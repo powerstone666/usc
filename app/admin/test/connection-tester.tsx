@@ -13,8 +13,8 @@ type Result = {
 
 const tests: { name: string; endpoint: string }[] = [
   { name: "GTM / GA4", endpoint: "/api/admin/test/gtm" },
-  { name: "BigQuery Connection", endpoint: "/api/admin/test/bigquery" },
-  { name: "BigQuery Table", endpoint: "/api/admin/test/table" },
+  { name: "Supabase Connection", endpoint: "/api/admin/test/bigquery" },
+  { name: "Supabase Tables", endpoint: "/api/admin/test/table" },
   { name: "Lead API", endpoint: "/api/admin/test/lead-api" },
   { name: "IP Geolocation", endpoint: "/api/admin/test/geo" },
   { name: "User-Agent Parser", endpoint: "/api/admin/test/ua" },
@@ -119,9 +119,9 @@ export function ConnectionTester() {
         <div className="mt-6 rounded-2xl border border-red-500/20 bg-red-500/5 p-4">
           <p className="text-sm font-bold text-red-400">Some tests failed</p>
           <p className="mt-1 text-xs text-white/50">
-            Check the error details above. For BigQuery, ensure the service
-            account has both <strong>BigQuery Data Editor</strong> and{" "}
-            <strong>BigQuery Job User</strong> roles in GCP IAM.
+            Check the error details above. For Supabase, ensure you've run
+            the <strong>supabase-schema.sql</strong> in the SQL Editor and
+            RLS policies allow public insert + select.
           </p>
         </div>
       )}

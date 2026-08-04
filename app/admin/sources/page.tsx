@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { getSourceStats } from "@/app/(server-lib)/bigquery-queries";
+import { getSourceStats } from "@/app/(server-lib)/supabase-queries";
 
 function formatTime(ms: number | null | undefined): string {
   if (!ms) return "—";
@@ -69,7 +69,7 @@ export default async function AdminSources() {
           </h2>
           <BarChart
             data={stats.bySource.map((d) => ({
-              label: d.source,
+              label: d.label,
               count: d.count,
             }))}
             color="#0d47a1"
@@ -82,7 +82,7 @@ export default async function AdminSources() {
           </h2>
           <BarChart
             data={stats.byAppliance.map((d) => ({
-              label: d.appliance,
+              label: d.label,
               count: d.count,
             }))}
             color="#1565c0"

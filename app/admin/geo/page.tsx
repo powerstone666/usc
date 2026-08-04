@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { getGeoStats } from "@/app/(server-lib)/bigquery-queries";
+import { getGeoStats } from "@/app/(server-lib)/supabase-queries";
 
 function BarChart({
   data,
@@ -55,7 +55,7 @@ export default async function AdminGeo() {
           </h2>
           <BarChart
             data={stats.byCity.map((d) => ({
-              label: d.city,
+              label: d.label,
               count: d.count,
             }))}
             color="#0d47a1"
@@ -68,7 +68,7 @@ export default async function AdminGeo() {
           </h2>
           <BarChart
             data={stats.byIsp.map((d) => ({
-              label: d.isp,
+              label: d.label,
               count: d.count,
             }))}
             color="#1565c0"
@@ -81,7 +81,7 @@ export default async function AdminGeo() {
           </h2>
           <BarChart
             data={stats.byDevice.map((d) => ({
-              label: d.device_type,
+              label: d.label,
               count: d.count,
             }))}
             color="#7b1fa2"
@@ -94,7 +94,7 @@ export default async function AdminGeo() {
           </h2>
           <BarChart
             data={stats.byBrowser.map((d) => ({
-              label: d.browser,
+              label: d.label,
               count: d.count,
             }))}
             color="#ff9800"
@@ -107,7 +107,7 @@ export default async function AdminGeo() {
           </h2>
           <BarChart
             data={stats.byOs.map((d) => ({
-              label: d.os,
+              label: d.label,
               count: d.count,
             }))}
             color="#4caf50"

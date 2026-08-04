@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { getOverviewStats } from "@/app/(server-lib)/bigquery-queries";
+import { getOverviewStats } from "@/app/(server-lib)/supabase-queries";
 
 function formatTime(ms: number): string {
   if (!ms) return "—";
@@ -80,12 +80,12 @@ export default async function AdminOverview() {
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
           <h2 className="mb-4 text-sm font-bold text-white/80">Top Pages</h2>
-          <BarChart data={stats.topPages.map((d) => ({ label: d.page_path, count: d.count }))} color="#0d47a1" />
+          <BarChart data={stats.topPages.map((d) => ({ label: d.label, count: d.count }))} color="#0d47a1" />
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
           <h2 className="mb-4 text-sm font-bold text-white/80">Leads by Source (which button)</h2>
-          <BarChart data={stats.bySource.map((d) => ({ label: d.source, count: d.count }))} color="#1565c0" />
+          <BarChart data={stats.bySource.map((d) => ({ label: d.label, count: d.count }))} color="#1565c0" />
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
@@ -145,7 +145,7 @@ export default async function AdminOverview() {
               </thead>
               <tbody>
                 {stats.recentLeads.map((lead) => (
-                  <tr key={lead.lead_id} className="border-b border-white/5 text-white/70">
+                  <tr key={lead.id} className="border-b border-white/5 text-white/70">
                     <td className="py-2 pr-4 text-white/40">{formatTimeAgo(lead.received_at)}</td>
                     <td className="py-2 pr-4">{lead.appliance}</td>
                     <td className="py-2 pr-4 text-white/50">{lead.source}</td>

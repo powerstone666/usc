@@ -35,7 +35,7 @@ export type LeadNotification = {
   appliance: string;
   issue: string;
   name: string;
-  phoneLast4: string;
+  phone: string;
   source: string;
   city: string;
   region: string;
@@ -59,7 +59,7 @@ export async function sendLeadNotification(lead: LeadNotification): Promise<bool
     `<b>Appliance:</b> ${lead.appliance}`,
     lead.issue ? `<b>Issue:</b> ${lead.issue}` : "",
     lead.name ? `<b>Name:</b> ${lead.name}` : "",
-    `<b>Phone:</b> ****${lead.phoneLast4}`,
+    `<b>Phone:</b> ${lead.phone}`,
     `<b>Source:</b> ${lead.source}`,
     "",
     "<b>--- Location ---</b>",

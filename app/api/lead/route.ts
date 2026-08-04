@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { LeadInput } from "@/app/(common-lib)/types";
-import { insertLead } from "@/app/(server-lib)/bigquery";
+import { insertLead } from "@/app/(server-lib)/supabase";
 import { collectTelemetry } from "@/app/(server-lib)/telemetry";
 import { generateFingerprint } from "@/app/(server-lib)/fingerprint";
 import { sendLeadNotification } from "@/app/(server-lib)/telegram";
@@ -72,8 +72,6 @@ export async function POST(req: Request) {
     country: srv.country,
     isp: srv.isp,
     asn: srv.asn,
-    latitude: srv.latitude,
-    longitude: srv.longitude,
     browser: srv.browser,
     browserVersion: srv.browserVersion,
     os: srv.os,
@@ -100,7 +98,7 @@ export async function POST(req: Request) {
     appliance: body.appliance,
     issue: body.issue || "",
     name: body.name || "",
-    phoneLast4: phone.slice(-4),
+    phone: phone,
     source: body.source || "unknown",
     city: srv.city,
     region: srv.region,

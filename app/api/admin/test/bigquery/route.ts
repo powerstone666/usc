@@ -1,27 +1,20 @@
 import { NextResponse } from "next/server";
-import { getBigQuery } from "@/app/(server-lib)/bigquery";
+import { supabase } from "@/app/(server-lib)/supabase";
 
 export async function GET() {
-  const bq = getBigQuery();
-  if (!bq) {
+  const { error, count } = await supabase
+    .from("leads")
+    .select("*", { count: "exact", head: true });
+
+  if (error) {
     return NextResponse.json({
       ok: false,
-      detail: "BigQuery not configured (missing BIGQUERY_PROJECT_ID or BIGQUERY_CREDENTIALS_JSON)",
+      detail: `Supabase connection error: ${error.message}`,
     });
   }
 
-  try {
-    const projectId = process.env.BIGQUERY_PROJECT_ID;
-    const [datasets] = await bq.getDatasets();
-    const datasetIds = datasets.map((d) => d.id);
-    return NextResponse.json({
-      ok: true,
-      detail: `Connected to project ${projectId}. Datasets: ${datasetIds.length > 0 ? datasetIds.join(", ") : "none"}`,
-    });
-  } catch (err) {
-    return NextResponse.json({
-      ok: false,
-      detail: err instanceof Error ? err.message : "Connection failed",
-    });
-  }
+  return NextResponse.json({
+    ok: true,
+    detail: `Connected. Leads table: ${count ?? 0} rows`,
+  });
 }

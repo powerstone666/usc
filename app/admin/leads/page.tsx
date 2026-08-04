@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { getAllLeads } from "@/app/(server-lib)/bigquery-queries";
+import { getAllLeads } from "@/app/(server-lib)/supabase-queries";
 
 function formatTime(ms: number): string {
   if (!ms) return "—";
@@ -59,7 +59,7 @@ export default async function AdminLeads() {
             <tbody>
               {leads.map((lead) => (
                 <tr
-                  key={lead.lead_id}
+                  key={lead.id}
                   className="border-b border-white/5 text-white/70 hover:bg-white/5"
                 >
                   <td className="px-4 py-2 text-white/40">

@@ -1,33 +1,25 @@
 import { NextResponse } from "next/server";
-import { getBigQuery } from "@/app/(server-lib)/bigquery";
+import { supabase } from "@/app/(server-lib)/supabase";
 
 export async function GET() {
-  const bq = getBigQuery();
-  if (!bq) {
-    return NextResponse.json({ ok: false, detail: "BigQuery not configured" });
-  }
+  const [leadsRes, pvRes] = await Promise.all([
+    supabase.from("leads").select("*").limit(1),
+    supabase.from("page_views").select("*").limit(1),
+  ]);
 
-  const datasetId = process.env.BIGQUERY_DATASET_ID || "analytics";
-  const tableId = process.env.BIGQUERY_TABLE_ID || "leads";
+  const issues: string[] = [];
+  if (leadsRes.error) issues.push(`leads: ${leadsRes.error.message}`);
+  if (pvRes.error) issues.push(`page_views: ${pvRes.error.message}`);
 
-  try {
-    const [table] = await bq.dataset(datasetId).table(tableId).get();
-    const [meta] = await table.getMetadata();
-    const schema = meta.schema?.fields || [];
-    const rowCount = meta.numRows || "0";
-
+  if (issues.length > 0) {
     return NextResponse.json({
-      ok: true,
-      detail: `Table ${datasetId}.${tableId}: ${schema.length} columns, ${Number(rowCount).toLocaleString()} rows`,
+      ok: false,
+      detail: `Table check failed: ${issues.join("; ")}`,
     });
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : "Table check failed";
-    if (msg.includes("Not found") || msg.includes("does not exist")) {
-      return NextResponse.json({
-        ok: false,
-        detail: `Table ${datasetId}.${tableId} not found. Run bigquery-schema.sql to create it.`,
-      });
-    }
-    return NextResponse.json({ ok: false, detail: msg });
   }
+
+  return NextResponse.json({
+    ok: true,
+    detail: "Tables OK: leads + page_views accessible",
+  });
 }
