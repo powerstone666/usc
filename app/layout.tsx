@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Sora } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { site } from "@/app/(config)/site";
 import { AnalyticsScript, AnalyticsNoscript } from "@/app/(ui)/components/gtm-script";
@@ -85,6 +87,8 @@ export default function RootLayout({
         <AnalyticsNoscript />
         {children}
         <AnalyticsScript />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
