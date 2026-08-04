@@ -1,4 +1,4 @@
-import { query, type LeadRow, type PageViewRow } from "@/app/(server-lib)/supabase";
+import { supabase, type LeadRow, type PageViewRow } from "@/app/(server-lib)/supabase";
 
 export type { LeadRow, PageViewRow };
 
@@ -20,47 +20,65 @@ export type OverviewStats = {
   viewsByDay: { day: string; count: number }[];
 };
 
+function aggregate(rows: Record<string, unknown>[], field: string): { label: string; count: number }[] {
+  const map = new Map<string, number>();
+  for (const r of rows) {
+    const key = String(r[field] || "—");
+    map.set(key, (map.get(key) || 0) + 1);
+  }
+  return [...map.entries()].map(([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
+}
+
+function byDay(rows: { received_at: string }[]): { day: string; count: number }[] {
+  const map = new Map<string, number>();
+  for (const r of rows) {
+    const day = new Date(r.received_at).toISOString().split("T")[0];
+    map.set(day, (map.get(day) || 0) + 1);
+  }
+  return [...map.entries()].map(([day, count]) => ({ day, count })).sort((a, b) => b.day.localeCompare(a.day)).slice(0, 30);
+}
+
+function isToday(iso: string): boolean {
+  return new Date(iso).toDateString() === new Date().toDateString();
+}
+
 export async function getOverviewStats(): Promise<OverviewStats> {
-  const [totalLeads] = await query<{ count: string }>("SELECT COUNT(*) as count FROM leads");
-  const [todayLeads] = await query<{ count: string }>("SELECT COUNT(*) as count FROM leads WHERE received_at::date = CURRENT_DATE");
-  const [uniqueUsers] = await query<{ count: string }>("SELECT COUNT(DISTINCT phone_hash) as count FROM leads");
-  const [avgTime] = await query<{ avg: string | null }>("SELECT AVG(time_on_page) as avg FROM leads");
-  const byAppliance = await query<{ appliance: string; count: string }>("SELECT appliance, COUNT(*) as count FROM leads GROUP BY appliance ORDER BY count DESC");
-  const bySource = await query<{ source: string; count: string }>("SELECT source, COUNT(*) as count FROM leads GROUP BY source ORDER BY count DESC");
-  const byDay = await query<{ day: string; count: string }>("SELECT received_at::date as day, COUNT(*) as count FROM leads GROUP BY day ORDER BY day DESC LIMIT 30");
-  const recentLeads = await query<LeadRow>("SELECT * FROM leads ORDER BY received_at DESC LIMIT 20");
+  const [{ data: leads }, { data: pv }] = await Promise.all([
+    supabase.from("leads").select("*").order("received_at", { ascending: false }).limit(500),
+    supabase.from("page_views").select("*").order("received_at", { ascending: false }).limit(2000),
+  ]);
 
-  const [pvTotal] = await query<{ count: string }>("SELECT COUNT(*) as count FROM page_views");
-  const [pvToday] = await query<{ count: string }>("SELECT COUNT(*) as count FROM page_views WHERE received_at::date = CURRENT_DATE");
-  const [pvUnique] = await query<{ count: string }>("SELECT COUNT(DISTINCT session_id) as count FROM page_views");
-  const [pvFPs] = await query<{ count: string }>("SELECT COUNT(DISTINCT fingerprint) as count FROM page_views WHERE fingerprint != ''");
-  const [pvReturning] = await query<{ count: string }>("SELECT COUNT(*) as count FROM (SELECT fingerprint FROM page_views WHERE fingerprint != '' GROUP BY fingerprint HAVING COUNT(*) > 1) t");
-  const topPages = await query<{ page_path: string; count: string }>("SELECT page_path, COUNT(*) as count FROM page_views GROUP BY page_path ORDER BY count DESC LIMIT 10");
-  const viewsByDay = await query<{ day: string; count: string }>("SELECT received_at::date as day, COUNT(*) as count FROM page_views GROUP BY day ORDER BY day DESC LIMIT 30");
+  const leadRows = (leads || []) as LeadRow[];
+  const pvRows = (pv || []) as PageViewRow[];
 
-  const toNum = (v: string | null | undefined) => v ? parseInt(v) : 0;
+  const uniquePhones = new Set(leadRows.map((l) => l.phone_hash));
+  const uniqueSessions = new Set(pvRows.map((p) => p.session_id));
+  const uniqueFPs = new Set(pvRows.map((p) => p.fingerprint).filter(Boolean));
+  const fpCounts = new Map<string, number>();
+  for (const p of pvRows) if (p.fingerprint) fpCounts.set(p.fingerprint, (fpCounts.get(p.fingerprint) || 0) + 1);
 
   return {
-    totalLeads: toNum(totalLeads?.count),
-    todayLeads: toNum(todayLeads?.count),
-    uniqueUsers: toNum(uniqueUsers?.count),
-    totalPageViews: toNum(pvTotal?.count),
-    todayPageViews: toNum(pvToday?.count),
-    uniqueVisitors: toNum(pvUnique?.count),
-    uniqueFingerprints: toNum(pvFPs?.count),
-    returningVisitors: toNum(pvReturning?.count),
-    avgTimeOnPage: avgTime?.avg ? parseFloat(avgTime.avg) : 0,
-    byAppliance: byAppliance.map((d) => ({ label: d.appliance, count: toNum(d.count) })),
-    bySource: bySource.map((d) => ({ label: d.source, count: toNum(d.count) })),
-    byDay: byDay.map((d) => ({ day: d.day, count: toNum(d.count) })),
-    recentLeads,
-    topPages: topPages.map((d) => ({ label: d.page_path, count: toNum(d.count) })),
-    viewsByDay: viewsByDay.map((d) => ({ day: d.day, count: toNum(d.count) })),
+    totalLeads: leadRows.length,
+    todayLeads: leadRows.filter((l) => isToday(l.received_at)).length,
+    uniqueUsers: uniquePhones.size,
+    totalPageViews: pvRows.length,
+    todayPageViews: pvRows.filter((p) => isToday(p.received_at)).length,
+    uniqueVisitors: uniqueSessions.size,
+    uniqueFingerprints: uniqueFPs.size,
+    returningVisitors: [...fpCounts.values()].filter((c) => c > 1).length,
+    avgTimeOnPage: leadRows.length > 0 ? leadRows.reduce((s, l) => s + (l.time_on_page || 0), 0) / leadRows.length : 0,
+    byAppliance: aggregate(leadRows, "appliance"),
+    bySource: aggregate(leadRows, "source"),
+    byDay: byDay(leadRows),
+    recentLeads: leadRows.slice(0, 20),
+    topPages: aggregate(pvRows, "page_path"),
+    viewsByDay: byDay(pvRows),
   };
 }
 
 export async function getAllLeads(limit = 200, offset = 0): Promise<LeadRow[]> {
-  return query<LeadRow>(`SELECT * FROM leads ORDER BY received_at DESC LIMIT $1 OFFSET $2`, [limit, offset]);
+  const { data } = await supabase.from("leads").select("*").order("received_at", { ascending: false }).range(offset, offset + limit - 1);
+  return (data || []) as LeadRow[];
 }
 
 export type GeoStats = {
@@ -72,19 +90,14 @@ export type GeoStats = {
 };
 
 export async function getGeoStats(): Promise<GeoStats> {
-  const byCity = await query<{ city: string; count: string }>("SELECT city, COUNT(*) as count FROM page_views WHERE city != '' GROUP BY city ORDER BY count DESC LIMIT 20");
-  const byIsp = await query<{ isp: string; count: string }>("SELECT isp, COUNT(*) as count FROM page_views WHERE isp != '' GROUP BY isp ORDER BY count DESC LIMIT 20");
-  const byDevice = await query<{ device_type: string; count: string }>("SELECT device_type, COUNT(*) as count FROM page_views GROUP BY device_type ORDER BY count DESC");
-  const byBrowser = await query<{ browser: string; count: string }>("SELECT browser, COUNT(*) as count FROM page_views WHERE browser != '' GROUP BY browser ORDER BY count DESC LIMIT 10");
-  const byOs = await query<{ os: string; count: string }>("SELECT os, COUNT(*) as count FROM page_views WHERE os != '' GROUP BY os ORDER BY count DESC LIMIT 10");
-
-  const toNum = (v: string) => parseInt(v);
+  const { data } = await supabase.from("page_views").select("city, isp, device_type, browser, os").limit(5000);
+  const rows = (data || []) as Record<string, unknown>[];
   return {
-    byCity: byCity.map((d) => ({ label: d.city, count: toNum(d.count) })),
-    byIsp: byIsp.map((d) => ({ label: d.isp, count: toNum(d.count) })),
-    byDevice: byDevice.map((d) => ({ label: d.device_type, count: toNum(d.count) })),
-    byBrowser: byBrowser.map((d) => ({ label: d.browser, count: toNum(d.count) })),
-    byOs: byOs.map((d) => ({ label: d.os, count: toNum(d.count) })),
+    byCity: aggregate(rows.filter((r) => r.city), "city"),
+    byIsp: aggregate(rows.filter((r) => r.isp), "isp"),
+    byDevice: aggregate(rows, "device_type"),
+    byBrowser: aggregate(rows.filter((r) => r.browser), "browser"),
+    byOs: aggregate(rows.filter((r) => r.os), "os"),
   };
 }
 
@@ -96,16 +109,35 @@ export type SourceStats = {
 };
 
 export async function getSourceStats(): Promise<SourceStats> {
-  const bySource = await query<{ source: string; count: string }>("SELECT source, COUNT(*) as count FROM leads GROUP BY source ORDER BY count DESC");
-  const byAppliance = await query<{ appliance: string; count: string }>("SELECT appliance, COUNT(*) as count FROM leads GROUP BY appliance ORDER BY count DESC");
-  const byApplianceSource = await query<{ appliance: string; source: string; count: string }>("SELECT appliance, source, COUNT(*) as count FROM leads GROUP BY appliance, source ORDER BY count DESC");
-  const avgTimeBySource = await query<{ source: string; avg: string | null; count: string }>("SELECT source, AVG(time_on_page) as avg, COUNT(*) as count FROM leads GROUP BY source ORDER BY count DESC");
+  const { data } = await supabase.from("leads").select("*").limit(5000);
+  const rows = (data || []) as LeadRow[];
 
-  const toNum = (v: string) => parseInt(v);
+  const applianceSourceMap = new Map<string, number>();
+  for (const r of rows) {
+    const key = `${r.appliance}|${r.source}`;
+    applianceSourceMap.set(key, (applianceSourceMap.get(key) || 0) + 1);
+  }
+
+  const sourceTimeMap = new Map<string, { total: number; count: number }>();
+  for (const r of rows) {
+    const s = r.source || "unknown";
+    const e = sourceTimeMap.get(s) || { total: 0, count: 0 };
+    e.total += r.time_on_page || 0;
+    e.count += 1;
+    sourceTimeMap.set(s, e);
+  }
+
   return {
-    bySource: bySource.map((d) => ({ label: d.source, count: toNum(d.count) })),
-    byAppliance: byAppliance.map((d) => ({ label: d.appliance, count: toNum(d.count) })),
-    byApplianceSource: byApplianceSource.map((d) => ({ appliance: d.appliance, source: d.source, count: toNum(d.count) })),
-    avgTimeBySource: avgTimeBySource.map((d) => ({ source: d.source, avg_ms: d.avg ? parseFloat(d.avg) : null, count: toNum(d.count) })),
+    bySource: aggregate(rows, "source"),
+    byAppliance: aggregate(rows, "appliance"),
+    byApplianceSource: [...applianceSourceMap.entries()].map(([key, count]) => {
+      const [appliance, source] = key.split("|");
+      return { appliance, source, count };
+    }).sort((a, b) => b.count - a.count),
+    avgTimeBySource: [...sourceTimeMap.entries()].map(([source, { total, count }]) => ({
+      source,
+      avg_ms: count > 0 ? total / count : null,
+      count,
+    })).sort((a, b) => b.count - a.count),
   };
 }

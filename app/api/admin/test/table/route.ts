@@ -1,33 +1,19 @@
 import { NextResponse } from "next/server";
-import { query } from "@/app/(server-lib)/db";
+import { supabase } from "@/app/(server-lib)/supabase";
 
 export async function GET() {
-  const dbUrl = process.env.DATABASE_URL;
-  if (!dbUrl) {
-    return NextResponse.json({ ok: false, detail: "DATABASE_URL not set in env" });
+  const [leads, pv] = await Promise.all([
+    supabase.from("leads").select("id").limit(1),
+    supabase.from("page_views").select("view_id").limit(1),
+  ]);
+
+  const issues: string[] = [];
+  if (leads.error) issues.push(`leads: ${leads.error.message}`);
+  if (pv.error) issues.push(`page_views: ${pv.error.message}`);
+
+  if (issues.length > 0) {
+    return NextResponse.json({ ok: false, detail: `Tables not found — run supabase-schema.sql | ${issues.join("; ")}` });
   }
 
-  try {
-    const leads = await query<{ count: string }>("SELECT COUNT(*) as count FROM leads");
-    const pv = await query<{ count: string }>("SELECT COUNT(*) as count FROM page_views");
-
-    if (leads.length === 0 && pv.length === 0) {
-      return NextResponse.json({
-        ok: false,
-        detail: `Tables not found — run supabase-schema.sql | raw: ${dbUrl}`,
-      });
-    }
-
-    const toNum = (v: string | undefined) => v ? parseInt(v) : 0;
-    return NextResponse.json({
-      ok: true,
-      detail: `Tables OK — leads: ${toNum(leads[0]?.count)} rows, page_views: ${toNum(pv[0]?.count)} rows`,
-    });
-  } catch (err) {
-    const e = err instanceof Error ? err : new Error(String(err));
-    return NextResponse.json({
-      ok: false,
-      detail: `${e.message} | raw: ${dbUrl}`,
-    });
-  }
+  return NextResponse.json({ ok: true, detail: "Tables OK — leads + page_views accessible" });
 }
