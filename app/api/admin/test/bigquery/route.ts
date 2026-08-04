@@ -1,20 +1,16 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/app/(server-lib)/supabase";
+import { isDbConfigured } from "@/app/(server-lib)/db";
 
 export async function GET() {
-  const { error, count } = await supabase
-    .from("leads")
-    .select("*", { count: "exact", head: true });
-
-  if (error) {
+  const ok = await isDbConfigured();
+  if (!ok) {
     return NextResponse.json({
       ok: false,
-      detail: `Supabase connection error: ${error.message}`,
+      detail: "PostgreSQL connection failed — check DATABASE_URL in env",
     });
   }
-
   return NextResponse.json({
     ok: true,
-    detail: `Connected. Leads table: ${count ?? 0} rows`,
+    detail: "Connected to PostgreSQL (Supabase)",
   });
 }

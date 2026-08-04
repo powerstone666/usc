@@ -1,25 +1,20 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/app/(server-lib)/supabase";
+import { query } from "@/app/(server-lib)/db";
 
 export async function GET() {
-  const [leadsRes, pvRes] = await Promise.all([
-    supabase.from("leads").select("*").limit(1),
-    supabase.from("page_views").select("*").limit(1),
-  ]);
+  const leads = await query<{ count: string }>("SELECT COUNT(*) as count FROM leads");
+  const pv = await query<{ count: string }>("SELECT COUNT(*) as count FROM page_views");
 
-  const issues: string[] = [];
-  if (leadsRes.error) issues.push(`leads: ${leadsRes.error.message}`);
-  if (pvRes.error) issues.push(`page_views: ${pvRes.error.message}`);
-
-  if (issues.length > 0) {
+  if (leads.length === 0 && pv.length === 0) {
     return NextResponse.json({
       ok: false,
-      detail: `Table check failed: ${issues.join("; ")}`,
+      detail: "Tables not found — run supabase-schema.sql in Supabase SQL Editor",
     });
   }
 
+  const toNum = (v: string | undefined) => v ? parseInt(v) : 0;
   return NextResponse.json({
     ok: true,
-    detail: "Tables OK: leads + page_views accessible",
+    detail: `Tables OK — leads: ${toNum(leads[0]?.count)} rows, page_views: ${toNum(pv[0]?.count)} rows`,
   });
 }

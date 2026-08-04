@@ -1,12 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
 import { createHash } from "crypto";
-
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "";
-
-export const supabase = createClient(url, key, {
-  auth: { persistSession: false },
-});
+import { query, execute } from "@/app/(server-lib)/db";
 
 export type LeadRow = {
   id: string;
@@ -86,55 +79,31 @@ export type LeadInput = {
 
 export async function insertLead(record: LeadInput): Promise<boolean> {
   const phoneHash = createHash("sha256").update(record.phone).digest("hex");
-  try {
-    const { error } = await supabase.from("leads").insert({
-      id: record.id,
-      received_at: record.receivedAt,
-      appliance: record.appliance,
-      issue: record.issue || "",
-      name: record.name || "",
-      phone: record.phone,
-      phone_hash: phoneHash,
-      phone_last4: record.phone.slice(-4),
-      source: record.source,
-      page_url: record.pageUrl,
-      user_agent: record.userAgent,
-      ip_address: record.ipAddress,
-      city: record.city,
-      region: record.region,
-      country: record.country,
-      isp: record.isp,
-      asn: record.asn,
-      browser: record.browser,
-      browser_version: record.browserVersion,
-      os: record.os,
-      os_version: record.osVersion,
-      device_type: record.deviceType,
-      device_model: record.deviceModel,
-      device_vendor: record.deviceVendor,
-      session_id: record.sessionId,
-      time_on_page: record.timeOnPage,
-      screen_resolution: record.screenResolution,
-      viewport: record.viewport,
-      language: record.language,
-      referrer: record.referrer,
-      traffic_source: record.trafficSource,
-      traffic_medium: record.trafficMedium,
-      traffic_category: record.trafficCategory,
-      traffic_campaign: record.trafficCampaign,
-      gclid: record.gclid,
-      fingerprint: record.fingerprint,
-    });
-    if (error) {
-      console.error("[supabase] Lead insert failed:", error.message);
-      return false;
-    }
-    console.log("[supabase] Lead inserted:", record.id);
-    return true;
-  } catch (err) {
-    console.error("[supabase] Lead insert error:", err);
-    return false;
-  }
+  const sql = `INSERT INTO leads (
+    id, received_at, appliance, issue, name, phone, phone_hash, phone_last4,
+    source, page_url, user_agent, ip_address, city, region, country,
+    isp, asn, browser, browser_version, os, os_version,
+    device_type, device_model, device_vendor, session_id, time_on_page,
+    screen_resolution, viewport, language, referrer, traffic_source,
+    traffic_medium, traffic_category, traffic_campaign, gclid, fingerprint
+  ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36)`;
+
+  const params = [
+    record.id, record.receivedAt, record.appliance, record.issue || "",
+    record.name || "", record.phone, phoneHash, record.phone.slice(-4),
+    record.source, record.pageUrl, record.userAgent, record.ipAddress,
+    record.city, record.region, record.country, record.isp, record.asn,
+    record.browser, record.browserVersion, record.os, record.osVersion,
+    record.deviceType, record.deviceModel, record.deviceVendor,
+    record.sessionId, record.timeOnPage, record.screenResolution,
+    record.viewport, record.language, record.referrer,
+    record.trafficSource, record.trafficMedium, record.trafficCategory,
+    record.trafficCampaign, record.gclid, record.fingerprint,
+  ];
+
+  const ok = await execute(sql, params);
+  if (ok) console.log("[db] Lead inserted:", record.id);
+  return ok;
 }
 
 export type PageViewRow = {
@@ -163,20 +132,24 @@ export type PageViewRow = {
 };
 
 export async function insertPageView(record: PageViewRow): Promise<boolean> {
-  try {
-    const { error } = await supabase.from("page_views").insert(record);
-    if (error) {
-      console.error("[supabase] Page view insert failed:", error.message);
-      return false;
-    }
-    return true;
-  } catch (err) {
-    console.error("[supabase] Page view insert error:", err);
-    return false;
-  }
+  const sql = `INSERT INTO page_views (
+    view_id, received_at, session_id, page_url, page_path, page_title,
+    referrer, ip_address, city, region, country, isp, browser, os,
+    device_type, screen_resolution, language, traffic_source,
+    traffic_medium, traffic_category, time_on_page, fingerprint
+  ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22)`;
+
+  const params = [
+    record.view_id, record.received_at, record.session_id,
+    record.page_url, record.page_path, record.page_title,
+    record.referrer, record.ip_address, record.city, record.region,
+    record.country, record.isp, record.browser, record.os,
+    record.device_type, record.screen_resolution, record.language,
+    record.traffic_source, record.traffic_medium, record.traffic_category,
+    record.time_on_page, record.fingerprint,
+  ];
+
+  return execute(sql, params);
 }
 
-export async function isSupabaseConfigured(): Promise<boolean> {
-  const { error } = await supabase.from("leads").select("id").limit(1);
-  return !error;
-}
+export { query, isDbConfigured } from "@/app/(server-lib)/db";
