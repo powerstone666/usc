@@ -9,6 +9,8 @@ type Result = {
   status: Status;
   detail: string;
   latency?: string;
+  debug?: Record<string, unknown>;
+  hint?: string;
 };
 
 const tests: { name: string; endpoint: string }[] = [
@@ -28,9 +30,11 @@ export function ConnectionTester() {
     tests.map((t) => ({ name: t.name, status: "idle" as Status, detail: "" })),
   );
   const [running, setRunning] = useState(false);
+  const [expanded, setExpanded] = useState<number | null>(null);
 
   async function runAll() {
     setRunning(true);
+    setExpanded(null);
     setResults(tests.map((t) => ({ name: t.name, status: "testing" as Status, detail: "" })));
 
     const newResults = [...results];
@@ -46,6 +50,8 @@ export function ConnectionTester() {
           status: data.ok ? "ok" : "fail",
           detail: data.detail || data.error || "OK",
           latency,
+          debug: data.debug,
+          hint: data.hint,
         };
       } catch (err) {
         newResults[i] = {
@@ -84,7 +90,7 @@ export function ConnectionTester() {
         <button
           onClick={runAll}
           disabled={running}
-          className="rounded-xl bg-[#0d47a1] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#1565c0] disabled:opacity-50"
+          className="rounded-xl bg-[#0d47a1] px-5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-[#1565c0] disabled:opacity-50 sm:text-sm"
         >
           {running ? "Testing..." : "Run All Tests"}
         </button>
@@ -92,35 +98,58 @@ export function ConnectionTester() {
 
       <div className="mt-4 flex flex-col gap-3 sm:mt-6">
         {results.map((r, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:p-4"
-          >
-            <span className={`h-3 w-3 shrink-0 rounded-full ${dotColor[r.status]}`} />
-            <div className="flex-1">
-              <p className="text-xs font-bold text-white/90 sm:text-sm">{r.name}</p>
-              <p className={`mt-0.5 text-[10px] sm:text-xs ${statusColor[r.status]}`}>
-                {r.status === "idle" && "Not tested yet"}
-                {r.status === "testing" && "Testing..."}
-                {r.status === "ok" && r.detail}
-                {r.status === "fail" && `Failed: ${r.detail}`}
-              </p>
+          <div key={i}>
+            <div
+              onClick={() => r.debug || r.hint ? setExpanded(expanded === i ? null : i) : undefined}
+              className={`flex items-center gap-3 rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:p-4 ${r.debug || r.hint ? "cursor-pointer hover:border-white/20" : ""}`}
+            >
+              <span className={`h-3 w-3 shrink-0 rounded-full ${dotColor[r.status]}`} />
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-bold text-white/90 sm:text-sm">{r.name}</p>
+                <p className={`mt-0.5 text-[10px] sm:text-xs ${statusColor[r.status]} break-all`}>
+                  {r.status === "idle" && "Not tested yet"}
+                  {r.status === "testing" && "Testing..."}
+                  {r.status === "ok" && r.detail}
+                  {r.status === "fail" && `Failed: ${r.detail}`}
+                </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-2">
+                {r.latency && (
+                  <span className="text-[10px] font-mono text-white/30 sm:text-xs">{r.latency}</span>
+                )}
+                {(r.debug || r.hint) && (
+                  <svg
+                    width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                    className={`text-white/40 transition-transform ${expanded === i ? "rotate-180" : ""}`}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                )}
+              </div>
             </div>
-            {r.latency && (
-              <span className="text-xs font-mono text-white/30">{r.latency}</span>
+            {expanded === i && (r.debug || r.hint) && (
+              <div className="mt-1 rounded-xl border border-white/10 bg-[#0a1929] p-3 sm:p-4">
+                {r.hint && (
+                  <p className="mb-2 text-[10px] font-bold text-yellow-400 sm:text-xs">HINT: {r.hint}</p>
+                )}
+                {r.debug && (
+                  <pre className="overflow-x-auto text-[10px] leading-relaxed text-white/60 sm:text-xs">
+                    <code>{JSON.stringify(r.debug, null, 2)}</code>
+                  </pre>
+                )}
+              </div>
             )}
           </div>
         ))}
       </div>
 
       {results.some((r) => r.status === "fail") && (
-      <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/5 p-3 sm:mt-6 sm:rounded-2xl sm:p-4">
-        <p className="text-xs font-bold text-red-400 sm:text-sm">Some tests failed</p>
-        <p className="mt-1 text-[10px] text-white/50 sm:text-xs">
-          Check the error details above. For Supabase, ensure you've run
-          the <strong>supabase-schema.sql</strong> in the SQL Editor and
-          RLS policies allow public insert + select.
-        </p>
+        <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/5 p-3 sm:mt-6 sm:rounded-2xl sm:p-4">
+          <p className="text-xs font-bold text-red-400 sm:text-sm">Some tests failed</p>
+          <p className="mt-1 text-[10px] text-white/50 sm:text-xs">
+            Click a failed test to expand debug details. For Supabase, ensure DATABASE_URL uses the
+            pooler URL (port 6543) and you've run <strong>supabase-schema.sql</strong> in the SQL Editor.
+          </p>
         </div>
       )}
     </div>
