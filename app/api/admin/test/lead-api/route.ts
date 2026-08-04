@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const res = await fetch("http://localhost:3000/api/lead", {
+    const origin = new URL(req.url).origin;
+    const res = await fetch(`${origin}/api/lead`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

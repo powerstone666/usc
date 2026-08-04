@@ -5,7 +5,7 @@ const pool = new Pool({
   max: 3,
   idleTimeoutMillis: 20000,
   connectionTimeoutMillis: 5000,
-  ssl: { rejectUnauthorized: false },
+  ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : undefined,
 });
 
 export async function query<T extends Record<string, unknown>>(

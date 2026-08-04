@@ -149,7 +149,7 @@ export default async function AdminOverview() {
                     <td className="py-2 pr-4 text-white/40">{formatTimeAgo(lead.received_at)}</td>
                     <td className="py-2 pr-4">{lead.appliance}</td>
                     <td className="py-2 pr-4 text-white/50">{lead.source}</td>
-                    <td className="py-2 pr-4 font-mono">****{lead.phone_last4}</td>
+                    <td className="py-2 pr-4 font-mono">{lead.phone}</td>
                     <td className="py-2 pr-4 text-white/50">{lead.city || "—"}</td>
                     <td className="py-2 pr-4 text-white/50">{lead.device_type}</td>
                     <td className="py-2 pr-4 text-white/50">{formatTime(lead.time_on_page)}</td>

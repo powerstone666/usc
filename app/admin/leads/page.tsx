@@ -73,7 +73,7 @@ export default async function AdminLeads() {
                   </td>
                   <td className="px-4 py-2">{lead.name || "—"}</td>
                   <td className="px-4 py-2 font-mono">
-                    ****{lead.phone_last4}
+                    {lead.phone}
                   </td>
                   <td className="px-4 py-2">
                     <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px]">
