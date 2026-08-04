@@ -28,10 +28,10 @@ function StatCard({
   label: string; value: string | number; sub?: string; color: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-      <p className="text-xs font-medium text-white/40">{label}</p>
-      <p className="mt-2 text-3xl font-extrabold" style={{ color }}>{value}</p>
-      {sub && <p className="mt-1 text-xs text-white/30">{sub}</p>}
+    <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+      <p className="text-[10px] font-medium text-white/40 sm:text-xs">{label}</p>
+      <p className="mt-1.5 text-2xl font-extrabold sm:mt-2 sm:text-3xl" style={{ color }}>{value}</p>
+      {sub && <p className="mt-0.5 text-[10px] text-white/30 sm:mt-1 sm:text-xs">{sub}</p>}
     </div>
   );
 }
@@ -42,12 +42,12 @@ function BarChart({ data, color = "#0d47a1" }: { data: { label: string; count: n
   return (
     <div className="flex flex-col gap-2">
       {data.map((d, i) => (
-        <div key={i} className="flex items-center gap-3">
-          <span className="w-32 truncate text-xs text-white/60">{d.label}</span>
+        <div key={i} className="flex items-center gap-2 sm:gap-3">
+          <span className="w-24 shrink-0 truncate text-[10px] text-white/60 sm:w-32 sm:text-xs">{d.label}</span>
           <div className="h-6 flex-1 overflow-hidden rounded-md bg-white/5">
             <div className="h-full rounded-md transition-all" style={{ width: `${(d.count / max) * 100}%`, backgroundColor: color, minWidth: "2px" }} />
           </div>
-          <span className="w-8 text-right text-xs font-bold text-white/80">{d.count}</span>
+          <span className="w-6 shrink-0 text-right text-[10px] font-bold text-white/80 sm:w-8 sm:text-xs">{d.count}</span>
         </div>
       ))}
     </div>
@@ -71,25 +71,25 @@ export default async function AdminOverview() {
         <StatCard label="Avg Time on Page" value={formatTime(stats.avgTimeOnPage)} color="#9c27b0" />
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-3">
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
         <StatCard label="Unique Fingerprints" value={stats.uniqueFingerprints} sub="distinct devices" color="#00bcd4" />
-        <StatCard label="Returning Visitors" value={stats.returningVisitors} sub="visited more than once" color="#e91e63" />
-        <StatCard label="Conversion Rate" value={stats.totalPageViews > 0 ? `${((stats.totalLeads / stats.totalPageViews) * 100).toFixed(1)}%` : "—"} sub={`${stats.totalLeads} leads / ${stats.totalPageViews} views`} color="#8bc34a" />
+        <StatCard label="Returning Visitors" value={stats.returningVisitors} sub="visited >1x" color="#e91e63" />
+        <StatCard label="Conversion Rate" value={stats.totalPageViews > 0 ? `${((stats.totalLeads / stats.totalPageViews) * 100).toFixed(1)}%` : "—"} sub={`${stats.totalLeads} / ${stats.totalPageViews}`} color="#8bc34a" />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">Top Pages</h2>
+      <div className="mt-4 grid gap-3 sm:gap-6 lg:grid-cols-2 sm:mt-6">
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Top Pages</h2>
           <BarChart data={stats.topPages.map((d) => ({ label: d.label, count: d.count }))} color="#0d47a1" />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">Leads by Source (which button)</h2>
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Leads by Source (which button)</h2>
           <BarChart data={stats.bySource.map((d) => ({ label: d.label, count: d.count }))} color="#1565c0" />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">Page Views (Last 30 Days)</h2>
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Page Views (Last 30 Days)</h2>
           {stats.viewsByDay.length === 0 ? (
             <p className="py-4 text-sm text-white/30">No data yet</p>
           ) : (
@@ -125,34 +125,34 @@ export default async function AdminOverview() {
         </div>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-        <h2 className="mb-4 text-sm font-bold text-white/80">Recent Leads (Last 20)</h2>
+      <div className="mt-4 rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:mt-6 sm:rounded-2xl sm:p-5">
+        <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Recent Leads (Last 20)</h2>
         {stats.recentLeads.length === 0 ? (
           <p className="py-4 text-sm text-white/30">No leads yet — page views are being tracked above</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-[10px] sm:text-xs">
               <thead>
                 <tr className="border-b border-white/10 text-white/40">
-                  <th className="py-2 pr-4 font-medium">When</th>
-                  <th className="py-2 pr-4 font-medium">Appliance</th>
-                  <th className="py-2 pr-4 font-medium">Source</th>
-                  <th className="py-2 pr-4 font-medium">Phone</th>
-                  <th className="py-2 pr-4 font-medium">City</th>
-                  <th className="py-2 pr-4 font-medium">Device</th>
-                  <th className="py-2 pr-4 font-medium">Time on page</th>
+                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">When</th>
+                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Appliance</th>
+                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Source</th>
+                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Phone</th>
+                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">City</th>
+                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Device</th>
+                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Time</th>
                 </tr>
               </thead>
               <tbody>
                 {stats.recentLeads.map((lead) => (
                   <tr key={lead.id} className="border-b border-white/5 text-white/70">
-                    <td className="py-2 pr-4 text-white/40">{formatTimeAgo(lead.received_at)}</td>
-                    <td className="py-2 pr-4">{lead.appliance}</td>
-                    <td className="py-2 pr-4 text-white/50">{lead.source}</td>
-                    <td className="py-2 pr-4 font-mono">{lead.phone}</td>
-                    <td className="py-2 pr-4 text-white/50">{lead.city || "—"}</td>
-                    <td className="py-2 pr-4 text-white/50">{lead.device_type}</td>
-                    <td className="py-2 pr-4 text-white/50">{formatTime(lead.time_on_page)}</td>
+                    <td className="whitespace-nowrap py-2 pr-3 text-white/40 sm:pr-4">{formatTimeAgo(lead.received_at)}</td>
+                    <td className="whitespace-nowrap py-2 pr-3 sm:pr-4">{lead.appliance}</td>
+                    <td className="whitespace-nowrap py-2 pr-3 text-white/50 sm:pr-4">{lead.source}</td>
+                    <td className="whitespace-nowrap py-2 pr-3 font-mono sm:pr-4">{lead.phone}</td>
+                    <td className="whitespace-nowrap py-2 pr-3 text-white/50 sm:pr-4">{lead.city || "—"}</td>
+                    <td className="whitespace-nowrap py-2 pr-3 text-white/50 sm:pr-4">{lead.device_type}</td>
+                    <td className="whitespace-nowrap py-2 pr-3 text-white/50 sm:pr-4">{formatTime(lead.time_on_page)}</td>
                   </tr>
                 ))}
               </tbody>

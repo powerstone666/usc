@@ -9,8 +9,8 @@ function BarChart({ data, color = "#0d47a1" }: { data: { label: string; count: n
     <div className="flex flex-col gap-2">
       {data.map((d, i) => (
         <div key={i} className="flex items-center gap-3">
-          <span className="w-40 truncate text-xs text-white/60">{d.label}</span>
-          <div className="h-7 flex-1 overflow-hidden rounded-md bg-white/5">
+          <span className="w-24 shrink-0 truncate text-[10px] sm:w-40 sm:text-xs text-white/60">{d.label}</span>
+          <div className="h-6 sm:h-7 flex-1 overflow-hidden rounded-md bg-white/5">
             <div
               className="flex h-full items-center justify-end rounded-md pr-2 transition-all"
               style={{ width: `${(d.count / max) * 100}%`, backgroundColor: color, minWidth: "30px" }}
@@ -42,29 +42,29 @@ export default async function AdminTraffic() {
 
   return (
     <div>
-      <h1 className="text-xl font-extrabold text-white">Traffic Sources</h1>
-      <p className="mt-1 text-xs text-white/40">
+      <h1 className="text-lg font-extrabold sm:text-xl text-white">Traffic Sources</h1>
+      <p className="mt-1 text-[10px] text-white/40 sm:text-xs">
         Where your leads come from — organic, PPC, WhatsApp, social, referral, direct
       </p>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">Leads by Traffic Category</h2>
+      <div className="mt-4 grid gap-3 sm:gap-6 lg:grid-cols-2 sm:mt-6">
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold sm:mb-4 sm:text-sm text-white/80">Leads by Traffic Category</h2>
           <BarChart data={byCategory.map((d) => ({ label: d.traffic_category, count: toNum(d.count) }))} color="#0d47a1" />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">Leads by Source</h2>
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold sm:mb-4 sm:text-sm text-white/80">Leads by Source</h2>
           <BarChart data={bySource.map((d) => ({ label: d.traffic_source, count: toNum(d.count) }))} color="#1565c0" />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">Leads by Medium</h2>
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold sm:mb-4 sm:text-sm text-white/80">Leads by Medium</h2>
           <BarChart data={byMedium.map((d) => ({ label: d.traffic_medium, count: toNum(d.count) }))} color="#7b1fa2" />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">Leads by Campaign</h2>
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold sm:mb-4 sm:text-sm text-white/80">Leads by Campaign</h2>
           <BarChart data={byCampaign.map((d) => ({ label: d.traffic_campaign, count: toNum(d.count) }))} color="#ff9800" />
         </div>
       </div>

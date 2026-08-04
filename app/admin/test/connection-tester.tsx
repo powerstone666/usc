@@ -76,12 +76,10 @@ export function ConnectionTester() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-extrabold text-white">Connection Test</h1>
-          <p className="mt-1 text-xs text-white/40">
-            Verify all integrations are working
-          </p>
+          <h1 className="text-lg font-extrabold text-white sm:text-xl">Connection Test</h1>
+          <p className="mt-1 text-[10px] text-white/40 sm:text-xs">Verify all integrations are working</p>
         </div>
         <button
           onClick={runAll}
@@ -92,16 +90,16 @@ export function ConnectionTester() {
         </button>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3">
+      <div className="mt-4 flex flex-col gap-3 sm:mt-6">
         {results.map((r, i) => (
           <div
             key={i}
-            className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0d2843] p-4"
+            className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:p-4"
           >
             <span className={`h-3 w-3 shrink-0 rounded-full ${dotColor[r.status]}`} />
             <div className="flex-1">
-              <p className="text-sm font-bold text-white/90">{r.name}</p>
-              <p className={`mt-0.5 text-xs ${statusColor[r.status]}`}>
+              <p className="text-xs font-bold text-white/90 sm:text-sm">{r.name}</p>
+              <p className={`mt-0.5 text-[10px] sm:text-xs ${statusColor[r.status]}`}>
                 {r.status === "idle" && "Not tested yet"}
                 {r.status === "testing" && "Testing..."}
                 {r.status === "ok" && r.detail}
@@ -116,13 +114,13 @@ export function ConnectionTester() {
       </div>
 
       {results.some((r) => r.status === "fail") && (
-        <div className="mt-6 rounded-2xl border border-red-500/20 bg-red-500/5 p-4">
-          <p className="text-sm font-bold text-red-400">Some tests failed</p>
-          <p className="mt-1 text-xs text-white/50">
-            Check the error details above. For Supabase, ensure you've run
-            the <strong>supabase-schema.sql</strong> in the SQL Editor and
-            RLS policies allow public insert + select.
-          </p>
+      <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/5 p-3 sm:mt-6 sm:rounded-2xl sm:p-4">
+        <p className="text-xs font-bold text-red-400 sm:text-sm">Some tests failed</p>
+        <p className="mt-1 text-[10px] text-white/50 sm:text-xs">
+          Check the error details above. For Supabase, ensure you've run
+          the <strong>supabase-schema.sql</strong> in the SQL Editor and
+          RLS policies allow public insert + select.
+        </p>
         </div>
       )}
     </div>

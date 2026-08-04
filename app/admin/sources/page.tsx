@@ -26,8 +26,8 @@ function BarChart({
     <div className="flex flex-col gap-2">
       {data.map((d, i) => (
         <div key={i} className="flex items-center gap-3">
-          <span className="w-40 truncate text-xs text-white/60">{d.label}</span>
-          <div className="h-7 flex-1 overflow-hidden rounded-md bg-white/5">
+          <span className="w-24 shrink-0 truncate text-[10px] sm:w-40 sm:text-xs text-white/60">{d.label}</span>
+          <div className="h-6 sm:h-7 flex-1 overflow-hidden rounded-md bg-white/5">
             <div
               className="flex h-full items-center justify-end rounded-md pr-2 transition-all"
               style={{
@@ -57,14 +57,14 @@ export default async function AdminSources() {
 
   return (
     <div>
-      <h1 className="text-xl font-extrabold text-white">Sources & Conversions</h1>
-      <p className="mt-1 text-xs text-white/40">
+      <h1 className="text-lg font-extrabold sm:text-xl text-white">Sources & Conversions</h1>
+      <p className="mt-1 text-[10px] text-white/40 sm:text-xs">
         Which buttons, forms, and pages drive leads
       </p>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">
+      <div className="mt-4 grid gap-3 sm:gap-6 lg:grid-cols-2 sm:mt-6">
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold sm:mb-4 sm:text-sm text-white/80">
             Leads by Source (which button/form)
           </h2>
           <BarChart
@@ -76,8 +76,8 @@ export default async function AdminSources() {
           />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold sm:mb-4 sm:text-sm text-white/80">
             Leads by Appliance
           </h2>
           <BarChart
@@ -89,8 +89,8 @@ export default async function AdminSources() {
           />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold sm:mb-4 sm:text-sm text-white/80">
             Avg Time on Page Before Lead (by source)
           </h2>
           <BarChart
@@ -103,8 +103,8 @@ export default async function AdminSources() {
           />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">
+        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
+          <h2 className="mb-3 text-xs font-bold sm:mb-4 sm:text-sm text-white/80">
             Appliance × Source Breakdown
           </h2>
           <div className="overflow-x-auto">

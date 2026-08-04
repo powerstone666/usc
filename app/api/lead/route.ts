@@ -48,14 +48,6 @@ export async function POST(req: Request) {
     deviceType: ct.device_type || srv.deviceType,
   });
 
-  const lead = {
-    ...body,
-    phone,
-    receivedAt,
-    id: leadId,
-  };
-  console.log("[lead]", JSON.stringify(lead));
-
   await insertLead({
     id: leadId,
     receivedAt,

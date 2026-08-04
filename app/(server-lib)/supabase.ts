@@ -102,7 +102,6 @@ export async function insertLead(record: LeadInput): Promise<boolean> {
   ];
 
   const ok = await execute(sql, params);
-  if (ok) console.log("[db] Lead inserted:", record.id);
   return ok;
 }
 
