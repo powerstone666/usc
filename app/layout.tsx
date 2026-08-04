@@ -2,11 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
 import { site } from "@/app/(config)/site";
-import { Header } from "@/app/(ui)/components/header";
-import { Footer } from "@/app/(ui)/components/footer";
-import { CallBar } from "@/app/(ui)/components/call-bar";
-import { FloatingCall } from "@/app/(ui)/components/floating-call";
-import { DiagnosticProvider } from "@/app/(ui)/components/diagnostic-provider";
+import { AnalyticsScript, AnalyticsNoscript } from "@/app/(ui)/components/gtm-script";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -85,19 +81,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${sora.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col bg-background text-on-surface">
-        <DiagnosticProvider>
-          <a href="#main" className="skip-link">
-            Skip to content
-          </a>
-          <Header />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <Footer />
-          <CallBar />
-          <FloatingCall />
-        </DiagnosticProvider>
+      <body className="min-h-full bg-background text-on-surface">
+        <AnalyticsNoscript />
+        {children}
+        <AnalyticsScript />
       </body>
     </html>
   );

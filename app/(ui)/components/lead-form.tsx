@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { Icon } from "@/app/(ui)/components/icons";
+import { analytics } from "@/app/(common-lib)/analytics";
 
 type State = "idle" | "sending" | "done" | "error";
 
@@ -32,10 +33,19 @@ export function LeadForm({
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ appliance, issue, name, phone: digits, source }),
+        body: JSON.stringify({
+          appliance,
+          issue,
+          name,
+          phone: digits,
+          source,
+          telemetry: analytics.getTelemetry(),
+        }),
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || "Could not submit");
+      analytics.leadFormSubmit(appliance, source);
+      analytics.generateLead(source, appliance);
       setState("done");
     } catch (err) {
       setState("error");

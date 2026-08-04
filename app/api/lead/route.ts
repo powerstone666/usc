@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import type { LeadInput } from "@/app/(common-lib)/types";
+import { insertLead } from "@/app/(common-lib)/bigquery";
+import { collectTelemetry } from "@/app/(common-lib)/telemetry";
 
 const PHONE_RE = /^[6-9]\d{9}$/;
 
@@ -29,15 +31,57 @@ export async function POST(req: Request) {
     );
   }
 
-  // TODO(step-2): email this lead to the team via Hostinger SMTP
-  // and emit the GA4 dataLayer event (analytics integration).
+  const leadId = `lead_${Date.now().toString(36)}`;
+  const receivedAt = new Date().toISOString();
+  const ct = body.telemetry || {};
+
+  const srv = await collectTelemetry(req.headers);
+
   const lead = {
     ...body,
     phone,
-    receivedAt: new Date().toISOString(),
-    id: `lead_${Date.now().toString(36)}`,
+    receivedAt,
+    id: leadId,
   };
   console.log("[lead]", JSON.stringify(lead));
 
-  return NextResponse.json({ ok: true, id: lead.id });
+  await insertLead({
+    id: leadId,
+    receivedAt,
+    appliance: body.appliance,
+    issue: body.issue || "",
+    name: body.name || "",
+    phone,
+    source: body.source || "unknown",
+    pageUrl: ct.page_url || srv.userAgent,
+    userAgent: srv.userAgent,
+    ipAddress: srv.ipAddress,
+    city: srv.city,
+    region: srv.region,
+    country: srv.country,
+    isp: srv.isp,
+    asn: srv.asn,
+    latitude: srv.latitude,
+    longitude: srv.longitude,
+    browser: srv.browser,
+    browserVersion: srv.browserVersion,
+    os: srv.os,
+    osVersion: srv.osVersion,
+    deviceType: srv.deviceType,
+    deviceModel: srv.deviceModel,
+    deviceVendor: srv.deviceVendor,
+    sessionId: ct.session_id || "",
+    timeOnPage: ct.time_on_page || 0,
+    screenResolution: ct.screen_resolution || "",
+    viewport: ct.viewport || "",
+    language: ct.language || "",
+    referrer: ct.referrer || "",
+    trafficSource: ct.traffic_source || "",
+    trafficMedium: ct.traffic_medium || "",
+    trafficCategory: ct.traffic_category || "",
+    trafficCampaign: ct.traffic_campaign || "",
+    gclid: ct.gclid || "",
+  });
+
+  return NextResponse.json({ ok: true, id: leadId });
 }

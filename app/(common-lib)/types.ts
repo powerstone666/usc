@@ -14,6 +14,23 @@ export type ApplianceIcon =
   | "water-filter"
   | "chimney";
 
+export type ClientTelemetry = {
+  session_id?: string;
+  time_on_page?: number;
+  page_url?: string;
+  page_path?: string;
+  screen_resolution?: string;
+  viewport?: string;
+  device_type?: string;
+  language?: string;
+  referrer?: string;
+  traffic_source?: string;
+  traffic_medium?: string;
+  traffic_category?: string;
+  traffic_campaign?: string;
+  gclid?: string;
+};
+
 export type LeadInput = {
   appliance: ServiceSlug;
   issue?: string;
@@ -21,4 +38,5 @@ export type LeadInput = {
   name?: string;
   phone: string;
   source?: string;
+  telemetry?: ClientTelemetry;
 };

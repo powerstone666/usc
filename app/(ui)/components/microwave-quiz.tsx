@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent, type ReactNode } from "react";
 import { Icon } from "@/app/(ui)/components/icons";
+import { analytics } from "@/app/(common-lib)/analytics";
 
 type Answers = {
   brand?: string;
@@ -76,10 +77,13 @@ export function MicrowaveQuiz() {
           name: a.name,
           phone: digits,
           source: "microwave-quiz",
+          telemetry: analytics.getTelemetry(),
         }),
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || "Could not submit");
+      analytics.leadFormSubmit("microwave-repair", "microwave-quiz");
+      analytics.generateLead("microwave-quiz", "microwave-repair");
       setDone(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");

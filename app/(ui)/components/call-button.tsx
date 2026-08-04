@@ -3,6 +3,7 @@
 import { useDiagnostic } from "@/app/(ui)/components/diagnostic-provider";
 import { site } from "@/app/(config)/site";
 import { Icon } from "@/app/(ui)/components/icons";
+import { analytics } from "@/app/(common-lib)/analytics";
 import type { ReactNode } from "react";
 
 type Variant = "light" | "dark" | "outline" | "small";
@@ -28,10 +29,15 @@ export function CallButton({
   const { openDiagnostic } = useDiagnostic();
   const text = showNumber ? site.phoneDisplay : "Call";
 
+  function handleClick() {
+    analytics.clickToCall("call-button");
+    openDiagnostic();
+  }
+
   return (
     <button
       type="button"
-      onClick={openDiagnostic}
+      onClick={handleClick}
       className={className || styles[variant]}
       aria-label={`Book a repair — ${site.phoneDisplay}`}
     >

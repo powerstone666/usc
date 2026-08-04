@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { site } from "@/app/(config)/site";
 import { Icon } from "@/app/(ui)/components/icons";
 import { useDiagnostic } from "@/app/(ui)/components/diagnostic-provider";
+import { analytics } from "@/app/(common-lib)/analytics";
 
 type State = "icon" | "callNow" | "number";
 
@@ -38,7 +39,10 @@ export function FloatingCall() {
       )}
       <button
         type="button"
-        onClick={openDiagnostic}
+        onClick={() => {
+          analytics.clickToCall("floating-cta");
+          openDiagnostic();
+        }}
         className="relative flex h-14 shrink-0 items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-full text-white shadow-lg transition-all duration-500 ease-in-out"
         style={{ backgroundColor: info === "icon" ? "#8B1E1E" : "#A32020", width }}
         aria-label={`Book a repair — ${site.phoneDisplay}`}

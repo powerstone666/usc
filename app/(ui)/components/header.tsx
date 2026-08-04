@@ -5,6 +5,7 @@ import { nav, site } from "@/app/(config)/site";
 import { Wordmark } from "@/app/(ui)/components/wordmark";
 import { Icon } from "@/app/(ui)/components/icons";
 import { useDiagnostic } from "@/app/(ui)/components/diagnostic-provider";
+import { analytics } from "@/app/(common-lib)/analytics";
 
 export function Header() {
   const { openDiagnostic } = useDiagnostic();
@@ -32,7 +33,10 @@ export function Header() {
         </div>
         <button
           type="button"
-          onClick={openDiagnostic}
+          onClick={() => {
+            analytics.clickToCall("header");
+            openDiagnostic();
+          }}
           className="btn-zoom inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary transition-transform hover:scale-[1.02] active:scale-95"
         >
           <Icon name="phone" className="h-4 w-4" filled />

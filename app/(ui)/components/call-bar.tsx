@@ -3,6 +3,7 @@
 import { site } from "@/app/(config)/site";
 import { Icon } from "@/app/(ui)/components/icons";
 import { useDiagnostic } from "@/app/(ui)/components/diagnostic-provider";
+import { analytics } from "@/app/(common-lib)/analytics";
 
 export function CallBar() {
   const { openDiagnostic } = useDiagnostic();
@@ -12,7 +13,10 @@ export function CallBar() {
       <div className="flex items-stretch border-t border-outline-variant bg-primary">
         <button
           type="button"
-          onClick={openDiagnostic}
+          onClick={() => {
+            analytics.clickToCall("mobile-bar");
+            openDiagnostic();
+          }}
           className="flex flex-1 items-center justify-center gap-2 py-3.5 text-sm font-bold text-on-primary"
         >
           <Icon name="phone" className="h-5 w-5" filled />

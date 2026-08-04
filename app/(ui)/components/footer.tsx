@@ -4,6 +4,7 @@ import Link from "next/link";
 import { nav, services, site } from "@/app/(config)/site";
 import { Icon } from "@/app/(ui)/components/icons";
 import { useDiagnostic } from "@/app/(ui)/components/diagnostic-provider";
+import { analytics } from "@/app/(common-lib)/analytics";
 
 export function Footer() {
   const { openDiagnostic } = useDiagnostic();
@@ -95,7 +96,10 @@ export function Footer() {
             <li>
               <button
                 type="button"
-                onClick={openDiagnostic}
+                onClick={() => {
+                  analytics.clickToCall("footer");
+                  openDiagnostic();
+                }}
                 className="inline-flex items-center gap-2 transition-colors hover:text-on-primary"
               >
                 <Icon name="phone" className="h-4 w-4" filled />
@@ -107,6 +111,7 @@ export function Footer() {
                 href={`https://wa.me/${site.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => analytics.whatsappClick("footer")}
                 className="inline-flex items-center gap-2 transition-colors hover:text-on-primary"
               >
                 <Icon name="whatsapp" className="h-4 w-4" filled />

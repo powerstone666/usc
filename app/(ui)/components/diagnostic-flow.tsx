@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { services, site } from "@/app/(config)/site";
 import { serviceProblems } from "@/app/(config)/content";
 import { Icon } from "@/app/(ui)/components/icons";
+import { analytics } from "@/app/(common-lib)/analytics";
 
 export function DiagnosticFlow({
   open,
@@ -77,10 +78,12 @@ export function DiagnosticFlow({
           name,
           phone: digits,
           source: "diagnostic-popup",
+          telemetry: analytics.getTelemetry(),
         }),
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || "Could not submit");
+      analytics.diagnosticSubmit(service, issue === "other" ? otherIssue : issue);
       setDone(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -148,6 +151,7 @@ export function DiagnosticFlow({
                 href={`https://wa.me/${site.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => analytics.whatsappClick("diagnostic-popup")}
                 className="btn-zoom mt-2 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold text-white"
                 style={{ backgroundColor: "#0B5345" }}
               >
@@ -179,6 +183,7 @@ export function DiagnosticFlow({
                     onClick={() => {
                       setService(s.slug);
                       setIssue("");
+                      analytics.diagnosticCategory(s.slug);
                     }}
                     className={`flex flex-col items-center gap-1.5 rounded-xl border p-3 transition-colors ${
                       service === s.slug
