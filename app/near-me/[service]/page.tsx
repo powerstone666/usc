@@ -23,7 +23,7 @@ export async function generateMetadata({
   const s = services.find((sv) => sv.slug === service);
   if (!s) return { title: "Not found" };
   return {
-    title: `${s.name} Near Me in Bengaluru — Same Day Repair`,
+    title: `${s.short} Repair Near Me in Bengaluru`,
     description: `${s.name} near you in Bengaluru — same-day repair by verified technicians, free diagnosis, genuine parts, quality assured. ${s.tagline}`,
     alternates: { canonical: `/near-me/${service}` },
   };
@@ -50,7 +50,7 @@ export default async function Page({
           name: `${s.name} Near Me in ${site.city}`,
           serviceType: s.name,
           areaServed: site.city,
-          provider: { "@type": "LocalBusiness", name: site.name },
+          provider: { "@type": "LocalBusiness", name: site.name, address: { "@type": "PostalAddress", streetAddress: site.address.streetAddress, addressLocality: site.address.addressLocality, addressRegion: site.address.addressRegion, postalCode: site.address.postalCode, addressCountry: site.address.addressCountry }, telephone: site.phone, url: site.url },
         }}
       />
       <ServiceHero

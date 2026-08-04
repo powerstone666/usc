@@ -17,7 +17,7 @@ import { JsonLd } from "@/app/(ui)/components/json-ld";
 export const metadata: Metadata = {
   title: "AC Repair & Service in Bengaluru — Split, Window, All Brands",
   description:
-    "AC repair in Bengaluru — not cooling, gas refill, water leakage, noise, installation. Split & window AC. Daikin, LG, Samsung, Voltas, Hitachi. Free diagnosis, quality assured.",
+    "AC repair in Bengaluru — not cooling, gas refill, water leakage, noise, installation. Split & window AC. Daikin, LG, Samsung, Voltas, Hitachi. Free diagnosis, genuine parts, quality assured.",
   alternates: { canonical: "/services/ac-repair" },
   openGraph: {
     title: "AC Repair & Service in Bengaluru — Split, Window, All Brands",
@@ -42,7 +42,7 @@ export default function Page() {
           name: s.name,
           serviceType: "Air conditioner repair",
           areaServed: site.city,
-          provider: { "@type": "LocalBusiness", name: site.name },
+          provider: { "@type": "LocalBusiness", name: site.name, address: { "@type": "PostalAddress", streetAddress: site.address.streetAddress, addressLocality: site.address.addressLocality, addressRegion: site.address.addressRegion, postalCode: site.address.postalCode, addressCountry: site.address.addressCountry }, telephone: site.phone, url: site.url },
         }}
       />
       <ServiceHero image="/ac-repair.png" title={s.name} tagline={s.tagline}>

@@ -10,14 +10,14 @@ export function GET() {
   const base = site.url;
 
   const urls = [
-    url(`${base}/`, now, "monthly", "1"),
-    url(`${base}/about`, now, "monthly", "0.5"),
-    url(`${base}/contact`, now, "monthly", "0.5"),
-    url(`${base}/coverage`, now, "monthly", "0.5"),
-    url(`${base}/reviews`, now, "monthly", "0.5"),
-    url(`${base}/blog`, now, "monthly", "0.5"),
-    url(`${base}/terms`, now, "monthly", "0.3"),
-    url(`${base}/privacy`, now, "monthly", "0.3"),
+    url(`${base}/`, now, "daily", "1"),
+    url(`${base}/about`, now, "daily", "0.5"),
+    url(`${base}/contact`, now, "daily", "0.5"),
+    url(`${base}/coverage`, now, "daily", "0.5"),
+    url(`${base}/reviews`, now, "daily", "0.5"),
+    url(`${base}/blog`, now, "daily", "0.5"),
+    url(`${base}/terms`, now, "daily", "0.3"),
+    url(`${base}/privacy`, now, "daily", "0.3"),
   ];
 
   return new NextResponse(buildSitemap(urls), {

@@ -13,11 +13,11 @@ export function GET() {
 
   const urls = [
     ...brands.map((b) =>
-      url(`${base}/brands/${slugify(b)}`, now, "monthly", "0.6"),
+      url(`${base}/brands/${slugify(b)}`, now, "daily", "0.6"),
     ),
     ...brands.flatMap((brand) =>
       services.map((service) =>
-        url(`${base}/brands/${slugify(brand)}/${service.slug}`, now, "monthly", "0.5"),
+        url(`${base}/brands/${slugify(brand)}/${service.slug}`, now, "daily", "0.5"),
       ),
     ),
   ];

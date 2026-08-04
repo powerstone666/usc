@@ -37,7 +37,7 @@ export default function Home() {
           </Reveal>
           <Reveal delay={0.05}>
             <h1 className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
-              Microwave, AC, washing machine &amp; fridge repair services in Bengaluru
+              Microwave, AC, washing machine, fridge, water filter &amp; chimney repair services in Bengaluru
             </h1>
           </Reveal>
           <Reveal delay={0.1}>

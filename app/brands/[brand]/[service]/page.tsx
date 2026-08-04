@@ -32,7 +32,7 @@ export async function generateMetadata({
   const serviceData = services.find((s) => s.slug === service);
   if (!brandName || !serviceData) return { title: "Not found" };
   return {
-    title: `${brandName} ${serviceData.name} in Bengaluru — Same Day`,
+    title: `${brandName} ${serviceData.short} Repair`,
     description: `${brandName} ${serviceData.name.toLowerCase()} in Bengaluru — genuine ${brandName} spare parts, verified technicians, free diagnosis, quality assured. ${serviceData.tagline}`,
     alternates: { canonical: `/brands/${brand}/${service}` },
   };
@@ -61,7 +61,7 @@ export default async function Page({
           name: `${brandName} ${serviceData.name}`,
           serviceType: serviceData.name,
           areaServed: site.city,
-          provider: { "@type": "LocalBusiness", name: site.name },
+          provider: { "@type": "LocalBusiness", name: site.name, address: { "@type": "PostalAddress", streetAddress: site.address.streetAddress, addressLocality: site.address.addressLocality, addressRegion: site.address.addressRegion, postalCode: site.address.postalCode, addressCountry: site.address.addressCountry }, telephone: site.phone, url: site.url },
         }}
       />
       <ServiceHero

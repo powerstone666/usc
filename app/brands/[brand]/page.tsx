@@ -23,7 +23,7 @@ export async function generateMetadata({
   const brandName = brands.find((b) => slugify(b) === brand);
   if (!brandName) return { title: "Not found" };
   return {
-    title: `${brandName} Appliance Repair in Bengaluru — All Appliances`,
+    title: `${brandName} Appliance Repair in Bengaluru`,
     description: `${brandName} microwave, AC, washing machine and refrigerator repair in Bengaluru. Genuine ${brandName} spare parts, verified technicians, free diagnosis, quality assured.`,
     alternates: { canonical: `/brands/${brand}` },
   };
@@ -47,7 +47,7 @@ export default async function Page({
           name: `${brandName} Appliance Repair`,
           serviceType: "Appliance repair",
           areaServed: site.city,
-          provider: { "@type": "LocalBusiness", name: site.name },
+          provider: { "@type": "LocalBusiness", name: site.name, address: { "@type": "PostalAddress", streetAddress: site.address.streetAddress, addressLocality: site.address.addressLocality, addressRegion: site.address.addressRegion, postalCode: site.address.postalCode, addressCountry: site.address.addressCountry }, telephone: site.phone, url: site.url },
         }}
       />
       <ServiceHero

@@ -12,11 +12,11 @@ export function GET() {
 
   const urls = [
     ...bangaloreAreas.map((a) =>
-      url(`${base}/areas/${slugify(a.name)}`, now, "monthly", "0.7"),
+      url(`${base}/areas/${slugify(a.name)}`, now, "daily", "0.7"),
     ),
     ...bangaloreAreas.flatMap((area) =>
       services.map((service) =>
-        url(`${base}/areas/${slugify(area.name)}/${service.slug}`, now, "monthly", "0.6"),
+        url(`${base}/areas/${slugify(area.name)}/${service.slug}`, now, "daily", "0.6"),
       ),
     ),
   ];

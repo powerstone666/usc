@@ -42,7 +42,7 @@ export default function Page() {
           name: s.name,
           serviceType: "Microwave oven repair",
           areaServed: site.city,
-          provider: { "@type": "LocalBusiness", name: site.name },
+          provider: { "@type": "LocalBusiness", name: site.name, address: { "@type": "PostalAddress", streetAddress: site.address.streetAddress, addressLocality: site.address.addressLocality, addressRegion: site.address.addressRegion, postalCode: site.address.postalCode, addressCountry: site.address.addressCountry }, telephone: site.phone, url: site.url },
         }}
       />
       <ServiceHero image="/microwave-repair.png" title={s.name} tagline={s.tagline}>

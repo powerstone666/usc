@@ -11,7 +11,7 @@ export function GET() {
   const base = site.url;
 
   const urls = keywords.map((k) =>
-    url(`${base}/keywords/${k.slug}`, now, "monthly", "0.5"),
+    url(`${base}/keywords/${k.slug}`, now, "daily", "0.5"),
   );
 
   return new NextResponse(buildSitemap(urls), {

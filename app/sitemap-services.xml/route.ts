@@ -11,10 +11,10 @@ export function GET() {
 
   const urls = [
     ...services.map((s) =>
-      url(`${base}/services/${s.slug}`, now, "weekly", "0.8"),
+      url(`${base}/services/${s.slug}`, now, "daily", "0.8"),
     ),
     ...services.map((s) =>
-      url(`${base}/near-me/${s.slug}`, now, "monthly", "0.7"),
+      url(`${base}/near-me/${s.slug}`, now, "daily", "0.7"),
     ),
   ];
 

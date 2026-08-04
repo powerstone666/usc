@@ -21,18 +21,28 @@ export const metadata: Metadata = {
     template: "%s · Urban Service Company",
   },
   description:
-    "Same-day microwave, AC, washing machine and refrigerator repair in Bengaluru. Verified technicians, transparent quotes, genuine parts, quality assured. Call to book.",
+    "Same-day microwave, AC, washing machine, refrigerator, water filter and chimney repair in Bengaluru. Verified technicians, transparent quotes, genuine parts, quality assured. Call to book.",
   keywords: [
     "appliance repair bengaluru",
     "microwave repair bengaluru",
+    "microwave repair near me",
     "ac repair bangalore",
+    "ac service near me",
+    "ac repair near me",
     "washing machine repair bengaluru",
+    "washing machine repair near me",
     "refrigerator repair bengaluru",
+    "refrigerator repair near me",
+    "fridge repair near me",
     "water filter repair bengaluru",
+    "water filter repair near me",
+    "ro purifier repair bengaluru",
     "chimney repair bengaluru",
+    "chimney repair near me",
+    "kitchen chimney repair bengaluru",
     "urbanservicecompany",
   ],
-  alternates: { canonical: site.url },
+  alternates: { canonical: site.url + "/" },
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -40,15 +50,13 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: "Urban Service Company — Appliance Repair in Bengaluru",
     description:
-      "Same-day microwave, AC, washing machine and refrigerator repair in Bengaluru. Verified technicians, quality assured.",
-    images: [{ url: "/hero.png", width: 1024, height: 1024, alt: site.name }],
+      "Same-day microwave, AC, washing machine, refrigerator, water filter and chimney repair in Bengaluru. Verified technicians, quality assured.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Urban Service Company — Appliance Repair in Bengaluru",
     description:
       "Same-day microwave, AC, washing machine and refrigerator repair in Bengaluru.",
-    images: [{ url: "/hero.png", alt: site.name }],
   },
   robots: {
     index: true,
@@ -69,7 +77,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1c6ef6",
+  themeColor: "#0d47a1",
 };
 
 export default function RootLayout({

@@ -398,7 +398,7 @@ export const brandDomains: Record<string, string> = {
 
 export const serviceProblems: Record<ServiceSlug, Problem[]> = {
   "microwave-repair": [
-    { title: "Not heating", icon: "thermostat", description: "Faulty magnetron, blown fuse or defective high-voltage diode — the most common microwave fault we fix in Bengaluru." },
+    { title: "Microwave not heating", icon: "thermostat", description: "Faulty magnetron, blown fuse or defective high-voltage diode — the most common microwave fault we fix in Bengaluru. If you're searching for microwave repair near me, our technician diagnoses and replaces the faulty part." },
     { title: "Sparking inside", icon: "bolt", description: "Damaged waveguide cover or metal in the cavity — our technician replaces the waveguide and inspects the magnetron." },
     { title: "Turntable not rotating", icon: "rotate", description: "Worn turntable motor or broken drive coupling — we replace the motor with a genuine spare." },
     { title: "Buttons not working", icon: "display", description: "Faulty membrane switch or control panel — we test and replace the defective component." },
@@ -408,9 +408,9 @@ export const serviceProblems: Record<ServiceSlug, Problem[]> = {
     { title: "Display not working", icon: "display", description: "Defective control board or display panel — we replace the faulty board with a genuine spare." },
   ],
   "ac-repair": [
-    { title: "Less or no cooling", icon: "thermostat", description: "Low gas, faulty capacitor, dirty coil or defective compressor — the most common AC issue in Bengaluru." },
+    { title: "AC not cooling", icon: "thermostat", description: "Low gas, faulty capacitor, dirty coil or defective compressor — the most common AC issue in Bengaluru. If you're looking for AC service near me, our technician diagnoses the exact cause." },
     { title: "Water leakage", icon: "water-drop", description: "Clogged drain pipe or damaged drain tray — our technician clears the blockage and checks water flow." },
-    { title: "Not turning on", icon: "power", description: "Faulty capacitor, tripped PCB, or power supply issue — we diagnose and fix the electrical fault." },
+    { title: "AC not turning on", icon: "power", description: "Faulty capacitor, tripped PCB, or power supply issue — we diagnose and fix the electrical fault." },
     { title: "Noise or vibration", icon: "volume", description: "Faulty fan motor, loose blower or worn bearing — we identify the source and replace the part." },
     { title: "Gas refill needed", icon: "air", description: "Low refrigerant causing poor cooling — we test for leaks, fix them, and refill gas by weight." },
     { title: "Remote not working", icon: "display", description: "Faulty remote or receiver board — we test both and replace the defective unit." },

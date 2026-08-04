@@ -8,13 +8,20 @@ export const site = {
   url: "https://urbanservicecompany.in",
   city: "Bengaluru",
   // TODO(replace-before-launch): swap placeholder phone + WhatsApp number
-  phone: "+918884519375",
-  phoneDisplay: "+91 8884519375",
-  whatsapp: "+918884519375",
+  phone: "+919019349170",
+  phoneDisplay: "+91 9019349170",
+  whatsapp: "+919019349170",
   email: "contact@urbanservicecompany.in",
   hours: "8 AM – 9 PM · all days",
   warranty: "Quality assured repair",
   damageCover: "Service you can trust",
+  address: {
+    streetAddress: "Indiranagar",
+    addressLocality: "Bengaluru",
+    addressRegion: "Karnataka",
+    postalCode: "560038",
+    addressCountry: "IN",
+  },
 } as const;
 
 export type Service = {

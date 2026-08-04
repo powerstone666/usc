@@ -22,7 +22,7 @@ export async function generateMetadata({
   const areaData = bangaloreAreas.find((a) => slugify(a.name) === area);
   if (!areaData) return { title: "Not found" };
   return {
-    title: `Appliance Repair in ${areaData.name}, Bengaluru — Same Day`,
+    title: `Appliance Repair in ${areaData.name}`,
     description: `Same-day microwave, AC, washing machine and refrigerator repair in ${areaData.name}, Bengaluru. Verified technicians, free diagnosis, genuine parts, quality assured.`,
     alternates: { canonical: `/areas/${area}` },
   };
@@ -50,7 +50,7 @@ export default async function Page({
           name: `Appliance Repair in ${areaData.name}`,
           serviceType: "Appliance repair",
           areaServed: { "@type": "Place", name: areaData.name },
-          provider: { "@type": "LocalBusiness", name: site.name },
+          provider: { "@type": "LocalBusiness", name: site.name, address: { "@type": "PostalAddress", streetAddress: site.address.streetAddress, addressLocality: site.address.addressLocality, addressRegion: site.address.addressRegion, postalCode: site.address.postalCode, addressCountry: site.address.addressCountry }, telephone: site.phone, url: site.url },
         }}
       />
       <ServiceHero
