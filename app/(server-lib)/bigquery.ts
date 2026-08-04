@@ -58,6 +58,7 @@ export type LeadRecord = {
   trafficCategory: string;
   trafficCampaign: string;
   gclid: string;
+  fingerprint: string;
 };
 
 export async function insertLead(record: LeadRecord): Promise<boolean> {
@@ -107,6 +108,7 @@ export async function insertLead(record: LeadRecord): Promise<boolean> {
     traffic_category: record.trafficCategory,
     traffic_campaign: record.trafficCampaign,
     gclid: record.gclid,
+    fingerprint: record.fingerprint,
   };
 
   try {
@@ -159,4 +161,5 @@ export const bigQuerySchema = [
   { name: "traffic_category", type: "STRING" },
   { name: "traffic_campaign", type: "STRING" },
   { name: "gclid", type: "STRING" },
+  { name: "fingerprint", type: "STRING" },
 ];

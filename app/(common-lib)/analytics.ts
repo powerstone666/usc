@@ -202,11 +202,39 @@ class Analytics {
     if (!this.sessionStartPushed) {
       this.sessionStartPushed = true;
       this.push("session_start");
+      this.sendPageViewBeacon();
     }
     if (!this.scrollInit) {
       this.scrollInit = true;
       this.initScrollTracking();
     }
+  }
+
+  onRouteChange(path: string) {
+    this.push("page_view", { page_path: path });
+    this.sendPageViewBeacon();
+  }
+
+  private sendPageViewBeacon() {
+    if (typeof window === "undefined") return;
+    if (!navigator.sendBeacon) return;
+    const telemetry = this.getTelemetry();
+    telemetry.page_title = document.title;
+    const blob = new Blob(
+      [JSON.stringify({ telemetry })],
+      { type: "application/json" },
+    );
+    navigator.sendBeacon("/api/track", blob);
+  }
+
+  private sendEventBeacon(event: string, source: string) {
+    if (typeof window === "undefined") return;
+    if (!navigator.sendBeacon) return;
+    const blob = new Blob(
+      [JSON.stringify({ event, source, telemetry: this.getTelemetry() })],
+      { type: "application/json" },
+    );
+    navigator.sendBeacon("/api/track-event", blob);
   }
 
   private initScrollTracking() {
@@ -233,6 +261,7 @@ class Analytics {
 
   clickToCall(source: string) {
     this.push("click_to_call", { source, interaction_type: "call_button" });
+    this.sendEventBeacon("click_to_call", source);
   }
 
   diagnosticOpen() {
@@ -257,6 +286,7 @@ class Analytics {
 
   whatsappClick(source: string) {
     this.push("whatsapp_click", { source, interaction_type: "whatsapp_link" });
+    this.sendEventBeacon("whatsapp_click", source);
   }
 
   pageView(url: string, title: string) {
@@ -265,15 +295,23 @@ class Analytics {
 
   getTelemetry(): Record<string, unknown> {
     if (typeof window === "undefined") return {};
+    let timezone = "";
+    try { timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch {}
     return {
       session_id: this.sessionId,
       time_on_page: Date.now() - this.sessionStart,
       page_url: window.location.href,
       page_path: window.location.pathname,
+      page_title: document.title,
       screen_resolution: `${window.screen.width}x${window.screen.height}`,
       viewport: `${window.innerWidth}x${window.innerHeight}`,
+      color_depth: window.screen.colorDepth,
       device_type: this.getDeviceType(),
       language: navigator.language,
+      timezone,
+      hardware_concurrency: navigator.hardwareConcurrency || 0,
+      platform: navigator.platform || "",
+      touch_support: "ontouchstart" in window,
       referrer: document.referrer,
       traffic_source: this.trafficSource.source,
       traffic_medium: this.trafficSource.medium,

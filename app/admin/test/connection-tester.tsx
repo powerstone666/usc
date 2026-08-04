@@ -20,6 +20,7 @@ const tests: { name: string; endpoint: string }[] = [
   { name: "User-Agent Parser", endpoint: "/api/admin/test/ua" },
   { name: "Admin Auth", endpoint: "/api/admin/test/auth" },
   { name: "Traffic Source Detection", endpoint: "/api/admin/test/traffic" },
+  { name: "Telegram Bot", endpoint: "/api/admin/test/telegram" },
 ];
 
 export function ConnectionTester() {

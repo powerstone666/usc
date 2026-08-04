@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { collectTelemetry } from "@/app/(common-lib)/telemetry";
+import { collectTelemetry } from "@/app/(server-lib)/telemetry";
 
 export async function GET() {
   const headers = new Headers({

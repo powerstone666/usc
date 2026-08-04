@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getBigQuery } from "@/app/(common-lib)/bigquery";
+import { getBigQuery } from "@/app/(server-lib)/bigquery";
 
 export async function GET() {
   const bq = getBigQuery();

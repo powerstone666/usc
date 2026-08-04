@@ -19,10 +19,16 @@ export type ClientTelemetry = {
   time_on_page?: number;
   page_url?: string;
   page_path?: string;
+  page_title?: string;
   screen_resolution?: string;
   viewport?: string;
+  color_depth?: number;
   device_type?: string;
   language?: string;
+  timezone?: string;
+  hardware_concurrency?: number;
+  platform?: string;
+  touch_support?: boolean;
   referrer?: string;
   traffic_source?: string;
   traffic_medium?: string;

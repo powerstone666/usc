@@ -3,6 +3,7 @@ import { Footer } from "@/app/(ui)/components/footer";
 import { CallBar } from "@/app/(ui)/components/call-bar";
 import { FloatingCall } from "@/app/(ui)/components/floating-call";
 import { DiagnosticProvider } from "@/app/(ui)/components/diagnostic-provider";
+import { PageViewTracker } from "@/app/(ui)/components/page-view-tracker";
 
 export default function SiteLayout({
   children,
@@ -11,6 +12,7 @@ export default function SiteLayout({
 }) {
   return (
     <DiagnosticProvider>
+      <PageViewTracker />
       <a href="#main" className="skip-link">
         Skip to content
       </a>

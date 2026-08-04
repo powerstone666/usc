@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { getAllLeads } from "@/app/(common-lib)/bigquery-queries";
+import { getAllLeads } from "@/app/(server-lib)/bigquery-queries";
 
 function formatTime(ms: number): string {
   if (!ms) return "—";

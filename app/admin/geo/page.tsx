@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { getGeoStats } from "@/app/(common-lib)/bigquery-queries";
+import { getGeoStats } from "@/app/(server-lib)/bigquery-queries";
 
 function BarChart({
   data,

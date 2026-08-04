@@ -1,8 +1,9 @@
-import { getBigQuery } from "@/app/(common-lib)/bigquery";
+import { getBigQuery } from "@/app/(server-lib)/bigquery";
 
 const datasetId = process.env.BIGQUERY_DATASET_ID || "analytics";
 const tableId = process.env.BIGQUERY_TABLE_ID || "leads";
 const table = `\`${process.env.BIGQUERY_PROJECT_ID}.${datasetId}.${tableId}\``;
+const pvTable = `\`${process.env.BIGQUERY_PROJECT_ID}.${datasetId}.page_views\``;
 
 export type LeadRow = {
   lead_id: string;
@@ -33,11 +34,18 @@ export type OverviewStats = {
   totalLeads: number;
   todayLeads: number;
   uniqueUsers: number;
+  totalPageViews: number;
+  todayPageViews: number;
+  uniqueVisitors: number;
+  uniqueFingerprints: number;
+  returningVisitors: number;
   avgTimeOnPage: number;
   byAppliance: { appliance: string; count: number }[];
   bySource: { source: string; count: number }[];
   byDay: { day: string; count: number }[];
   recentLeads: LeadRow[];
+  topPages: { page_path: string; count: number }[];
+  viewsByDay: { day: string; count: number }[];
 };
 
 export type GeoStats = {
@@ -77,15 +85,19 @@ export async function getOverviewStats(): Promise<OverviewStats> {
   const byDayQuery = `SELECT DATE(received_at) as day, COUNT(*) as count FROM ${table} GROUP BY day ORDER BY day DESC LIMIT 30`;
   const recentQuery = `SELECT * FROM ${table} ORDER BY received_at DESC LIMIT 20`;
 
+  const pvTotalQuery = `SELECT COUNT(*) as count FROM ${pvTable}`;
+  const pvTodayQuery = `SELECT COUNT(*) as count FROM ${pvTable} WHERE DATE(received_at) = CURRENT_DATE()`;
+  const pvUniqueQuery = `SELECT COUNT(DISTINCT session_id) as count FROM ${pvTable}`;
+  const pvTopPagesQuery = `SELECT page_path, COUNT(*) as count FROM ${pvTable} GROUP BY page_path ORDER BY count DESC LIMIT 10`;
+  const pvByDayQuery = `SELECT DATE(received_at) as day, COUNT(*) as count FROM ${pvTable} GROUP BY day ORDER BY day DESC LIMIT 30`;
+  const pvFingerprintsQuery = `SELECT COUNT(DISTINCT fingerprint) as count FROM ${pvTable}`;
+  const pvReturningQuery = `SELECT COUNT(*) as count FROM (SELECT fingerprint, COUNT(*) as c FROM ${pvTable} WHERE fingerprint != '' GROUP BY fingerprint HAVING c > 1)`;
+
   const [
-    totalRes,
-    todayRes,
-    uniqueRes,
-    avgTimeRes,
-    byAppliance,
-    bySource,
-    byDay,
-    recentLeads,
+    totalRes, todayRes, uniqueRes, avgTimeRes,
+    byAppliance, bySource, byDay, recentLeads,
+    pvTotalRes, pvTodayRes, pvUniqueRes, topPages, viewsByDay,
+    pvFingerprintsRes, pvReturningRes,
   ] = await Promise.all([
     runQuery<{ count: number }>(totalQuery),
     runQuery<{ count: number }>(todayQuery),
@@ -95,17 +107,27 @@ export async function getOverviewStats(): Promise<OverviewStats> {
     runQuery<{ source: string; count: number }>(bySourceQuery),
     runQuery<{ day: string; count: number }>(byDayQuery),
     runQuery<LeadRow>(recentQuery),
+    runQuery<{ count: number }>(pvTotalQuery),
+    runQuery<{ count: number }>(pvTodayQuery),
+    runQuery<{ count: number }>(pvUniqueQuery),
+    runQuery<{ page_path: string; count: number }>(pvTopPagesQuery),
+    runQuery<{ day: string; count: number }>(pvByDayQuery),
+    runQuery<{ count: number }>(pvFingerprintsQuery),
+    runQuery<{ count: number }>(pvReturningQuery),
   ]);
 
   return {
     totalLeads: totalRes[0]?.count ?? 0,
     todayLeads: todayRes[0]?.count ?? 0,
     uniqueUsers: uniqueRes[0]?.count ?? 0,
+    totalPageViews: pvTotalRes[0]?.count ?? 0,
+    todayPageViews: pvTodayRes[0]?.count ?? 0,
+    uniqueVisitors: pvUniqueRes[0]?.count ?? 0,
+    uniqueFingerprints: pvFingerprintsRes[0]?.count ?? 0,
+    returningVisitors: pvReturningRes[0]?.count ?? 0,
     avgTimeOnPage: avgTimeRes[0]?.avg_ms ?? 0,
-    byAppliance,
-    bySource,
-    byDay,
-    recentLeads,
+    byAppliance, bySource, byDay, recentLeads,
+    topPages, viewsByDay,
   };
 }
 

@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { getBigQuery } from "@/app/(common-lib)/bigquery";
+import { getBigQuery } from "@/app/(server-lib)/bigquery";
 
 const datasetId = process.env.BIGQUERY_DATASET_ID || "analytics";
 const tableId = process.env.BIGQUERY_TABLE_ID || "leads";

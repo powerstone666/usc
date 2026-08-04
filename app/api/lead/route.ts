@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import type { LeadInput } from "@/app/(common-lib)/types";
-import { insertLead } from "@/app/(common-lib)/bigquery";
-import { collectTelemetry } from "@/app/(common-lib)/telemetry";
+import { insertLead } from "@/app/(server-lib)/bigquery";
+import { collectTelemetry } from "@/app/(server-lib)/telemetry";
+import { generateFingerprint } from "@/app/(server-lib)/fingerprint";
+import { sendLeadNotification } from "@/app/(server-lib)/telegram";
 
 const PHONE_RE = /^[6-9]\d{9}$/;
 
@@ -36,6 +38,15 @@ export async function POST(req: Request) {
   const ct = body.telemetry || {};
 
   const srv = await collectTelemetry(req.headers);
+  const fingerprint = generateFingerprint({
+    ipAddress: srv.ipAddress,
+    userAgent: srv.userAgent,
+    screenResolution: ct.screen_resolution || "",
+    language: ct.language || "",
+    timezone: ct.timezone || "",
+    colorDepth: ct.color_depth,
+    deviceType: ct.device_type || srv.deviceType,
+  });
 
   const lead = {
     ...body,
@@ -81,6 +92,29 @@ export async function POST(req: Request) {
     trafficCategory: ct.traffic_category || "",
     trafficCampaign: ct.traffic_campaign || "",
     gclid: ct.gclid || "",
+    fingerprint,
+  });
+
+  await sendLeadNotification({
+    leadId,
+    appliance: body.appliance,
+    issue: body.issue || "",
+    name: body.name || "",
+    phoneLast4: phone.slice(-4),
+    source: body.source || "unknown",
+    city: srv.city,
+    region: srv.region,
+    isp: srv.isp,
+    browser: srv.browser,
+    os: srv.os,
+    deviceType: srv.deviceType,
+    screenResolution: ct.screen_resolution || "",
+    trafficSource: ct.traffic_source || "",
+    trafficMedium: ct.traffic_medium || "",
+    trafficCategory: ct.traffic_category || "",
+    timeOnPage: ct.time_on_page || 0,
+    fingerprint,
+    pageUrl: ct.page_url || "",
   });
 
   return NextResponse.json({ ok: true, id: leadId });
