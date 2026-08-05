@@ -5,6 +5,7 @@ import Link from "next/link";
 const navItems = [
   { href: "/admin", label: "Overview", icon: "M3 3h7v7H3V3zm11 0h7v7h-7V3zM3 14h7v7H3v-7zm11 0h7v7h-7v-7z" },
   { href: "/admin/leads", label: "Leads", icon: "M3 5h18M3 12h18M3 19h18" },
+  { href: "/admin/events", label: "Events", icon: "M22 12h-4l-3 9L9 3l-3 9H2" },
   { href: "/admin/sources", label: "Sources", icon: "M9 19l-7-7 7-7M3 12h18" },
   { href: "/admin/traffic", label: "Traffic", icon: "M3 3v18h18M7 16l4-4 4 4 6-6" },
   { href: "/admin/geo", label: "Geo & Device", icon: "M12 2a10 10 0 100 20 10 10 0 000-20zM2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20" },

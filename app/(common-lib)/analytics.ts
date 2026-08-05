@@ -227,13 +227,12 @@ class Analytics {
     navigator.sendBeacon("/api/track", blob);
   }
 
-  private sendEventBeacon(event: string, source: string) {
+  private sendEventBeacon(event: string, source: string, extra?: Record<string, unknown>) {
     if (typeof window === "undefined") return;
     if (!navigator.sendBeacon) return;
-    const blob = new Blob(
-      [JSON.stringify({ event, source, telemetry: this.getTelemetry() })],
-      { type: "application/json" },
-    );
+    const payload: Record<string, unknown> = { event, source, telemetry: this.getTelemetry() };
+    if (extra) payload.extra = extra;
+    const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
     navigator.sendBeacon("/api/track-event", blob);
   }
 
@@ -252,6 +251,7 @@ class Analytics {
           if (scrollPct >= m && !reached.has(m)) {
             reached.add(m);
             this.push("scroll_depth", { depth_percent: m });
+            this.sendEventBeacon("scroll_depth", "page", { depth_percent: m });
           }
         }
       },
@@ -266,22 +266,27 @@ class Analytics {
 
   diagnosticOpen() {
     this.push("diagnostic_open", { interaction_type: "diagnostic_popup" });
+    this.sendEventBeacon("diagnostic_open", "diagnostic-popup");
   }
 
   diagnosticCategory(service: string) {
     this.push("diagnostic_category_selected", { service, interaction_type: "diagnostic_popup" });
+    this.sendEventBeacon("diagnostic_category_selected", "diagnostic-popup", { service });
   }
 
   diagnosticSubmit(service: string, issue: string) {
     this.push("diagnostic_submit", { service, issue, interaction_type: "diagnostic_popup" });
+    this.sendEventBeacon("diagnostic_submit", "diagnostic-popup", { service, issue });
   }
 
   leadFormSubmit(appliance: string, source: string) {
     this.push("lead_form_submit", { appliance, source, interaction_type: "lead_form" });
+    this.sendEventBeacon("lead_form_submit", source, { appliance });
   }
 
   generateLead(source: string, appliance: string) {
     this.push("generate_lead", { source, appliance, value: 1, currency: "INR" });
+    this.sendEventBeacon("generate_lead", source, { appliance });
   }
 
   whatsappClick(source: string) {

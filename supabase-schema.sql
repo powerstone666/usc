@@ -91,3 +91,34 @@ CREATE INDEX IF NOT EXISTS idx_pv_page_path ON page_views (page_path);
 CREATE INDEX IF NOT EXISTS idx_pv_fingerprint ON page_views (fingerprint);
 CREATE INDEX IF NOT EXISTS idx_pv_session_id ON page_views (session_id);
 CREATE INDEX IF NOT EXISTS idx_pv_traffic_category ON page_views (traffic_category);
+
+-- ── Events table ─────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS events (
+  event_id TEXT PRIMARY KEY,
+  received_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  session_id TEXT DEFAULT '',
+  event_type TEXT NOT NULL,
+  event_source TEXT DEFAULT '',
+  page_url TEXT DEFAULT '',
+  page_title TEXT DEFAULT '',
+  ip_address TEXT DEFAULT '',
+  city TEXT DEFAULT '',
+  country TEXT DEFAULT '',
+  isp TEXT DEFAULT '',
+  browser TEXT DEFAULT '',
+  os TEXT DEFAULT '',
+  device_type TEXT DEFAULT '',
+  traffic_category TEXT DEFAULT '',
+  time_on_page BIGINT DEFAULT 0,
+  fingerprint TEXT DEFAULT '',
+  extra JSONB DEFAULT '{}'
+);
+
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public insert events" ON events FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "Public select events" ON events FOR SELECT TO anon, authenticated USING (true);
+
+CREATE INDEX IF NOT EXISTS idx_events_received_at ON events (received_at DESC);
+CREATE INDEX IF NOT EXISTS idx_events_event_type ON events (event_type);
+CREATE INDEX IF NOT EXISTS idx_events_session_id ON events (session_id);
+CREATE INDEX IF NOT EXISTS idx_events_fingerprint ON events (fingerprint);
