@@ -52,6 +52,48 @@ export async function POST(req: Request) {
   });
 
   if (body.event === "click_to_call" || body.event === "whatsapp_click") {
+    const leadId = `${body.event}_${Date.now().toString(36)}`;
+    const now = new Date().toISOString();
+
+    await supabase.from("leads").insert({
+      id: leadId,
+      received_at: now,
+      appliance: "",
+      issue: "",
+      name: "",
+      phone: "",
+      phone_hash: "",
+      phone_last4: "",
+      source: `${body.event}:${body.source || "unknown"}`,
+      page_url: (ct.page_url as string) || "",
+      user_agent: srv.userAgent,
+      ip_address: srv.ipAddress,
+      city: srv.city,
+      region: srv.region,
+      country: srv.country,
+      isp: srv.isp,
+      asn: srv.asn,
+      browser: srv.browser,
+      browser_version: srv.browserVersion,
+      os: srv.os,
+      os_version: srv.osVersion,
+      device_type: srv.deviceType,
+      device_model: srv.deviceModel,
+      device_vendor: srv.deviceVendor,
+      session_id: (ct.session_id as string) || "",
+      time_on_page: (ct.time_on_page as number) || 0,
+      screen_resolution: (ct.screen_resolution as string) || "",
+      viewport: (ct.viewport as string) || "",
+      language: (ct.language as string) || "",
+      referrer: (ct.referrer as string) || "",
+      traffic_source: (ct.traffic_source as string) || "",
+      traffic_medium: (ct.traffic_medium as string) || "",
+      traffic_category: (ct.traffic_category as string) || "",
+      traffic_campaign: (ct.traffic_campaign as string) || "",
+      gclid: (ct.gclid as string) || "",
+      fingerprint,
+    });
+
     await sendEventNotification({
       event: body.event,
       source: body.source || "unknown",

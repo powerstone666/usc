@@ -30,19 +30,33 @@ function getIP(headers: Headers): string {
   return "0.0.0.0";
 }
 
-function parseUserAgent(ua: string) {
+function parseUserAgent(ua: string, headers: Headers) {
   const parser = new UAParser(ua);
   const device = parser.getDevice();
   const os = parser.getOS();
   const browser = parser.getBrowser();
+
+  let deviceModel = device.model || "";
+  let deviceVendor = device.vendor || "";
+
+  const chModel = headers.get("sec-ch-ua-model");
+  if (chModel && chModel !== '""' && chModel !== "") {
+    deviceModel = chModel.replace(/"/g, "");
+  }
+
+  const chPlatform = headers.get("sec-ch-ua-platform");
+  if (chPlatform && chPlatform.replace(/"/g, "") && !os.name) {
+    os.name = chPlatform.replace(/"/g, "");
+  }
+
   return {
     browser: browser.name || "",
     browserVersion: browser.version || "",
     os: os.name || "",
     osVersion: os.version || "",
     deviceType: device.type || "desktop",
-    deviceModel: device.model || "",
-    deviceVendor: device.vendor || "",
+    deviceModel,
+    deviceVendor,
   };
 }
 
@@ -81,7 +95,7 @@ async function resolveIP(ip: string): Promise<{
 export async function collectTelemetry(headers: Headers): Promise<ServerTelemetry> {
   const ip = getIP(headers);
   const ua = headers.get("user-agent") || "";
-  const parsed = parseUserAgent(ua);
+  const parsed = parseUserAgent(ua, headers);
   const geo = await resolveIP(ip);
 
   return {

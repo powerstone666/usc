@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { site } from "@/app/(config)/site";
 import { AnalyticsScript, AnalyticsNoscript } from "@/app/(ui)/components/gtm-script";
+import { JsonLd } from "@/app/(ui)/components/json-ld";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -69,8 +70,17 @@ export const metadata: Metadata = {
   },
   category: "Home services",
   icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
     apple: [{ url: "/apple-icon.svg", type: "image/svg+xml" }],
+    other: [
+      { rel: "icon", url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
+      { rel: "icon", url: "/favicon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
   },
 };
 
@@ -85,6 +95,28 @@ export default function RootLayout({
     <html lang="en" className={`${sora.variable} h-full antialiased`}>
       <body className="min-h-full bg-background text-on-surface">
         <AnalyticsNoscript />
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: site.name,
+            url: site.url,
+            logo: `${site.url}/favicon-192x192.png`,
+            description:
+              "Same-day microwave, AC, washing machine, refrigerator, water filter and chimney repair in Bengaluru. Verified technicians, genuine parts, quality assured.",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: site.address.streetAddress,
+              addressLocality: site.address.addressLocality,
+              addressRegion: site.address.addressRegion,
+              postalCode: site.address.postalCode,
+              addressCountry: site.address.addressCountry,
+            },
+            telephone: site.phone,
+            email: site.email,
+            sameAs: [],
+          }}
+        />
         {children}
         <AnalyticsScript />
         <SpeedInsights />
