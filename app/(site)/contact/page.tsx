@@ -31,7 +31,7 @@ export default function Page() {
                 call you back within 15 minutes. {site.hours}.
               </p>
               <div className="mt-6">
-                <CallButton variant="light" showNumber />
+                <CallButton variant="light"  />
               </div>
             </Reveal>
             <div className="relative hidden h-48 overflow-hidden rounded-3xl lg:block">
@@ -58,7 +58,7 @@ export default function Page() {
                 <div>
                   <p className="text-sm text-on-surface-variant">Call us</p>
                   <p className="text-base font-extrabold text-on-surface">
-                    {site.phoneDisplay}
+                    
                   </p>
                 </div>
               </div>

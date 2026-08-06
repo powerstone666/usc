@@ -70,7 +70,7 @@ export default async function Page({
         tagline={`Genuine ${brandName} spare parts, verified technicians, same-day ${serviceData.name.toLowerCase()} across ${site.city}. Free diagnosis, quality assured.`}
       >
         <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-          <CallButton variant="light" showNumber />
+          <CallButton variant="light"  />
           <Link
             href={`/brands/${brand}`}
             className="inline-flex items-center justify-center gap-2 btn-zoom rounded-lg border-2 border-white/40 px-5 py-3 text-sm font-bold text-on-primary hover:bg-white/10"

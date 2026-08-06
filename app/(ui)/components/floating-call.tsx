@@ -6,14 +6,14 @@ import { Icon } from "@/app/(ui)/components/icons";
 import { useDiagnostic } from "@/app/(ui)/components/diagnostic-provider";
 import { analytics } from "@/app/(common-lib)/analytics";
 
-type State = "icon" | "callNow" | "number";
+type State = "icon" | "callNow";
 
 export function FloatingCall() {
   const [info, setInfo] = useState<State>("icon");
   const { openDiagnostic } = useDiagnostic();
 
   useEffect(() => {
-    const cycle: State[] = ["icon", "callNow", "number"];
+    const cycle: State[] = ["icon", "callNow"];
     let i = 0;
     const interval = setInterval(() => {
       i = (i + 1) % cycle.length;
@@ -22,7 +22,7 @@ export function FloatingCall() {
     return () => clearInterval(interval);
   }, []);
 
-  const width = info === "icon" ? "3.5rem" : info === "callNow" ? "10rem" : "14.5rem";
+  const width = info === "icon" ? "3.5rem" : "10rem";
 
   return (
     <div
@@ -50,7 +50,7 @@ export function FloatingCall() {
         <Icon name="phone" className="h-6 w-6 shrink-0" filled />
         {info !== "icon" && (
           <span className="overflow-hidden whitespace-nowrap text-sm font-bold">
-            {info === "number" ? site.phoneDisplay : "Call now"}
+            Call now
           </span>
         )}
       </button>

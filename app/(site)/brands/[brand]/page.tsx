@@ -55,7 +55,7 @@ export default async function Page({
         tagline={`Genuine ${brandName} spare parts, verified technicians, same-day repair across ${site.city}. Free diagnosis, quality assured.`}
       >
         <div className="mt-5">
-          <CallButton variant="light" showNumber />
+          <CallButton variant="light"  />
         </div>
       </ServiceHero>
 

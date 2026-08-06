@@ -17,17 +17,14 @@ const styles: Record<Variant, string> = {
 
 export function CallButton({
   variant = "light",
-  showNumber = false,
   children,
   className,
 }: {
   variant?: Variant;
-  showNumber?: boolean;
   children?: ReactNode;
   className?: string;
 }) {
   const { openDiagnostic } = useDiagnostic();
-  const text = showNumber ? site.phoneDisplay : "Call";
 
   function handleClick() {
     analytics.clickToCall("call-button");
@@ -42,7 +39,7 @@ export function CallButton({
       aria-label={`Book a repair — ${site.phoneDisplay}`}
     >
       <Icon name="phone" className="h-4 w-4" filled />
-      {children || text}
+      {children || "Call now"}
     </button>
   );
 }

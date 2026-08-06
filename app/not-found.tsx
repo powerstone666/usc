@@ -55,7 +55,7 @@ export default function NotFound() {
             refrigerators, water filters and chimneys across {site.city} — same day.
           </p>
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <CallButton variant="dark" showNumber />
+            <CallButton variant="dark"  />
             <Link
               href="/"
               className="inline-flex items-center gap-2 rounded-lg border-2 border-white/40 px-5 py-3 text-sm font-bold text-on-primary hover:bg-white/10"
@@ -171,7 +171,7 @@ export default function NotFound() {
             {keywords.join(" · ")}
           </p>
           <p className="mt-4 text-center text-xs text-on-surface-variant">
-            {site.name} · {site.phoneDisplay} · {site.email} · {site.hours} · {site.city}
+            {site.name} ·  · {site.email} · {site.hours} · {site.city}
           </p>
         </div>
       </section>

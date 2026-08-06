@@ -121,9 +121,11 @@ export function DiagnosticFlow({
             </p>
             <a
               href={`tel:${site.phone}`}
+              onClick={() => analytics.telClick("diagnostic-done")}
               className="btn-zoom inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-bold text-on-primary"
             >
-              <Icon name="phone" className="h-4 w-4" filled /> {site.phoneDisplay}
+              <Icon name="phone" className="h-4 w-4" filled /> 
+              Call now
             </a>
             <button
               type="button"
@@ -142,10 +144,11 @@ export function DiagnosticFlow({
               </p>
               <a
                 href={`tel:${site.phone}`}
+                onClick={() => analytics.telClick("diagnostic-top")}
                 className="btn-zoom mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3.5 text-sm font-bold text-on-primary"
               >
                 <Icon name="phone" className="h-5 w-5" filled />
-                Call now — {site.phoneDisplay}
+                Call now
               </a>
               <a
                 href={`https://wa.me/${site.whatsapp}`}

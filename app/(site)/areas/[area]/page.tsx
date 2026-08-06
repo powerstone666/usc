@@ -58,7 +58,7 @@ export default async function Page({
         tagline={`Same-day microwave, AC, washing machine & refrigerator repair in ${areaData.name}. Verified technicians, free diagnosis, genuine parts, quality assured.`}
       >
         <div className="mt-5">
-          <CallButton variant="light" showNumber />
+          <CallButton variant="light"  />
         </div>
       </ServiceHero>
 

@@ -49,7 +49,7 @@ export default function Home() {
           </Reveal>
           <Reveal delay={0.15}>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <CallButton variant="light" showNumber />
+              <CallButton variant="light"  />
               <Link
                 href="/services/microwave-repair"
                 className="inline-flex items-center justify-center gap-2 btn-zoom rounded-lg border-2 border-white/40 px-5 py-3 text-sm font-bold text-on-primary transition-colors hover:bg-white/10"

@@ -294,6 +294,11 @@ class Analytics {
     this.sendEventBeacon("whatsapp_click", source);
   }
 
+  telClick(source: string) {
+    this.push("tel_click", { source, interaction_type: "tel_link" });
+    this.sendEventBeacon("tel_click", source);
+  }
+
   pageView(url: string, title: string) {
     this.push("page_view", { page_url: url, page_title: title });
   }

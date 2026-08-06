@@ -20,16 +20,8 @@ export function CallBar() {
           className="flex flex-1 items-center justify-center gap-2 py-3.5 text-sm font-bold text-on-primary"
         >
           <Icon name="phone" className="h-5 w-5" filled />
-          Book a repair
+          Call now
         </button>
-        <div className="flex items-center border-l border-white/20 px-4">
-          <a
-            href={`tel:${site.phone}`}
-            className="text-xs font-semibold text-on-primary/80"
-          >
-            {site.phoneDisplay}
-          </a>
-        </div>
       </div>
     </div>
   );

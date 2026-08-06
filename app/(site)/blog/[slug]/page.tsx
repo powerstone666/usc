@@ -151,7 +151,7 @@ export default async function Page({
                       <div className="my-8 rounded-3xl bg-surface-variant p-6">
                         <p className="text-base font-extrabold text-on-surface">Need a repair today in {site.city}?</p>
                         <p className="mt-1 text-sm text-on-surface-variant">Same-day slots. Free diagnosis. Quality assured. Call us now.</p>
-                        <CallButton variant="dark" showNumber />
+                        <CallButton variant="dark"  />
                       </div>
                     )}
                   </div>

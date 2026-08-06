@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     extra: body.extra || {},
   });
 
-  if (body.event === "click_to_call" || body.event === "whatsapp_click") {
+  if (body.event === "click_to_call" || body.event === "whatsapp_click" || body.event === "tel_click") {
     const leadId = `${body.event}_${Date.now().toString(36)}`;
     const now = new Date().toISOString();
 

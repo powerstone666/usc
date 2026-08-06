@@ -103,7 +103,7 @@ export function Footer() {
                 className="inline-flex items-center gap-2 transition-colors hover:text-on-primary"
               >
                 <Icon name="phone" className="h-4 w-4" filled />
-                {site.phoneDisplay}
+                
               </button>
             </li>
             <li>
