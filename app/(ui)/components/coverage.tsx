@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { areas, site } from "@/app/(config)/site";
+import { slugify } from "@/app/(common-lib)/slugify";
 import { Icon } from "@/app/(ui)/components/icons";
 
 export function Coverage() {
@@ -30,11 +32,13 @@ export function Coverage() {
       <div className="flex flex-col justify-center">
         <ul className="flex flex-wrap gap-2">
           {shown.map((a) => (
-            <li
-              key={a}
-              className="rounded-lg bg-background px-3 py-1.5 text-sm text-on-surface-variant"
-            >
-              {a}
+            <li key={a}>
+              <Link
+                href={`/areas/${slugify(a)}`}
+                className="block rounded-lg bg-background px-3 py-1.5 text-sm text-on-surface-variant transition-colors hover:bg-primary hover:text-on-primary"
+              >
+                {a}
+              </Link>
             </li>
           ))}
         </ul>

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { brands } from "@/app/(config)/content";
+import { slugify } from "@/app/(common-lib)/slugify";
 import { Reveal } from "@/app/(ui)/components/reveal";
 
 export function BrandsGrid() {
@@ -23,21 +25,23 @@ export function BrandsGrid() {
         </Reveal>
         <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {shown.map((b, i) => (
-            <li
-              key={b}
-              className="group relative flex h-20 items-center justify-center overflow-hidden card-zoom rounded-2xl border border-outline-variant bg-surface px-4 transition-colors hover:border-primary hover:bg-primary-container"
-            >
-              <span
-                className="water-fill"
-                style={{
-                  animation: `waterFill 32s ease-in-out infinite`,
-                  animationDelay: `${-32 + (i * 32 / shown.length)}s`,
-                }}
-                aria-hidden="true"
-              />
-              <span className="relative text-base font-extrabold tracking-tight text-on-surface transition-colors group-hover:text-primary">
-                {b}
-              </span>
+            <li key={b}>
+              <Link
+                href={`/brands/${slugify(b)}`}
+                className="group relative flex h-20 items-center justify-center overflow-hidden card-zoom rounded-2xl border border-outline-variant bg-surface px-4 transition-colors hover:border-primary hover:bg-primary-container"
+              >
+                <span
+                  className="water-fill"
+                  style={{
+                    animation: `waterFill 32s ease-in-out infinite`,
+                    animationDelay: `${-32 + (i * 32 / shown.length)}s`,
+                  }}
+                  aria-hidden="true"
+                />
+                <span className="relative text-base font-extrabold tracking-tight text-on-surface transition-colors group-hover:text-primary">
+                  {b}
+                </span>
+              </Link>
             </li>
           ))}
         </ul>

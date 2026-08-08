@@ -89,7 +89,7 @@ export default async function Page({
                   ))}
                 </ul>
                 <Link
-                  href={`/services/${s.slug}`}
+                  href={`/brands/${brand}/${s.slug}`}
                   className="mt-1 inline-flex items-center gap-1 text-sm font-bold text-primary"
                 >
                   {brandName} {s.short} repair
@@ -116,6 +116,28 @@ export default async function Page({
               source={`brand-${brand}`}
             />
           </div>
+        </div>
+      </section>
+
+      <section className="py-14 lg:py-20">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
+            Other brands we service
+          </h2>
+          <ul className="mt-6 flex flex-wrap gap-2">
+            {brands
+              .filter((b) => b !== brandName)
+              .map((b) => (
+                <li key={b}>
+                  <Link
+                    href={`/brands/${slugify(b)}`}
+                    className="block rounded-lg border border-outline-variant bg-surface px-3 py-1.5 text-sm text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
+                  >
+                    {b}
+                  </Link>
+                </li>
+              ))}
+          </ul>
         </div>
       </section>
     </div>

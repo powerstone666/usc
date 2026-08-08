@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { site, areas, bangaloreAreas, areaRegions } from "@/app/(config)/site";
+import { slugify } from "@/app/(common-lib)/slugify";
 import { Coverage } from "@/app/(ui)/components/coverage";
-import { Icon } from "@/app/(ui)/components/icons";
 import { Reveal } from "@/app/(ui)/components/reveal";
 
 export const metadata: Metadata = {
@@ -88,11 +89,13 @@ export default function Page() {
                     </div>
                     <ul className="flex flex-wrap gap-2">
                       {regionAreas.map((a) => (
-                        <li
-                          key={a.name}
-                          className="rounded-lg border border-outline-variant bg-surface px-3 py-1.5 text-sm text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
-                        >
-                          {a.name}
+                        <li key={a.name}>
+                          <Link
+                            href={`/areas/${slugify(a.name)}`}
+                            className="block rounded-lg border border-outline-variant bg-surface px-3 py-1.5 text-sm text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
+                          >
+                            {a.name}
+                          </Link>
                         </li>
                       ))}
                     </ul>

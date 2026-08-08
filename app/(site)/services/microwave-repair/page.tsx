@@ -6,6 +6,7 @@ import { ServiceHero } from "@/app/(ui)/components/service-hero";
 import { MicrowaveQuiz } from "@/app/(ui)/components/microwave-quiz";
 import { FaqSection } from "@/app/(ui)/components/faq-section";
 import { BrandsGrid } from "@/app/(ui)/components/brands-grid";
+import { ServiceAreas } from "@/app/(ui)/components/service-areas";
 import { TipsSection } from "@/app/(ui)/components/tips-section";
 import { WhyChooseUs } from "@/app/(ui)/components/why-choose-us";
 import { HowItWorks } from "@/app/(ui)/components/how-it-works";
@@ -111,6 +112,8 @@ export default function Page() {
       </section>
 
       <BrandsGrid />
+
+      <ServiceAreas service={s} />
 
       {/* Diagnostic quiz */}
       <section id="diagnose" className="scroll-mt-16 bg-surface-variant py-14 lg:py-20">

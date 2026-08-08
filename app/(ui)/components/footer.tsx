@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { nav, services, site } from "@/app/(config)/site";
+import { services, site, popularAreas } from "@/app/(config)/site";
+import { slugify } from "@/app/(common-lib)/slugify";
 import { Icon } from "@/app/(ui)/components/icons";
 import { useDiagnostic } from "@/app/(ui)/components/diagnostic-provider";
 import { analytics } from "@/app/(common-lib)/analytics";
@@ -134,6 +135,30 @@ export function Footer() {
             <li className="flex items-center gap-2">
               <Icon name="shield" className="h-4 w-4" />
               {site.warranty}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Popular areas */}
+      <div className="border-t border-white/10">
+        <div className="mx-auto max-w-6xl px-4 py-6">
+          <p className="text-sm font-bold">Popular areas</p>
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-on-primary/70">
+            {popularAreas.map((a) => (
+              <li key={a}>
+                <Link
+                  href={`/areas/${slugify(a)}`}
+                  className="transition-colors hover:text-on-primary"
+                >
+                  {a}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href="/coverage" className="font-bold text-on-primary transition-colors hover:text-on-primary/80">
+                All areas →
+              </Link>
             </li>
           </ul>
         </div>

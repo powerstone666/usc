@@ -297,6 +297,21 @@ export const bangaloreAreas: Area[] = [
 
 export const areas = bangaloreAreas.map((a) => a.name);
 
+export const popularAreas = [
+  "Indiranagar",
+  "Koramangala",
+  "Whitefield",
+  "HSR Layout",
+  "Jayanagar",
+  "Hebbal",
+  "Marathahalli",
+  "Electronic City",
+  "Malleswaram",
+  "Basavanagudi",
+  "Bellandur",
+  "Yelahanka",
+];
+
 export const areaRegions: AreaRegion[] = [
   "Central",
   "Eastern",

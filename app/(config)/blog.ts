@@ -1,8 +1,11 @@
+import type { ServiceSlug } from "@/app/(common-lib)/types";
+
 export type BlogPost = {
   slug: string;
   title: string;
   excerpt: string;
   category: string;
+  service: ServiceSlug;
   date: string;
   readTime: string;
   image: string;
@@ -16,6 +19,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Microwave not heating, sparking, turntable stuck, buttons dead? This complete guide explains every common microwave fault, its cause, and how our technicians diagnose and fix it — for Samsung, LG, IFB, Whirlpool, Bajaj, Godrej and Panasonic across 84+ Bengaluru neighbourhoods.",
     category: "Microwave",
+    service: "microwave-repair",
     date: "2026-07-15",
     readTime: "12 min read",
     image: "/blog/microwave-maintenance.png",
@@ -130,6 +134,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "AC not cooling, gas refill, water leakage, noise, PCB failure? This complete guide explains every common AC fault, its cause, and how our technicians diagnose and fix it — for Daikin, LG, Samsung, Voltas, Hitachi, Panasonic across 84+ Bengaluru neighbourhoods.",
     category: "AC Repair",
+    service: "ac-repair",
     date: "2026-07-10",
     readTime: "14 min read",
     image: "/blog/ac-problems.png",
@@ -254,6 +259,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Washing machine not draining, not spinning, noisy drum, door jammed? This complete guide explains every common washing machine fault for Samsung, LG, IFB, Bosch, Whirlpool across 84+ Bengaluru neighbourhoods.",
     category: "Washing Machine",
+    service: "washing-machine-repair",
     date: "2026-07-05",
     readTime: "12 min read",
     image: "/blog/washing-machine-repair-vs-replace.png",
@@ -369,6 +375,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Refrigerator not cooling, frost buildup, water leakage, compressor noise, door seal? This complete guide explains every common fridge fault for Samsung, LG, Whirlpool, Godrej, Haier across 84+ Bengaluru neighbourhoods.",
     category: "Refrigerator",
+    service: "refrigerator-repair",
     date: "2026-06-28",
     readTime: "12 min read",
     image: "/blog/refrigerator-signs.png",
@@ -471,6 +478,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "RO not purifying, low flow, leakage, bad taste, UV lamp, membrane replacement? Complete guide for Kent, Aquaguard, Pureit, Livpure water purifier repair across 84+ Bengaluru neighbourhoods.",
     category: "Water Filter",
+    service: "water-filter-repair",
     date: "2026-06-20",
     readTime: "11 min read",
     image: "/blog/water-filter-maintenance.png",
@@ -570,6 +578,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Chimney not sucking smoke, noisy motor, low suction, touch panel dead, filter cleaning? Complete guide for Faber, Elica, Bosch, Hindware, Glen, Kaff chimney repair across 84+ Bengaluru neighbourhoods.",
     category: "Chimney",
+    service: "chimney-repair",
     date: "2026-06-15",
     readTime: "11 min read",
     image: "/blog/chimney-cleaning.png",

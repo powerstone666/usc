@@ -138,6 +138,41 @@ export default async function Page({
       </section>
 
       <TipsSection tips={tips} />
+
+      <section className="bg-surface-variant py-14 lg:py-20">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
+            {serviceData.short} repair near {areaData.name}
+          </h2>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {bangaloreAreas
+              .filter((a) => a.region === areaData.region && a.name !== areaData.name)
+              .map((a) => (
+                <li key={a.name}>
+                  <Link
+                    href={`/areas/${slugify(a.name)}/${serviceData.slug}`}
+                    className="block rounded-lg border border-outline-variant bg-surface px-3 py-1.5 text-sm text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
+                  >
+                    {a.name}
+                  </Link>
+                </li>
+              ))}
+          </ul>
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold">
+            <Link
+              href={`/areas/${area}`}
+              className="inline-flex items-center gap-1 text-primary"
+            >
+              All services in {areaData.name}
+              <Icon name="arrow" className="h-4 w-4" />
+            </Link>
+            <Link href="/coverage" className="inline-flex items-center gap-1 text-primary">
+              All coverage areas
+              <Icon name="arrow" className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

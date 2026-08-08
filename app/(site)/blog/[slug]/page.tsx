@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { blogPosts } from "@/app/(config)/blog";
+import { keywords } from "@/app/(config)/keywords";
 import { site, areas, services } from "@/app/(config)/site";
 import { slugify } from "@/app/(common-lib)/slugify";
 import { Icon, type IconName } from "@/app/(ui)/components/icons";
@@ -49,6 +50,7 @@ export default async function Page({
   const related = blogPosts.filter((p) => p.slug !== slug).slice(0, 3);
   const nearbyAreas = areas.slice(0, 12);
   const relevantServices = services.slice(0, 6);
+  const postKeywords = keywords.filter((k) => k.service === post.service);
   const faqs = post.content.filter(p => p.includes("?")).slice(0, 9);
   const headings = post.content.filter(isHeading);
 
@@ -188,6 +190,30 @@ export default async function Page({
                   ))}
                 </ul>
               </div>
+
+              {/* PROBLEM GUIDES — keyword pages for this service */}
+              {postKeywords.length > 0 && (
+                <div className="mt-6 rounded-3xl border border-outline-variant bg-surface p-6">
+                  <h2 className="text-lg font-extrabold text-on-surface">
+                    Common {post.category.toLowerCase()} problems — quick guides
+                  </h2>
+                  <p className="mt-1 text-xs text-on-surface-variant">
+                    Symptom-by-symptom guides for {post.category.toLowerCase()} repair in {site.city}.
+                  </p>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {postKeywords.map((k) => (
+                      <li key={k.slug}>
+                        <Link
+                          href={`/keywords/${k.slug}`}
+                          className="block rounded-lg border border-outline-variant bg-background px-3 py-1.5 text-xs font-medium text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
+                        >
+                          {k.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
 
             {/* RIGHT — sidebar CTA + services */}
