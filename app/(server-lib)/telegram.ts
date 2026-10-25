@@ -83,3 +83,38 @@ export async function sendLeadNotification(lead: LeadNotification): Promise<bool
 
   return send(lines.join("\n"));
 }
+
+export type ContactTapNotification = {
+  kind: "call" | "whatsapp";
+  appliance: string;
+  pageUrl?: string;
+  city?: string;
+  region?: string;
+  deviceType?: string;
+  os?: string;
+  browser?: string;
+};
+
+const escapeHtml = (v: string) => v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/** A visitor tapped Call or WhatsApp. No phone number is known, so this is a heads-up only. */
+export async function sendContactTapNotification(tap: ContactTapNotification): Promise<boolean> {
+  const applianceDisplay = applianceNames[tap.appliance] || "General Appliance Repair";
+  const location = [tap.city, tap.region].filter(Boolean).join(", ") || "—";
+  const device = [tap.deviceType, tap.os, tap.browser].filter(Boolean).join(" · ") || "—";
+  let page = "—";
+  try {
+    if (tap.pageUrl) page = new URL(tap.pageUrl).pathname;
+  } catch {
+    /* keep the dash */
+  }
+  const lines = [
+    tap.kind === "whatsapp" ? "💬 <b>WHATSAPP TAP</b> — they may message you now" : "📲 <b>CALL TAP</b> — a call may be coming",
+    "",
+    `🔧 <b>Appliance:</b> ${escapeHtml(applianceDisplay)}`,
+    `📄 <b>Page:</b> ${escapeHtml(page)}`,
+    `📍 <b>Location:</b> ${escapeHtml(location)}`,
+    `📱 <b>Device:</b> ${escapeHtml(device)}`,
+  ];
+  return send(lines.join("\n"));
+}

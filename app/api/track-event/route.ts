@@ -1,7 +1,13 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { collectTelemetry } from "@/app/(server-lib)/telemetry";
 import { generateFingerprint } from "@/app/(server-lib)/fingerprint";
 import { supabase } from "@/app/(server-lib)/supabase";
+import { sendContactTapNotification } from "@/app/(server-lib)/telegram";
+
+// One alert per visitor and kind every 5 minutes, so repeated taps do not flood Telegram.
+// In memory, so it is best effort across serverless instances.
+const recentAlerts = new Map<string, number>();
+const ALERT_GAP_MS = 5 * 60 * 1000;
 
 export async function POST(req: Request) {
   let body: { event?: string; source?: string; telemetry?: Record<string, unknown>; extra?: Record<string, unknown> };
@@ -91,6 +97,27 @@ export async function POST(req: Request) {
     gclid: (ct.gclid as string) || "",
     fingerprint,
   });
+
+  // Heads-up on Telegram. Skipped for localhost and other dev traffic, and for repeat taps.
+  const isTest = /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])/i.test(pageUrl);
+  const alertKey = `${fingerprint}:${isWhatsApp ? "wa" : "call"}`;
+  const last = recentAlerts.get(alertKey) ?? 0;
+  if (!isTest && Date.now() - last > ALERT_GAP_MS) {
+    recentAlerts.set(alertKey, Date.now());
+    if (recentAlerts.size > 500) for (const [k, t] of recentAlerts) if (Date.now() - t > ALERT_GAP_MS) recentAlerts.delete(k);
+    after(async () => {
+      await sendContactTapNotification({
+        kind: isWhatsApp ? "whatsapp" : "call",
+        appliance: appliance || "general",
+        pageUrl,
+        city: srv.city,
+        region: srv.region,
+        deviceType: srv.deviceType,
+        os: srv.os,
+        browser: srv.browser,
+      }).catch(() => {});
+    });
+  }
 
   return NextResponse.json({ ok: true });
 }
