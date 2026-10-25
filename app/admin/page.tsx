@@ -1,165 +1,151 @@
 export const dynamic = "force-dynamic";
 
-import { getOverviewStats } from "@/app/(server-lib)/supabase-queries";
+import Link from "next/link";
+import { isDemo, loadAdminData } from "@/app/(server-lib)/admin-data";
+import { RANGES, toLeadItems, type RangeKey } from "@/app/(server-lib)/admin-insights";
+import { fmtDateTime, plural, timeAgo } from "./_ui/format";
+import { Banner, DayBars, EmptyNote, HourBars, PageHeader, Panel, RangeTabs, RankedBars, StatCard } from "./_ui/parts";
+import { TYPE_STYLE } from "./_ui/lead-type";
 
-function formatTime(ms: number): string {
-  if (!ms) return "—";
-  const seconds = Math.round(ms / 1000);
-  if (seconds < 60) return `${seconds}s`;
-  const minutes = Math.floor(seconds / 60);
-  const remaining = seconds % 60;
-  return `${minutes}m ${remaining}s`;
+function parseRange(v?: string): RangeKey {
+  return RANGES.some((r) => r.key === v) ? (v as RangeKey) : "7d";
 }
 
-function formatTimeAgo(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diff / 60000);
-  if (minutes < 1) return "just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-
-function StatCard({
-  label, value, sub, color,
-}: {
-  label: string; value: string | number; sub?: string; color: string;
-}) {
-  return (
-    <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
-      <p className="text-[10px] font-medium text-white/40 sm:text-xs">{label}</p>
-      <p className="mt-1.5 text-2xl font-extrabold sm:mt-2 sm:text-3xl" style={{ color }}>{value}</p>
-      {sub && <p className="mt-0.5 text-[10px] text-white/30 sm:mt-1 sm:text-xs">{sub}</p>}
-    </div>
-  );
-}
-
-function BarChart({ data, color = "#0d47a1" }: { data: { label: string; count: number }[]; color?: string }) {
-  const max = Math.max(...data.map((d) => d.count), 1);
-  if (data.length === 0) return <p className="py-4 text-sm text-white/30">No data yet</p>;
-  return (
-    <div className="flex flex-col gap-2">
-      {data.map((d, i) => (
-        <div key={i} className="flex items-center gap-2 sm:gap-3">
-          <span className="w-24 shrink-0 truncate text-[10px] text-white/60 sm:w-32 sm:text-xs">{d.label}</span>
-          <div className="h-6 flex-1 overflow-hidden rounded-md bg-white/5">
-            <div className="h-full rounded-md transition-all" style={{ width: `${(d.count / max) * 100}%`, backgroundColor: color, minWidth: "2px" }} />
-          </div>
-          <span className="w-6 shrink-0 text-right text-[10px] font-bold text-white/80 sm:w-8 sm:text-xs">{d.count}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export default async function AdminOverview() {
-  const stats = await getOverviewStats();
+export default async function AdminOverview({ searchParams }: { searchParams: Promise<{ range?: string; test?: string }> }) {
+  const sp = await searchParams;
+  const range = parseRange(sp.range);
+  const includeTest = sp.test === "1";
+  const { data: d, error, generatedAt } = await loadAdminData(range, includeTest);
+  const t = d.totals;
+  const recent = toLeadItems(d.recentLeads, { includeTest: true });
+  const phrase = RANGES.find((r) => r.key === range)!.phrase;
 
   return (
-    <div>
-      <h1 className="text-xl font-extrabold text-white">Overview</h1>
-      <p className="mt-1 text-xs text-white/40">
-        {stats.todayPageViews > 0 ? `${stats.todayPageViews} page views today` : "No data yet — open the site to start tracking"}
-      </p>
+    <div className="space-y-5">
+      <PageHeader
+        title="Overview"
+        subtitle={`Where your leads and visitors come from, for ${phrase}.`}
+        right={<RangeTabs current={range} path="/admin" test={includeTest} />}
+      />
 
-      <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard label="Page Views" value={stats.totalPageViews} sub={`${stats.todayPageViews} today`} color="#2196f3" />
-        <StatCard label="Unique Visitors" value={stats.uniqueVisitors} color="#4caf50" />
-        <StatCard label="Total Leads" value={stats.totalLeads} sub={`${stats.todayLeads} today`} color="#ff9800" />
-        <StatCard label="Avg Time on Page" value={formatTime(stats.avgTimeOnPage)} color="#9c27b0" />
+      {isDemo() && <Banner tone="info"><strong>Demo data.</strong> These numbers are generated samples so you can preview the screens. Remove ADMIN_DEMO to see real data.</Banner>}
+      {error && <Banner tone="warn"><strong>Some data could not be loaded:</strong> {error}</Banner>}
+      {d.hiddenTestRows > 0 && (
+        <Banner tone="warn">
+          {plural(d.hiddenTestRows, "test row")} from localhost or dev traffic {d.hiddenTestRows === 1 ? "is" : "are"} hidden.{" "}
+          <Link href={`/admin?range=${range}&test=1`} className="font-bold underline">Show them</Link>
+        </Banner>
+      )}
+
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatCard
+          label="Leads"
+          value={t.leads}
+          note={`${t.formLeads} form · ${t.callTaps} call · ${t.whatsappTaps} WhatsApp`}
+        />
+        <StatCard label="Unique visitors" value={t.visitors} note={`${t.returningVisitors} came back · ${plural(t.pageViews, "page view")}`} />
+        <StatCard label="Visitors who became leads" value={`${t.conversionPct}%`} note={`${t.convertedVisitors} of ${t.visitors}`} />
+        <StatCard label="On a phone or tablet" value={`${t.mobilePct}%`} note="of unique visitors" />
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-        <StatCard label="Unique Fingerprints" value={stats.uniqueFingerprints} sub="distinct devices" color="#00bcd4" />
-        <StatCard label="Returning Visitors" value={stats.returningVisitors} sub="visited >1x" color="#e91e63" />
-        <StatCard label="Conversion Rate" value={stats.totalPageViews > 0 ? `${((stats.totalLeads / stats.totalPageViews) * 100).toFixed(1)}%` : "—"} sub={`${stats.totalLeads} / ${stats.totalPageViews}`} color="#8bc34a" />
-      </div>
-
-      <div className="mt-4 grid gap-3 sm:gap-6 lg:grid-cols-2 sm:mt-6">
-        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
-          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Top Pages</h2>
-          <BarChart data={stats.topPages.map((d) => ({ label: d.label, count: d.count }))} color="#0d47a1" />
-        </div>
-
-        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
-          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Leads by Source (which button)</h2>
-          <BarChart data={stats.bySource.map((d) => ({ label: d.label, count: d.count }))} color="#1565c0" />
-        </div>
-
-        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
-          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Page Views (Last 30 Days)</h2>
-          {stats.viewsByDay.length === 0 ? (
-            <p className="py-4 text-sm text-white/30">No data yet</p>
-          ) : (
-            <div className="flex items-end gap-1">
-              {stats.viewsByDay.slice().reverse().map((d, i) => {
-                const max = Math.max(...stats.viewsByDay.map((x) => x.count), 1);
-                return (
-                  <div key={i} className="flex-1" title={`${d.day}: ${d.count} views`}>
-                    <div className="w-full rounded-t-sm bg-[#1565c0] transition-all hover:bg-[#1976d2]" style={{ height: `${Math.max((d.count / max) * 120, 2)}px` }} />
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        <div className="rounded-2xl border border-white/10 bg-[#0d2843] p-5">
-          <h2 className="mb-4 text-sm font-bold text-white/80">Leads (Last 30 Days)</h2>
-          {stats.byDay.length === 0 ? (
-            <p className="py-4 text-sm text-white/30">No leads yet</p>
-          ) : (
-            <div className="flex items-end gap-1">
-              {stats.byDay.slice().reverse().map((d, i) => {
-                const max = Math.max(...stats.byDay.map((x) => x.count), 1);
-                return (
-                  <div key={i} className="flex-1" title={`${d.day}: ${d.count} leads`}>
-                    <div className="w-full rounded-t-sm bg-[#0d47a1] transition-all hover:bg-[#1565c0]" style={{ height: `${Math.max((d.count / max) * 120, 2)}px` }} />
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="mt-4 rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:mt-6 sm:rounded-2xl sm:p-5">
-        <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Recent Leads (Last 20)</h2>
-        {stats.recentLeads.length === 0 ? (
-          <p className="py-4 text-sm text-white/30">No leads yet — page views are being tracked above</p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-[10px] sm:text-xs">
-              <thead>
-                <tr className="border-b border-white/10 text-white/40">
-                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">When</th>
-                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Appliance</th>
-                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Source</th>
-                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Phone</th>
-                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">City</th>
-                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Device</th>
-                  <th className="whitespace-nowrap py-2 pr-3 font-medium sm:pr-4">Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats.recentLeads.map((lead) => (
-                  <tr key={lead.id} className="border-b border-white/5 text-white/70">
-                    <td className="whitespace-nowrap py-2 pr-3 text-white/40 sm:pr-4">{formatTimeAgo(lead.received_at)}</td>
-                    <td className="whitespace-nowrap py-2 pr-3 sm:pr-4">{lead.appliance}</td>
-                    <td className="whitespace-nowrap py-2 pr-3 text-white/50 sm:pr-4">{lead.source}</td>
-                    <td className="whitespace-nowrap py-2 pr-3 font-mono sm:pr-4">{lead.phone}</td>
-                    <td className="whitespace-nowrap py-2 pr-3 text-white/50 sm:pr-4">{lead.city || "—"}</td>
-                    <td className="whitespace-nowrap py-2 pr-3 text-white/50 sm:pr-4">{lead.device_type}</td>
-                    <td className="whitespace-nowrap py-2 pr-3 text-white/50 sm:pr-4">{formatTime(lead.time_on_page)}</td>
-                  </tr>
+      {t.leads === 0 && t.visitors === 0 ? (
+        <Panel title="No data yet for this period">
+          <EmptyNote>
+            Visits and leads appear here as soon as people use the site. Try a longer range, or open the website and tap a call button to see a lead arrive.
+          </EmptyNote>
+        </Panel>
+      ) : (
+        <>
+          {d.insights.length > 0 && (
+            <Panel title="What stands out">
+              <ul className="space-y-2">
+                {d.insights.map((line) => (
+                  <li key={line} className="flex gap-3 text-base text-on-surface">
+                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                    {line}
+                  </li>
                 ))}
-              </tbody>
-            </table>
+              </ul>
+            </Panel>
+          )}
+
+          <Panel title="Leads per day" hint="Form requests, call taps and WhatsApp taps (IST).">
+            <DayBars days={d.leadsByDay} />
+          </Panel>
+
+          <div className="grid gap-5 lg:grid-cols-2">
+            <Panel title="Where leads come from" hint="Traffic channel. The note shows how many visitors from it became a lead.">
+              <RankedBars
+                empty="No leads yet in this period."
+                rows={d.channels.filter((c) => c.leads > 0).slice(0, 6).map((c) => ({ label: c.label, bar: c.leads, value: `${c.leads}`, note: `${plural(c.visitors, "visitor")} · ${c.conversionPct}% became leads` }))}
+              />
+            </Panel>
+            <Panel title="Pages that start leads" hint="The page the visitor was on when they got in touch.">
+              <RankedBars
+                empty="No leads yet in this period."
+                rows={d.leadPages.filter((p) => p.leads > 0).slice(0, 6).map((p) => ({ label: p.path, bar: p.leads, value: `${p.leads}`, note: p.group }))}
+              />
+            </Panel>
+            <Panel title="Area pages" hint="Leads that started on a /areas/ page, so you can see which neighbourhoods ask.">
+              <RankedBars empty="No leads from area pages yet." rows={d.leadAreas.slice(0, 6).map((a) => ({ label: a.label, bar: a.count, value: `${a.count}` }))} />
+            </Panel>
+            <Panel title="Services asked for">
+              <RankedBars empty="No leads yet in this period." rows={d.leadServices.slice(0, 6).map((s) => ({ label: s.label, bar: s.count, value: `${s.count}` }))} />
+            </Panel>
           </div>
-        )}
-      </div>
+
+          <div className="grid gap-5 lg:grid-cols-2">
+            <Panel title="When leads arrive" hint="By hour of the day, IST. Useful for when to keep phones free and when to run ads.">
+              <HourBars counts={d.leadsByHour} />
+            </Panel>
+            <Panel title="Devices" hint="Unique visitors by device type, and the phone models behind leads.">
+              <RankedBars
+                empty="No visitors yet."
+                rows={d.devices.types.map((x) => ({ label: x.label.replace(/^\w/, (c) => c.toUpperCase()), bar: x.count, value: `${x.count}`, note: `${Math.round((x.count / Math.max(t.visitors, 1)) * 100)}% of visitors` }))}
+              />
+              {d.devices.models.length > 0 && (
+                <p className="mt-4 text-sm text-on-surface-variant">
+                  <span className="font-bold text-on-surface">Top phones for leads:</span> {d.devices.models.slice(0, 4).map((m) => `${m.label} (${m.count})`).join(", ")}
+                </p>
+              )}
+            </Panel>
+          </div>
+
+          <Panel title="Latest leads">
+            {recent.length === 0 ? (
+              <EmptyNote>No leads in this period.</EmptyNote>
+            ) : (
+              <ul className="divide-y divide-outline-variant">
+                {recent.map((l) => (
+                  <li key={l.id} className="flex items-start justify-between gap-3 py-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-base font-bold text-on-surface">
+                        <span className={TYPE_STYLE[l.type].text}>{TYPE_STYLE[l.type].label}</span>
+                        {l.name ? ` · ${l.name}` : ""}
+                      </p>
+                      <p className="truncate text-sm text-on-surface-variant">{l.appliance}{l.issue ? ` · ${l.issue}` : ""} · {l.channel}</p>
+                    </div>
+                    <p className="shrink-0 text-right text-sm text-muted" title={fmtDateTime(l.receivedAt)}>{timeAgo(l.receivedAt, generatedAt)}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="mt-3">
+              <Link href="/admin/leads" className="text-sm font-bold text-primary hover:underline">See all leads</Link>
+            </p>
+          </Panel>
+
+          <details className="rounded-2xl bg-surface p-4 text-sm text-on-surface-variant ring-1 ring-outline-variant">
+            <summary className="cursor-pointer text-base font-bold text-on-surface">How to read these numbers</summary>
+            <ul className="mt-3 list-disc space-y-1.5 pl-5">
+              <li><strong>Lead</strong>: a form request, a call tap or a WhatsApp tap. Call and WhatsApp taps do not include a phone number.</li>
+              <li><strong>Unique visitor</strong>: one browser fingerprint. The same person on two devices counts twice.</li>
+              <li><strong>Became a lead</strong>: unique visitors who produced at least one lead, divided by unique visitors.</li>
+              <li><strong>City</strong> comes from the visitor&apos;s IP address, so mobile users can show the carrier&apos;s city. Area pages are a better guide to neighbourhoods.</li>
+            </ul>
+          </details>
+        </>
+      )}
     </div>
   );
 }

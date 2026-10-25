@@ -1,22 +1,25 @@
 import { NextResponse } from "next/server";
 import { site } from "@/app/(config)/site";
+import { getApprovedTopics } from "@/app/(server-lib)/keyword-sync";
 
-export function GET() {
-  const now = new Date().toISOString();
+export const revalidate = 3600;
+
+export async function GET() {
   const base = site.url;
 
   const sitemaps = [
-    { loc: `${base}/sitemap-static.xml`, lastmod: now },
-    { loc: `${base}/sitemap-services.xml`, lastmod: now },
-    { loc: `${base}/sitemap-areas.xml`, lastmod: now },
-    { loc: `${base}/sitemap-brands.xml`, lastmod: now },
-    { loc: `${base}/sitemap-keywords.xml`, lastmod: now },
-    { loc: `${base}/sitemap-blog.xml`, lastmod: now },
+    `${base}/sitemap-static.xml`,
+    `${base}/sitemap-services.xml`,
+    `${base}/sitemap-areas.xml`,
+    `${base}/sitemap-brands.xml`,
+    `${base}/sitemap-keywords.xml`,
+    `${base}/sitemap-blog.xml`,
   ];
+  if ((await getApprovedTopics()).length > 0) sitemaps.push(`${base}/sitemap-topics.xml`);
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemaps.map((s) => `  <sitemap><loc>${s.loc}</loc><lastmod>${s.lastmod}</lastmod></sitemap>`).join("\n")}
+${sitemaps.map((loc) => `  <sitemap><loc>${loc}</loc><lastmod>${site.contentUpdated}</lastmod></sitemap>`).join("\n")}
 </sitemapindex>`;
 
   return new NextResponse(xml, {

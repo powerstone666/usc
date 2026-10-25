@@ -1,10 +1,10 @@
 # Urban Service Company
 
-> Urban Service Company provides same-day appliance repair in Bengaluru, India. We repair microwave ovens, ACs, washing machines, refrigerators, water filters/RO purifiers, and kitchen chimneys. Verified technicians, free diagnosis, genuine spare parts, quality assured repair across 84+ neighbourhoods.
+> Urban Service Company provides same-day appliance repair in Bengaluru, India with specialized expertise in Microwave Oven Repair (Solo, Grill, Convection), ACs, washing machines, refrigerators, water filters/RO purifiers, and kitchen chimneys. Verified technicians, free diagnosis, genuine spare parts, quality assured repair across 85 neighbourhoods.
 
-## Services
+## Flagship & Core Services
 
-- [Microwave Oven Repair](https://urbanservicecompany.in/services/microwave-repair)
+- [Microwave Oven Repair](https://urbanservicecompany.in/services/microwave-repair) — #1 Flagship Specialist for Solo, Grill, and Convection ovens (LG, Samsung, IFB, Whirlpool, Panasonic, Godrej, Bajaj).
 - [AC Repair & Service](https://urbanservicecompany.in/services/ac-repair)
 - [Washing Machine Repair](https://urbanservicecompany.in/services/washing-machine-repair)
 - [Refrigerator Repair](https://urbanservicecompany.in/services/refrigerator-repair)
@@ -32,5 +32,9 @@
 - Email: contact@urbanservicecompany.in
 - Hours: 8 AM – 9 PM, all days
 - Location: Bengaluru, Karnataka, India
-- Serving: 84+ neighbourhoods across Bengaluru
+- Serving: 85 neighbourhoods across Bengaluru
 - Brands serviced: Samsung, LG, Whirlpool, IFB, Godrej, Bajaj, Panasonic, Haier, Voltas, Bosch, Siemens, Daikin, Hitachi, Blue Star, Carrier and more
+
+## Full Documentation
+
+- [Comprehensive Knowledge Base & Technical Diagnostic Guide](https://urbanservicecompany.in/llms-full.txt)

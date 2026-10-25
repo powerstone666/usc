@@ -35,6 +35,7 @@ export async function generateMetadata({
     title: `${brandName} ${serviceData.short} Repair`,
     description: `${brandName} ${serviceData.name.toLowerCase()} in Bengaluru — genuine ${brandName} spare parts, verified technicians, free diagnosis, quality assured. ${serviceData.tagline}`,
     alternates: { canonical: `/brands/${brand}/${service}` },
+    robots: { index: false, follow: true },
   };
 }
 
@@ -65,15 +66,16 @@ export default async function Page({
         }}
       />
       <ServiceHero
+        path={`/brands/${brand}/${service}`}
         image={serviceData.icon === "microwave" ? "/microwave-repair.png" : serviceData.icon === "ac" ? "/ac-repair.png" : serviceData.icon === "washing-machine" ? "/wm-repair.png" : "/fridge-repair.png"}
         title={`${brandName} ${serviceData.name} in Bengaluru`}
         tagline={`Genuine ${brandName} spare parts, verified technicians, same-day ${serviceData.name.toLowerCase()} across ${site.city}. Free diagnosis, quality assured.`}
       >
-        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
           <CallButton variant="light"  />
           <Link
             href={`/brands/${brand}`}
-            className="inline-flex items-center justify-center gap-2 btn-zoom rounded-lg border-2 border-white/40 px-5 py-3 text-sm font-bold text-on-primary hover:bg-white/10"
+            className="btn-zoom btn-outline-light"
           >
             All {brandName} repairs
             <Icon name="arrow" className="h-4 w-4" />
@@ -81,12 +83,12 @@ export default async function Page({
         </div>
       </ServiceHero>
 
-      <section className="py-14 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
             Common {brandName} {serviceData.short.toLowerCase()} problems we fix
           </h2>
-          <p className="mt-1 text-sm text-on-surface-variant">
+          <p className="mt-1 text-base text-on-surface-variant">
             We repair {brandName} {serviceData.name.toLowerCase()} across{" "}
             {site.city} — from {problems[0].title.toLowerCase()} to{" "}
             {problems[problems.length - 1].title.toLowerCase()}.
@@ -95,17 +97,17 @@ export default async function Page({
             {problems.map((p) => (
               <div
                 key={p.title}
-                className="flex h-full flex-col gap-2 card-zoom rounded-3xl border border-outline-variant bg-surface p-5"
+                className="flex h-full flex-col gap-2 card-zoom rounded-2xl border border-outline-variant bg-surface p-5"
               >
                 <div className="flex items-center gap-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-container text-primary">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary-container text-primary">
                     <Icon name={p.icon as IconName} className="h-4 w-4" />
                   </span>
                   <h3 className="text-base font-bold text-on-surface">
                     {p.title}
                   </h3>
                 </div>
-                <p className="text-sm text-on-surface-variant">
+                <p className="text-base text-on-surface-variant">
                   {p.description}
                 </p>
               </div>
@@ -120,12 +122,12 @@ export default async function Page({
         faqs={faqs}
       />
 
-      <section id="book" className="scroll-mt-16 bg-surface-variant py-14 lg:py-20">
+      <section id="book" className="scroll-mt-16 py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
             Book your {brandName} {serviceData.short.toLowerCase()} repair
           </h2>
-          <p className="mt-2 text-sm text-on-surface-variant">
+          <p className="mt-2 text-base text-on-surface-variant">
             {serviceData.blurb} Share your number and our technician will call
             you back within 15 minutes.
           </p>

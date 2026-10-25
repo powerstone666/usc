@@ -1,62 +1,60 @@
 export const dynamic = "force-dynamic";
 
-import { supabase } from "@/app/(server-lib)/supabase";
+import { isDemo, loadAdminData } from "@/app/(server-lib)/admin-data";
+import { RANGES, type RangeKey } from "@/app/(server-lib)/admin-insights";
+import { Banner, PageHeader, Panel, RangeTabs, StatTable } from "../_ui/parts";
+import { UtmBuilder } from "./utm-builder";
 
-function BarChart({ data, color = "#0d47a1" }: { data: { label: string; count: number }[]; color?: string }) {
-  const max = Math.max(...data.map((d) => d.count), 1);
-  if (data.length === 0) return <p className="py-4 text-sm text-white/30">No data yet</p>;
-  return (
-    <div className="flex flex-col gap-2">
-      {data.map((d, i) => (
-        <div key={i} className="flex items-center gap-2 sm:gap-3">
-          <span className="w-24 shrink-0 truncate text-[10px] text-white/60 sm:w-40 sm:text-xs">{d.label}</span>
-          <div className="h-6 flex-1 overflow-hidden rounded-md bg-white/5 sm:h-7">
-            <div className="flex h-full items-center justify-end rounded-md pr-2 transition-all" style={{ width: `${(d.count / max) * 100}%`, backgroundColor: color, minWidth: "30px" }}>
-              <span className="text-[10px] font-bold text-white/90">{d.count}</span>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+function parseRange(v?: string): RangeKey {
+  return RANGES.some((r) => r.key === v) ? (v as RangeKey) : "30d";
 }
 
-function aggregate(rows: Record<string, unknown>[], field: string): { label: string; count: number }[] {
-  const map = new Map<string, number>();
-  for (const r of rows) {
-    const key = String(r[field] || "—");
-    map.set(key, (map.get(key) || 0) + 1);
-  }
-  return [...map.entries()].map(([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
-}
-
-export default async function AdminTraffic() {
-  const { data } = await supabase.from("leads").select("traffic_source, traffic_medium, traffic_category, traffic_campaign").limit(5000);
-  const rows = (data || []) as Record<string, unknown>[];
+export default async function AdminTraffic({ searchParams }: { searchParams: Promise<{ range?: string; test?: string }> }) {
+  const sp = await searchParams;
+  const range = parseRange(sp.range);
+  const includeTest = sp.test === "1";
+  const { data: d, error } = await loadAdminData(range, includeTest);
+  const rate = (n: number) => `${n}%`;
 
   return (
-    <div>
-      <h1 className="text-lg font-extrabold text-white sm:text-xl">Traffic Sources</h1>
-      <p className="mt-1 text-[10px] text-white/40 sm:text-xs">Where your leads come from — organic, PPC, WhatsApp, social, referral, direct</p>
+    <div className="space-y-5">
+      <PageHeader
+        title="Traffic"
+        subtitle="Which channels and campaigns bring visitors, and which of them turn into leads."
+        right={<RangeTabs current={range} path="/admin/traffic" test={includeTest} />}
+      />
+      {isDemo() && <Banner tone="info"><strong>Demo data.</strong> Sample traffic for previewing this screen.</Banner>}
+      {error && <Banner tone="warn"><strong>Some data could not be loaded:</strong> {error}</Banner>}
 
-      <div className="mt-4 grid gap-3 sm:gap-6 lg:grid-cols-2 sm:mt-6">
-        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
-          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Leads by Traffic Category</h2>
-          <BarChart data={aggregate(rows, "traffic_category")} color="#0d47a1" />
-        </div>
-        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
-          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Leads by Source</h2>
-          <BarChart data={aggregate(rows, "traffic_source")} color="#1565c0" />
-        </div>
-        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
-          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Leads by Medium</h2>
-          <BarChart data={aggregate(rows, "traffic_medium")} color="#7b1fa2" />
-        </div>
-        <div className="rounded-xl border border-white/10 bg-[#0d2843] p-3 sm:rounded-2xl sm:p-5">
-          <h2 className="mb-3 text-xs font-bold text-white/80 sm:mb-4 sm:text-sm">Leads by Campaign</h2>
-          <BarChart data={aggregate(rows.filter((r) => r.traffic_campaign), "traffic_campaign")} color="#ff9800" />
-        </div>
+      <Panel title="Channels" hint="Where visitors came from. Conv. is the share of those visitors who became a lead.">
+        <StatTable
+          headers={["Visitors", "Leads", "Conv."]}
+          empty="No traffic recorded in this period."
+          rows={[...d.channels].sort((a, b) => b.visitors - a.visitors).map((c) => ({ label: c.label, values: [c.visitors, c.leads, rate(c.conversionPct)] }))}
+        />
+      </Panel>
+
+      <Panel title="UTM and campaigns" hint="Traffic from tagged links and ads, grouped by source and medium.">
+        <StatTable
+          headers={["Visitors", "Leads", "Conv."]}
+          empty="No tagged traffic yet. Use the link builder below for ads, social posts and your Google Business Profile."
+          rows={d.campaigns.map((c) => ({ label: `${c.source} / ${c.medium}`, sub: `Campaign: ${c.campaign}`, values: [c.visitors, c.leads, rate(c.conversionPct)] }))}
+        />
+        <p className="mt-3 text-sm text-muted">Campaign names are known only for visitors who became leads, because page views do not store the campaign yet.</p>
+      </Panel>
+
+      <div className="grid gap-5 lg:grid-cols-2">
+        <Panel title="Top pages" hint="Most viewed pages, and how many leads started there.">
+          <StatTable headers={["Views", "Visitors", "Leads"]} empty="No page views in this period." rows={d.pages.map((p) => ({ label: p.path, sub: p.group, values: [p.views, p.visitors, p.leads] }))} />
+        </Panel>
+        <Panel title="Cities" hint="From the visitor's IP address. Mobile networks can show the carrier's city.">
+          <StatTable headers={["Visitors", "Leads", "Conv."]} empty="No locations recorded." rows={d.cities.map((c) => ({ label: c.label, values: [c.visitors, c.leads, rate(c.conversionPct)] }))} />
+        </Panel>
       </div>
+
+      <Panel title="UTM link builder" hint="Add these tags to any link you share, so the visit shows up under the right source and campaign above.">
+        <UtmBuilder />
+      </Panel>
     </div>
   );
 }

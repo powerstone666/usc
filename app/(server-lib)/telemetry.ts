@@ -37,7 +37,7 @@ function parseUserAgent(ua: string, headers: Headers) {
   const browser = parser.getBrowser();
 
   let deviceModel = device.model || "";
-  let deviceVendor = device.vendor || "";
+  const deviceVendor = device.vendor || "";
 
   const chModel = headers.get("sec-ch-ua-model");
   if (chModel && chModel !== '""' && chModel !== "") {

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { site } from "@/app/(config)/site";
+import { ServiceHero } from "@/app/(ui)/components/service-hero";
 import { Coverage } from "@/app/(ui)/components/coverage";
 import { Icon } from "@/app/(ui)/components/icons";
 import { CallButton } from "@/app/(ui)/components/call-button";
@@ -16,60 +16,44 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className="flex flex-col">
-      <section className="bg-primary pb-14 pt-28 text-on-primary lg:pb-20 lg:pt-32">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="grid gap-6 lg:grid-cols-[2fr,1fr] lg:items-center">
-            <Reveal>
-              <p className="text-sm font-bold uppercase tracking-wide text-on-primary/80">
-                Contact
-              </p>
-              <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Let&apos;s get it fixed
-              </h1>
-              <p className="mt-4 max-w-lg text-base text-on-primary/90">
-                Call for the fastest response, or share your number and we&apos;ll
-                call you back within 15 minutes. {site.hours}.
-              </p>
-              <div className="mt-6">
-                <CallButton variant="light"  />
-              </div>
-            </Reveal>
-            <div className="relative hidden h-48 overflow-hidden rounded-3xl lg:block">
-              <Image
-                src="/customer-service.png"
-                alt="Happy Bengaluru homes with working appliances"
-                fill
-                sizes="25vw"
-                className="object-cover"
-              />
-            </div>
-          </div>
+      <ServiceHero
+        path="/contact"
+        pageType="ContactPage"
+        image="/customer-service.png"
+        title={`Contact ${site.name}`}
+        tagline={`Call for the fastest response, or share your number and we'll call you back within 15 minutes. ${site.hours}.`}
+      >
+        <div className="mt-6">
+          <CallButton variant="light" />
         </div>
-      </section>
+      </ServiceHero>
 
-      <section className="py-14 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <div className="grid gap-4 sm:grid-cols-3">
             <Reveal>
-              <div className="flex flex-col items-start gap-3 card-zoom rounded-3xl border border-outline-variant bg-surface p-6">
+              <div className="flex flex-col items-start gap-3 card-zoom rounded-2xl border border-outline-variant bg-surface p-6">
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-on-primary">
                   <Icon name="phone" className="h-6 w-6" filled />
                 </span>
                 <div>
-                  <p className="text-sm text-on-surface-variant">Call us</p>
-                  <p className="text-base font-extrabold text-on-surface">
-                    
-                  </p>
+                  <p className="text-base text-on-surface-variant">Call us</p>
+                  <a
+                    href={`tel:${site.phone}`}
+                    className="text-base font-extrabold text-on-surface transition-colors hover:text-primary"
+                  >
+                    {site.phoneDisplay}
+                  </a>
                 </div>
               </div>
             </Reveal>
             <Reveal delay={0.05}>
-              <div className="flex flex-col items-start gap-3 card-zoom rounded-3xl border border-outline-variant bg-surface p-6">
+              <div className="flex flex-col items-start gap-3 card-zoom rounded-2xl border border-outline-variant bg-surface p-6">
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-on-primary">
                   <Icon name="clock" className="h-6 w-6" />
                 </span>
                 <div>
-                  <p className="text-sm text-on-surface-variant">Hours</p>
+                  <p className="text-base text-on-surface-variant">Hours</p>
                   <p className="text-base font-extrabold text-on-surface">
                     {site.hours}
                   </p>
@@ -77,12 +61,12 @@ export default function Page() {
               </div>
             </Reveal>
             <Reveal delay={0.1}>
-              <div className="flex flex-col items-start gap-3 card-zoom rounded-3xl border border-outline-variant bg-surface p-6">
+              <div className="flex flex-col items-start gap-3 card-zoom rounded-2xl border border-outline-variant bg-surface p-6">
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-on-primary">
                   <Icon name="shield" className="h-6 w-6" />
                 </span>
                 <div>
-                  <p className="text-sm text-on-surface-variant">Warranty</p>
+                  <p className="text-base text-on-surface-variant">Warranty</p>
                   <p className="text-base font-extrabold text-on-surface">
                     {site.warranty}
                   </p>
@@ -93,13 +77,13 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="bg-surface-variant py-14 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-2xl px-4">
           <Reveal>
             <h2 className="text-center text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
               Request a callback
             </h2>
-            <p className="mt-2 text-center text-sm text-on-surface-variant">
+            <p className="mt-2 text-center text-base text-on-surface-variant">
               Share your number and our technician will call you back within 15
               minutes.
             </p>
@@ -110,7 +94,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="py-14 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <Coverage />
         </div>

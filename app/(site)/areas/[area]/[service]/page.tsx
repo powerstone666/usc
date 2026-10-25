@@ -35,6 +35,7 @@ export async function generateMetadata({
     title: `${serviceData.short} Repair in ${areaData.name}`,
     description: `${serviceData.name} in ${areaData.name}, Bengaluru — same-day repair, verified technicians, genuine parts. ${serviceData.tagline} Free diagnosis, quality assured.`,
     alternates: { canonical: `/areas/${area}/${service}` },
+    robots: { index: false, follow: true },
   };
 }
 
@@ -65,27 +66,28 @@ export default async function Page({
         }}
       />
       <ServiceHero
+        path={`/areas/${area}/${service}`}
         image={serviceData.icon === "microwave" ? "/microwave-repair.png" : serviceData.icon === "ac" ? "/ac-repair.png" : serviceData.icon === "washing-machine" ? "/wm-repair.png" : "/fridge-repair.png"}
         title={`${serviceData.name} in ${areaData.name}, Bengaluru`}
         tagline={`Same-day ${serviceData.name.toLowerCase()} in ${areaData.name}. Verified technicians, free diagnosis, genuine parts, quality assured.`}
       >
-        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
           <CallButton variant="light"  />
           <Link
             href="#book"
-            className="inline-flex items-center justify-center gap-2 btn-zoom rounded-lg border-2 border-white/40 px-5 py-3 text-sm font-bold text-on-primary hover:bg-white/10"
+            className="btn-zoom btn-outline-light"
           >
             Request a callback
           </Link>
         </div>
       </ServiceHero>
 
-      <section className="py-14 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
             Common problems we fix in {areaData.name}
           </h2>
-          <p className="mt-1 text-sm text-on-surface-variant">
+          <p className="mt-1 text-base text-on-surface-variant">
             From {problems[0].title.toLowerCase()} to{" "}
             {problems[problems.length - 1].title.toLowerCase()} — we repair
             every fault at your doorstep in {areaData.name}.
@@ -94,17 +96,17 @@ export default async function Page({
             {problems.map((p) => (
               <div
                 key={p.title}
-                className="flex h-full flex-col gap-2 card-zoom rounded-3xl border border-outline-variant bg-surface p-5"
+                className="flex h-full flex-col gap-2 card-zoom rounded-2xl border border-outline-variant bg-surface p-5"
               >
                 <div className="flex items-center gap-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-container text-primary">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary-container text-primary">
                     <Icon name={p.icon as IconName} className="h-4 w-4" />
                   </span>
                   <h3 className="text-base font-bold text-on-surface">
                     {p.title}
                   </h3>
                 </div>
-                <p className="text-sm text-on-surface-variant">
+                <p className="text-base text-on-surface-variant">
                   {p.description}
                 </p>
               </div>
@@ -119,12 +121,12 @@ export default async function Page({
         faqs={faqs}
       />
 
-      <section id="book" className="scroll-mt-16 bg-surface-variant py-14 lg:py-20">
+      <section id="book" className="scroll-mt-16 py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
             Book {serviceData.name.toLowerCase()} in {areaData.name}
           </h2>
-          <p className="mt-2 text-sm text-on-surface-variant">
+          <p className="mt-2 text-base text-on-surface-variant">
             {serviceData.blurb} Share your number and our technician will call
             you back within 15 minutes.
           </p>
@@ -139,7 +141,7 @@ export default async function Page({
 
       <TipsSection tips={tips} />
 
-      <section className="bg-surface-variant py-14 lg:py-20">
+      <section className="bg-surface-variant py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
             {serviceData.short} repair near {areaData.name}
@@ -151,7 +153,7 @@ export default async function Page({
                 <li key={a.name}>
                   <Link
                     href={`/areas/${slugify(a.name)}/${serviceData.slug}`}
-                    className="block rounded-lg border border-outline-variant bg-surface px-3 py-1.5 text-sm text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
+                    className="block rounded-xl border border-outline-variant bg-surface px-3 py-1.5 text-base text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
                   >
                     {a.name}
                   </Link>

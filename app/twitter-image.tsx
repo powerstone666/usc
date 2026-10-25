@@ -39,10 +39,10 @@ export default function TwitterImage() {
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontSize: "48px", fontWeight: 900, color: "#ffffff" }}>
-              Urban Service Company
+              {site.name}
             </div>
             <div style={{ fontSize: "26px", fontWeight: 600, color: "#bbdefb", marginTop: "4px" }}>
-              Appliance Repair in Bengaluru
+              {`Appliance Repair in ${site.city}`}
             </div>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function TwitterImage() {
           Same-day repair · Verified technicians · Quality assured
         </div>
         <div style={{ marginTop: "12px", fontSize: "18px", color: "rgba(255,255,255,0.6)" }}>
-          Call +91 9019349170
+          {`Call ${site.phoneDisplay}`}
         </div>
       </div>
     ),

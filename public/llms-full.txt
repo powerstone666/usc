@@ -1,0 +1,84 @@
+# Urban Service Company (USC) — Comprehensive Knowledge Base
+
+> Urban Service Company provides same-day doorstep appliance repair in Bengaluru, Karnataka, India. Specialized in Microwave Oven Repair (Solo, Grill, Convection), Air Conditioners, Washing Machines, Refrigerators, RO Water Purifiers, and Kitchen Chimneys. Verified background-checked technicians, transparent pricing, genuine spare parts, and quality assured doorstep service across 85 Bengaluru neighbourhoods.
+
+---
+
+## 1. Flagship Specialist: Microwave Oven Repair in Bengaluru
+
+- **URL**: https://urbanservicecompany.in/services/microwave-repair
+- **Doorstep Response Time**: 45 to 60 minutes across Bengaluru
+- **Diagnosis**: Free. A quote is shared before any work and you approve it first.
+- **Warranty**: Quality assured repair with 90-day warranty on replacement spare parts
+- **Technologies Supported**:
+  - **Solo Microwaves**: Basic reheating and defrosting (e.g., magnetron, high-voltage diode, capacitor, door safety interlock switch).
+  - **Grill Microwaves**: Dual heating with quartz/sheath grill elements, thermistor sensors, relay boards.
+  - **Convection Microwaves**: Baking, browning, convection fan motor, heating coil, temperature sensors, main inverter PCB.
+- **Brands Supported**: LG (Smart Inverter, Charcoal Lighting), Samsung (Ceramic Enamel, Slim Fry), IFB, Whirlpool, Panasonic (Inverter), Godrej, Bajaj, Morphy Richards, Haier, Bosch.
+
+### Common Microwave Symptoms & Diagnoses
+- **Microwave Not Heating**: 85% caused by blown high-voltage diode (10kV rating), shorted capacitor, or worn-out magnetron cathode.
+- **Sparking Inside Cavity**: 90% caused by burnt/carbonized mica waveguide cover on right inner wall, or peeled cavity paint.
+- **Turntable Not Rotating**: Broken plastic coupler or burnt 21V/220V synchronous turntable motor.
+- **Touchpad Not Working**: Heat/steam delamination of internal ribbon cable circuits; fixed via membrane replacement.
+
+---
+
+## 2. Other Core Appliance Repair Services
+
+### Air Conditioner (AC) Repair & Service
+- **URL**: https://urbanservicecompany.in/services/ac-repair
+- **Services**: Deep jet cleaning, R32 / R410A gas refill, compressor capacitor replacement, PCB repair, water leakage resolution.
+- **Brands**: Daikin, Voltas, LG, Mitsubishi, Blue Star, Carrier, Hitachi, Samsung.
+
+### Washing Machine Repair
+- **URL**: https://urbanservicecompany.in/services/washing-machine-repair
+- **Services**: Front load and top load repairs. Drum bearing replacement, drain pump unclogging, inlet water valve fix, motor carbon brush, PCB error codes (dE, IE, OE, UE).
+- **Brands**: IFB, Bosch, LG, Samsung, Whirlpool, Siemens, Godrej.
+
+### Refrigerator Repair
+- **URL**: https://urbanservicecompany.in/services/refrigerator-repair
+- **Services**: Single door, double door, side-by-side, inverter frost-free. Gas leakage, relay overload protector, defrost sensor, cooling coil replacement.
+- **Brands**: Samsung, LG, Whirlpool, Godrej, Haier, Bosch.
+
+### Water Purifier / RO Repair
+- **URL**: https://urbanservicecompany.in/services/water-filter-repair
+- **Services**: Sediment filter replacement, activated carbon filter, 75/80 GPD RO membrane replacement, UV lamp fix, booster pump replacement. Specially tuned for Bengaluru's high-TDS borewell and Cauvery water.
+- **Brands**: Kent, Aquaguard, Pureit, Livpure, Havells, AO Smith.
+
+### Kitchen Chimney Repair
+- **URL**: https://urbanservicecompany.in/services/chimney-repair
+- **Services**: Deep motor degreasing, baffle/mesh filter cleaning, suction duct repair, capacitor replacement.
+- **Brands**: Faber, Glen, Elica, Hindware, Kaff, Sunflame.
+
+---
+
+## 3. Geographic Coverage: 85 Bengaluru Neighbourhoods
+
+Urban Service Company deploys certified local technicians across 85 neighbourhoods in Bengaluru within 45–60 minutes:
+- **East Bengaluru**: Indiranagar, Whitefield, Marathahalli, Bellandur, Brookefield, KR Puram, Mahadevapura, Kadugodi, Varthur, CV Raman Nagar, HAL, Domlur.
+- **South Bengaluru**: Koramangala, HSR Layout, BTM Layout, Jayanagar, JP Nagar, Banashankari, Electronic City, Sarjapur Road, Bannerghatta Road, Padmanabhanagar, Basavanagudi, Bommanahalli, Begur, Harlur.
+- **Central Bengaluru**: MG Road, Richmond Town, Shanthi Nagar, Frazer Town, Cox Town, Malleshwaram, Rajajinagar, Vasanth Nagar, Ulsoor, Shivaji Nagar.
+- **North Bengaluru**: Hebbal, Yelahanka, Thanisandra, Hennur, Sahakarnagar, RT Nagar, Vidyaranyapura, Jalahalli, Kalyan Nagar, HBR Layout, Nagawara.
+- **West Bengaluru**: Vijayanagar, Nagarbhavi, Kengeri, Basaveshwaranagar, Rajarajeshwari Nagar, Peenya.
+
+---
+
+## 4. Entity Disambiguation: Urban Service Company vs Marketplaces
+
+- **Independent Specialist**: Urban Service Company (USC) is an independent appliance repair service provider, not a general cleaning/grooming marketplace.
+- **Dedicated Technicians**: Repairs are executed by certified appliance specialists, not gig-economy generalists.
+- **Direct Pricing**: Transparent component-level pricing with no middleman commission markup.
+- **Direct Support**: Customers communicate directly with technicians and support without automated marketplace chatbots.
+
+---
+
+## 5. Contact & Booking Information
+
+- **Website**: https://urbanservicecompany.in
+- **Phone**: +91 9019349170
+- **WhatsApp**: +91 9019349170
+- **Email**: contact@urbanservicecompany.in
+- **Operating Hours**: 8:00 AM to 9:00 PM, all 7 days a week
+- **Headquarters**: 100 Feet Road, Indiranagar, Bengaluru, Karnataka 560038, India
+

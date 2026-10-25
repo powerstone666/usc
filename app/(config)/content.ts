@@ -27,7 +27,7 @@ export const homeFaqs: Faq[] = [
   },
   {
     q: "Which areas of Bengaluru do you serve?",
-    a: "We serve 84+ neighbourhoods across Bengaluru — from Indiranagar and Koramangala in the centre to Whitefield and Marathahalli in the east, Jayanagar and JP Nagar in the south, Hebbal and Yelahanka in the north, and Rajajinagar and Vijayanagar in the west.",
+    a: "We serve 85+ neighbourhoods across Bengaluru — from Indiranagar and Koramangala in the centre to Whitefield and Marathahalli in the east, Jayanagar and JP Nagar in the south, Hebbal and Yelahanka in the north, and Rajajinagar and Vijayanagar in the west.",
   },
   {
     q: "Do you repair all brands of appliances?",
@@ -113,7 +113,7 @@ export const serviceFaqs: Record<ServiceSlug, Faq[]> = {
   "ac-repair": [
     {
       q: "How much does AC repair cost in Bengaluru?",
-      a: "AC repair in Bengaluru starts with a free diagnosis. The cost depends on the fault — gas refill, capacitor replacement, PCB repair, fan motor replacement and installation each have fixed, transparent rates. You approve the quote before any work begins.",
+      a: "AC service pricing depends on the job — standard coil jet cleaning has a set flat rate, while component repairs like capacitor replacement, sensor fixing, or refrigerant leak-brazing and R32/R410A gas refills are quoted upfront after physical pressure testing. Doorstep diagnosis is free when you proceed with service.",
     },
     {
       q: "Why is my AC not cooling?",
@@ -149,7 +149,7 @@ export const serviceFaqs: Record<ServiceSlug, Faq[]> = {
     },
     {
       q: "Is the AC repair quality assured?",
-      a: "Yes. All AC repairs and gas refills done by Urban Service Company are quality assured.",
+      a: "Yes. Every AC service and repair is backed by our workmanship guarantee. If cooling drops or a refilled joint leaks within the service warranty period, our technician returns promptly to re-inspect and fix it at zero extra charge.",
     },
     {
       q: "My AC is making noise — what could be wrong?",
@@ -163,7 +163,7 @@ export const serviceFaqs: Record<ServiceSlug, Faq[]> = {
   "washing-machine-repair": [
     {
       q: "How much does washing machine repair cost in Bengaluru?",
-      a: "Washing machine repair in Bengaluru starts with a free diagnosis. The cost depends on the fault — drain pump replacement, motor repair, drum bearing replacement and door lock repair each have fixed, transparent rates. You approve the quote before any work begins.",
+      a: "Washing machine repair costs vary based on whether it is a drain hose unclogging, inlet solenoid replacement, drive belt swap, or front-load drum bearing overhaul. Our technician conducts a full spin and wash cycle check first, then provides an all-inclusive quote before starting work.",
     },
     {
       q: "Why is my washing machine not draining?",
@@ -199,7 +199,7 @@ export const serviceFaqs: Record<ServiceSlug, Faq[]> = {
     },
     {
       q: "Is the washing machine repair quality assured?",
-      a: "Yes. All washing machine repairs done by Urban Service Company are quality assured.",
+      a: "Yes. We stand behind all washing machine repairs with complete service assurance. Replacement parts like drain pumps, suspension dampers, and door interlocks carry reliable performance, and recurring faults are resolved free.",
     },
     {
       q: "My washing machine door is jammed — what should I do?",
@@ -213,7 +213,7 @@ export const serviceFaqs: Record<ServiceSlug, Faq[]> = {
   "refrigerator-repair": [
     {
       q: "How much does refrigerator repair cost in Bengaluru?",
-      a: "Refrigerator repair in Bengaluru starts with a free diagnosis. The cost depends on the fault — compressor replacement, thermostat repair, gas refill, fan motor replacement and door seal replacement each have fixed, transparent rates. You approve the quote before any work begins.",
+      a: "Fridge repair charges depend on whether you need a relay-overload protector replacement, evaporator fan swap, defrost bi-metal sensor repair, or full inverter compressor brazing and gas charging. We provide an exact doorstep estimate after inspecting power draws and cooling coils.",
     },
     {
       q: "Why is my refrigerator not cooling?",
@@ -245,7 +245,7 @@ export const serviceFaqs: Record<ServiceSlug, Faq[]> = {
     },
     {
       q: "Is the refrigerator repair quality assured?",
-      a: "Yes. All refrigerator repairs done by Urban Service Company are quality assured.",
+      a: "Yes. All refrigerator repairs, from thermostat replacements to cooling system overhauls, come with dedicated post-repair support. We ensure consistent cabinet temperatures before wrapping up, and back our work with full quality assurance.",
     },
     {
       q: "Why is my fridge over-freezing?",
@@ -263,7 +263,7 @@ export const serviceFaqs: Record<ServiceSlug, Faq[]> = {
   "water-filter-repair": [
     {
       q: "How much does water filter repair cost in Bengaluru?",
-      a: "Water filter and RO purifier repair in Bengaluru starts with a free diagnosis. The cost depends on the fault — RO membrane replacement, UV lamp replacement, pump repair and valve replacement each have fixed, transparent rates. You approve the quote before any work begins.",
+      a: "Water purifier servicing has clear tier-based pricing — routine sediment and pre-carbon filter swaps cost less than multi-stage RO membrane, booster pump, or UV ballast replacements. We test input and output TDS on the spot to recommend only what your purifier truly needs.",
     },
     {
       q: "Why is my RO not purifying water?",
@@ -297,7 +297,7 @@ export const serviceFaqs: Record<ServiceSlug, Faq[]> = {
   "chimney-repair": [
     {
       q: "How much does kitchen chimney repair cost in Bengaluru?",
-      a: "Kitchen chimney repair in Bengaluru starts with a free diagnosis. The cost depends on the fault — motor replacement, filter cleaning, touch panel repair and suction motor repair each have fixed, transparent rates. You approve the quote before any work begins.",
+      a: "Kitchen chimney charges depend on the scope: routine deep degreasing of baffle filters and housing, motor bearing lubrication, duct pipe replacement, or electronic touch PCB repair. You get a transparent quote following an airflow and suction test.",
     },
     {
       q: "Why is my chimney not sucking smoke?",
@@ -362,39 +362,6 @@ export const brands: string[] = [
   "Cello",
   "Agaro",
 ];
-
-export const brandDomains: Record<string, string> = {
-  Samsung: "samsung.com",
-  LG: "lg.com",
-  Whirlpool: "whirlpool.com",
-  IFB: "ifbappliances.com",
-  Godrej: "godrej.com",
-  Bajaj: "bajajelectricals.com",
-  Panasonic: "panasonic.com",
-  Haier: "haier.com",
-  Voltas: "voltas.com",
-  Bosch: "bosch.com",
-  Siemens: "siemens.com",
-  Daikin: "daikin.com",
-  Hitachi: "hitachi.com",
-  "Blue Star": "bluestarindia.com",
-  Carrier: "carrier.com",
-  "O-General": "o-general.com",
-  Midea: "midea.com",
-  Gree: "gree.com",
-  Lloyd: "lloyd.in",
-  Videocon: "videocon.com",
-  Onida: "onida.com",
-  AmazonBasics: "amazon.com",
-  Mi: "mi.com",
-  "Morphy Richards": "morphyrichards.co.uk",
-  Prestige: "ttkprestige.com",
-  Elica: "elica.com",
-  Faber: "faber-spa.com",
-  Sansui: "sansui.com",
-  Cello: "cello.co.in",
-  Agaro: "agaro.in",
-};
 
 export const serviceProblems: Record<ServiceSlug, Problem[]> = {
   "microwave-repair": [
@@ -506,9 +473,9 @@ export const serviceTips: Record<ServiceSlug, string[]> = {
 
 export const whyChooseUs = [
   { icon: "microwave", title: "Microwave-first specialists", text: "We lead with microwave oven repair — dedicated specialists, faster diagnosis, genuine magnetrons and parts." },
-  { icon: "pin", title: "84+ Bengaluru neighbourhoods", text: "Same-day slots from Indiranagar to Whitefield, Jayanagar to Hebbal — 45-minute arrival in most areas." },
+  { icon: "pin", title: "85+ Bengaluru neighbourhoods", text: "Same-day slots from Indiranagar to Whitefield, Jayanagar to Hebbal — 45-minute arrival in most areas." },
   { icon: "verified", title: "Free diagnosis, fixed rates", text: "Our technician inspects for free and shares a transparent quote. You approve before any work begins." },
   { icon: "shield", title: "Quality assured", text: "Every repair is quality assured and reliable." },
   { icon: "wrench", title: "Genuine spare parts", text: "We carry and procure genuine parts for Samsung, LG, IFB, Whirlpool, Bosch, Daikin and more." },
-  { icon: "star", title: "4.5+ rated technicians", text: "Background-verified, trained pros — not random contractors. Rated by thousands of Bengaluru customers." },
+  { icon: "star", title: "4.8★ rated technicians", text: "Background-verified, trained pros — not random contractors. Rated 4.8★ by Bengaluru customers." },
 ];

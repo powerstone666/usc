@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { bangaloreAreas, areas, services, site } from "@/app/(config)/site";
+import { bangaloreAreas, services, site } from "@/app/(config)/site";
 import { slugify } from "@/app/(common-lib)/slugify";
 import { ServiceHero } from "@/app/(ui)/components/service-hero";
 import { LeadForm } from "@/app/(ui)/components/lead-form";
 import { Icon } from "@/app/(ui)/components/icons";
 import { CallButton } from "@/app/(ui)/components/call-button";
 import { JsonLd } from "@/app/(ui)/components/json-ld";
+import { areaAnswer, areaFaqs } from "@/app/(config)/aeo";
+import { FaqSection } from "@/app/(ui)/components/faq-section";
 
 export function generateStaticParams() {
   return bangaloreAreas.map((a) => ({ area: slugify(a.name) }));
@@ -37,9 +39,13 @@ export default async function Page({
   const areaData = bangaloreAreas.find((a) => slugify(a.name) === area);
   if (!areaData) notFound();
 
-  const nearby = areas
-    .filter((a) => a !== areaData.name)
-    .slice(0, 8);
+  const regionNeighbours = bangaloreAreas
+    .filter((a) => a.region === areaData.region && a.name !== areaData.name)
+    .map((a) => a.name);
+  const fallbackNeighbours = bangaloreAreas
+    .filter((a) => a.region !== areaData.region && a.name !== areaData.name)
+    .map((a) => a.name);
+  const nearby = [...regionNeighbours, ...fallbackNeighbours].slice(0, 8);
 
   return (
     <div>
@@ -54,6 +60,9 @@ export default async function Page({
         }}
       />
       <ServiceHero
+        path={`/areas/${area}`}
+        parent={{ name: "Coverage", path: "/coverage" }}
+        answer={areaAnswer(areaData.name)}
         title={`Appliance Repair in ${areaData.name}, Bengaluru`}
         tagline={`Same-day microwave, AC, washing machine & refrigerator repair in ${areaData.name}. Verified technicians, free diagnosis, genuine parts, quality assured.`}
       >
@@ -62,12 +71,36 @@ export default async function Page({
         </div>
       </ServiceHero>
 
-      <section className="py-14 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-8 rounded-2xl border border-primary/20 bg-primary/5 p-5 sm:p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-on-primary">
+                  <Icon name="microwave" className="h-5 w-5" />
+                </span>
+                <div>
+                  <span className="text-sm font-bold uppercase tracking-wider text-primary">Priority Service in {areaData.name}</span>
+                  <h2 className="text-lg font-bold text-on-surface">Same-Day Microwave Oven Repair in {areaData.name}</h2>
+                  <p className="mt-1 text-sm text-on-surface-variant">
+                    Microwave not heating, sparking or dead panel? Our microwave technician reaches {areaData.name} within 45 minutes with genuine magnetrons and parts.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/services/microwave-repair"
+                className="btn-zoom inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-on-primary hover:bg-secondary"
+              >
+                Book Microwave Repair
+                <Icon name="arrow" className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+
           <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
             Our services in {areaData.name}
           </h2>
-          <p className="mt-1 text-sm text-on-surface-variant">
+          <p className="mt-1 text-base text-on-surface-variant">
             Same-day repair slots available in {areaData.name} and nearby
             neighbourhoods across {site.city}.
           </p>
@@ -75,13 +108,13 @@ export default async function Page({
             {services.map((s) => (
               <Link
                 key={s.slug}
-                href={`/areas/${area}/${s.slug}`}
-                className="group flex flex-col gap-2 card-zoom rounded-3xl border border-outline-variant bg-surface p-5 transition-colors hover:border-primary"
+                href={`/services/${s.slug}`}
+                className="group flex flex-col gap-2 card-zoom rounded-2xl border border-outline-variant bg-surface p-5 transition-colors hover:border-primary"
               >
                 <h3 className="text-base font-extrabold text-on-surface">
                   {s.name}
                 </h3>
-                <p className="text-sm text-on-surface-variant">
+                <p className="text-base text-on-surface-variant">
                   {s.tagline}
                 </p>
                 <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-bold text-primary">
@@ -94,7 +127,7 @@ export default async function Page({
         </div>
       </section>
 
-      <section className="bg-surface-variant py-14 lg:py-20">
+      <section className="bg-surface-variant py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-3xl px-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
             Nearby areas we serve
@@ -104,7 +137,7 @@ export default async function Page({
               <li key={a}>
                 <Link
                   href={`/areas/${slugify(a)}`}
-                  className="rounded-lg border border-outline-variant bg-surface px-3 py-1.5 text-sm text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
+                  className="rounded-xl border border-outline-variant bg-surface px-3 py-1.5 text-base text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
                 >
                   {a}
                 </Link>
@@ -114,12 +147,12 @@ export default async function Page({
         </div>
       </section>
 
-      <section className="py-14 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
             Book a repair in {areaData.name}
           </h2>
-          <p className="mt-2 text-sm text-on-surface-variant">
+          <p className="mt-2 text-base text-on-surface-variant">
             Share your number and our technician will call you back within 15
             minutes.
           </p>
@@ -128,6 +161,12 @@ export default async function Page({
           </div>
         </div>
       </section>
+
+      <FaqSection
+        title={`Appliance repair in ${areaData.name} — FAQ`}
+        subtitle={`Answers about same-day repair, diagnosis and booking in ${areaData.name}, ${site.city}.`}
+        faqs={areaFaqs(areaData.name, areaData.region, regionNeighbours)}
+      />
     </div>
   );
 }

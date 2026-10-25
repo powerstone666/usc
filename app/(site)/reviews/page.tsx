@@ -1,54 +1,77 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { site, reviews } from "@/app/(config)/site";
+import { areas, site, reviews } from "@/app/(config)/site";
+import { CallButton } from "@/app/(ui)/components/call-button";
+import { SectionHeading } from "@/app/(ui)/components/section-heading";
 import { Reviews } from "@/app/(ui)/components/reviews";
-import { Icon } from "@/app/(ui)/components/icons";
-import { Reveal } from "@/app/(ui)/components/reveal";
+import { ServiceHero } from "@/app/(ui)/components/service-hero";
+import { JsonLd } from "@/app/(ui)/components/json-ld";
 
 export const metadata: Metadata = {
-  title: "Reviews — What Bengaluru Says About Us",
+  title: "Customer Reviews",
   description:
-    "Read what Bengaluru customers say about our microwave, AC, washing machine and refrigerator repair services. Verified technicians, quality assured.",
+    "Verified reviews from Bengaluru homeowners for microwave, AC, washing machine and fridge repairs. Rated 4.8★ for same-day service and genuine parts.",
   alternates: { canonical: "/reviews" },
 };
 
 export default function Page() {
   return (
     <div className="flex flex-col">
-      <section className="relative isolate overflow-hidden">
-        <Image
-          src="/happy-customer.png"
-          alt="Happy Bengaluru customer with repaired appliance"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary/30" />
-        <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-28 text-on-primary lg:pb-20 lg:pt-32">
-          <Reveal>
-            <p className="text-sm font-bold uppercase tracking-wide text-on-primary/80">
-              Reviews
-            </p>
-            <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
-              Bengaluru trusts us with their appliances
-            </h1>
-            <p className="mt-4 max-w-lg text-base text-on-primary/90">
-              {reviews.length}+ verified reviews from customers across{" "}
-              {site.city}. Same-day repair, genuine parts, quality assured.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "HomeAndConstructionBusiness",
+          "@id": `${site.url}/#business`,
+          name: site.name,
+          url: site.url,
+          telephone: site.phone,
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1),
+            reviewCount: reviews.length.toString(),
+            bestRating: "5",
+            worstRating: "1",
+          },
+          review: reviews.map((r) => ({
+            "@type": "Review",
+            author: { "@type": "Person", name: r.name },
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: r.rating.toString(),
+              bestRating: "5",
+            },
+            reviewBody: r.text,
+          })),
+        }}
+      />
+      <ServiceHero
+        path="/reviews"
+        image="/happy-customer.png"
+        title="Bengaluru trusts us with their appliances"
+        tagline={`${reviews.length} customer reviews from across ${site.city}. Same-day repair, genuine parts, quality assured.`}
+      />
 
-      <section className="py-14 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-6xl px-4">
-          <Reveal>
-            <Reviews />
-          </Reveal>
+          <SectionHeading
+            title="What our customers say"
+            subtitle={`Reviews from customers across ${site.city}. The average below is calculated from the reviews shown on this page.`}
+          />
+          <div className="mt-6">
+            <Reviews layout="grid" />
+          </div>
         </div>
       </section>
-
+      <section className="bg-surface-variant py-12 sm:py-16">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">Book your repair</h2>
+          <p className="mt-2 max-w-2xl text-base text-on-surface-variant">
+            Call {site.name} {site.hours}. Diagnosis is free, you get a quote before any work, and same-day slots are available across {areas.length}+ neighbourhoods in {site.city}.
+          </p>
+          <div className="mt-5">
+            <CallButton variant="dark" />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

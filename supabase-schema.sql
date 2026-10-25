@@ -122,3 +122,37 @@ CREATE INDEX IF NOT EXISTS idx_events_received_at ON events (received_at DESC);
 CREATE INDEX IF NOT EXISTS idx_events_event_type ON events (event_type);
 CREATE INDEX IF NOT EXISTS idx_events_session_id ON events (session_id);
 CREATE INDEX IF NOT EXISTS idx_events_fingerprint ON events (fingerprint);
+
+
+-- ── Keyword discovery ───────────────────────────────────────────────────────
+-- Keyword pages found automatically (Google autocomplete, Search Console) or added by hand.
+-- Rows with status = 'approved' are public pages under /topics/; 'rejected' means unpublished
+-- and keeps the keyword from coming back. Read and written by the server
+-- (service role) only: RLS is on and there are deliberately NO public policies.
+CREATE TABLE IF NOT EXISTS dynamic_keywords (
+  slug TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  service TEXT NOT NULL,
+  problem TEXT NOT NULL,
+  query TEXT,
+  source TEXT NOT NULL DEFAULT 'autocomplete',
+  status TEXT NOT NULL DEFAULT 'approved' CHECK (status IN ('approved', 'rejected')),
+  impressions INTEGER NOT NULL DEFAULT 0,
+  clicks INTEGER NOT NULL DEFAULT 0,
+  position NUMERIC,
+  discovered_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  reviewed_at TIMESTAMPTZ
+);
+
+ALTER TABLE dynamic_keywords ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX IF NOT EXISTS idx_dynamic_keywords_status ON dynamic_keywords (status, impressions DESC);
+
+-- One row per day that discovery ran. The primary key is the claim: the first visitor of the day
+-- inserts it and runs discovery, everyone else gets a duplicate-key error and does nothing.
+CREATE TABLE IF NOT EXISTS keyword_discovery_runs (
+  bucket TEXT PRIMARY KEY,
+  ran_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE keyword_discovery_runs ENABLE ROW LEVEL SECURITY;

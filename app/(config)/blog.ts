@@ -17,7 +17,7 @@ export const blogPosts: BlogPost[] = [
     slug: "microwave-repair-bengaluru-complete-guide",
     title: "Microwave Oven Repair in Bengaluru — Complete Diagnostic Guide 2026",
     excerpt:
-      "Microwave not heating, sparking, turntable stuck, buttons dead? This complete guide explains every common microwave fault, its cause, and how our technicians diagnose and fix it — for Samsung, LG, IFB, Whirlpool, Bajaj, Godrej and Panasonic across 84+ Bengaluru neighbourhoods.",
+      "Microwave not heating, sparking, turntable stuck, buttons dead? This complete guide explains every common microwave fault, its cause, and how our technicians diagnose and fix it — for Samsung, LG, IFB, Whirlpool, Bajaj, Godrej and Panasonic across 85+ Bengaluru neighbourhoods.",
     category: "Microwave",
     service: "microwave-repair",
     date: "2026-07-15",
@@ -25,7 +25,7 @@ export const blogPosts: BlogPost[] = [
     image: "/blog/microwave-maintenance.png",
     content: [
       "Your microwave oven is one of the most used appliances in your Bengaluru kitchen. When it stops working, it disrupts your entire daily routine — no quick reheating, no defrosting, no fast meals. This guide breaks down every common microwave fault, what causes it, and how our technicians diagnose and fix it.",
-      "Microwave repair in Bengaluru is in high demand across all 84+ neighbourhoods we serve. From Indiranagar to Whitefield, Jayanagar to Hebbal, residents rely on same-day microwave repair services. This content is intended for Bengaluru residents who need to understand what's wrong with their microwave before calling a technician.",
+      "Microwave repair in Bengaluru is in high demand across all 85+ neighbourhoods we serve. From Indiranagar to Whitefield, Jayanagar to Hebbal, residents rely on same-day microwave repair services. This content is intended for Bengaluru residents who need to understand what's wrong with their microwave before calling a technician.",
       "This guide covers faults for all major microwave brands — Samsung, LG, IFB, Whirlpool, Bajaj, Godrej and Panasonic. Whether you have a solo, grill, or convection microwave, the diagnostic process is the same. The difference lies in the spare parts and internal architecture.",
       "If your microwave is under warranty, contact the brand's service centre first. If the warranty has expired or you need same-day repair, that's where we come in. Urban Service Company provides free diagnosis, genuine spare parts, and quality assured repairs across Bengaluru.",
 
@@ -97,7 +97,7 @@ export const blogPosts: BlogPost[] = [
 
       "How's the repair scene in Bengaluru?",
       "In Bengaluru, microwave oven repair is one of our most requested services. The city's fast-paced lifestyle, with many residents working in IT hubs like Whitefield, Electronic City, and Koramangala, means the microwave is used daily — for reheating, defrosting, and quick meals. Heavy use leads to faster wear of components like the magnetron, waveguide cover, and turntable motor.",
-      "From Indiranagar and Koramangala to Whitefield and Marathahalli, residents rely on same-day microwave repair. Whether you're in Jayanagar looking for Samsung microwave repair near Jayanagar 4th Block, or in Hebbal searching for LG microwave repair in Hebbal, our verified technicians reach every corner of Bengaluru within 45 to 60 minutes. Same-day slots are available across all 84+ neighbourhoods.",
+      "From Indiranagar and Koramangala to Whitefield and Marathahalli, residents rely on same-day microwave repair. Whether you're in Jayanagar looking for Samsung microwave repair near Jayanagar 4th Block, or in Hebbal searching for LG microwave repair in Hebbal, our verified technicians reach every corner of Bengaluru within 45 to 60 minutes. Same-day slots are available across all 85+ neighbourhoods.",
       "Bengaluru's power supply can be unstable in certain areas, which stresses microwave internal components. Areas like Marathahalli, HSR Layout, and BTM Layout experience more voltage fluctuations, leading to more fuse and control board failures. If you live in these areas, we recommend using a voltage stabiliser to protect your microwave.",
 
       "Microwave repair near me in Bengaluru",
@@ -108,7 +108,7 @@ export const blogPosts: BlogPost[] = [
       "When you search for microwave repair in Bengaluru, three names will come up — Urban Service Company, Urban Company, and Local Ramu. Here's an honest comparison to help you choose the right service for your microwave.",
       "Urban Company is a well-known national platform offering multiple home services. Their app is polished and booking is straightforward. However, their technicians are often generalists handling many appliance categories — which means they may not carry microwave-specific spare parts like magnetrons, waveguide covers, or membrane switches on the first visit. You might face a revisit for parts. Their pricing structure includes a platform visit fee, and same-day slots in Bengaluru are not always guaranteed during peak hours.",
       "Local Ramu is a Bengaluru-based repair provider covering several appliance types. Being local, they understand the city well. However, their technician pool is smaller, which can mean longer wait times during peak hours. They also don't always carry brand-specific microwave parts for all seven major brands we service — Samsung, LG, IFB, Whirlpool, Bajaj, Godrej, and Panasonic. If your microwave needs a specific magnetron or control panel, they may need to source it, adding delay.",
-      "Urban Service Company is Bengaluru-born, microwave-specialist, and carries genuine spare parts for all major brands on every visit. Our technicians are trained specifically on microwave diagnostics — magnetron resistance testing, waveguide cover inspection, turntable motor replacement, membrane switch and control board diagnosis, door switch testing, and thermal fuse replacement. Same-day slots are available across all 84+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
+      "Urban Service Company is Bengaluru-born, microwave-specialist, and carries genuine spare parts for all major brands on every visit. Our technicians are trained specifically on microwave diagnostics — magnetron resistance testing, waveguide cover inspection, turntable motor replacement, membrane switch and control board diagnosis, door switch testing, and thermal fuse replacement. Same-day slots are available across all 85+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
       "The choice depends on your priority. If you want a national app-based platform, Urban Company is an option. If you want a local generalist, Local Ramu is an option. If you want a microwave specialist with genuine parts, same-day service, and no platform fee across Bengaluru — Urban Service Company is the right choice.",
 
       "FAQs — Microwave repair in Bengaluru",
@@ -125,14 +125,14 @@ export const blogPosts: BlogPost[] = [
       "Final takeaway",
       "Microwave oven repair in Bengaluru doesn't have to be a hassle. Understanding the common faults — magnetron failure, waveguide cover damage, turntable motor wear, membrane switch failure, fuse and door switch issues — helps you describe the problem accurately when you call.",
       "With the right technician, genuine spare parts, and a quality assured repair, your microwave can be back to full working order in 30-60 minutes. Don't attempt DIY repairs — microwaves contain high-voltage components that can be dangerous even when unplugged.",
-      "Call us for same-day microwave repair across 84+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
+      "Call us for same-day microwave repair across 85+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
     ],
   },
   {
     slug: "ac-repair-bengaluru-complete-guide",
     title: "AC Repair in Bengaluru — Complete Diagnostic Guide 2026",
     excerpt:
-      "AC not cooling, gas refill, water leakage, noise, PCB failure? This complete guide explains every common AC fault, its cause, and how our technicians diagnose and fix it — for Daikin, LG, Samsung, Voltas, Hitachi, Panasonic across 84+ Bengaluru neighbourhoods.",
+      "AC not cooling, gas refill, water leakage, noise, PCB failure? This complete guide explains every common AC fault, its cause, and how our technicians diagnose and fix it — for Daikin, LG, Samsung, Voltas, Hitachi, Panasonic across 85+ Bengaluru neighbourhoods.",
     category: "AC Repair",
     service: "ac-repair",
     date: "2026-07-10",
@@ -223,7 +223,7 @@ export const blogPosts: BlogPost[] = [
       "How's the repair scene in Bengaluru?",
       "In Bengaluru, AC repair is one of our most requested services from March to June. The city's IT workforce, concentrated in areas like Whitefield, Electronic City, Koramangala, and Indiranagar, relies heavily on ACs for home comfort after long work hours.",
       "Bengaluru's unique challenge is the mix of old and new buildings. Older apartments in areas like Jayanagar and Malleswaram have outdated electrical wiring that causes voltage fluctuations, leading to more capacitor and PCB failures. Newer apartments in Whitefield and HSR Layout have better wiring but face dust from nearby construction, clogging AC filters faster.",
-      "From Indiranagar to Whitefield, Jayanagar to Hebbal, our verified technicians reach every corner of Bengaluru within 45 to 60 minutes. Whether you're in Koramangala looking for Daikin AC repair near Koramangala, or in Marathahalli searching for AC gas refill in Marathahalli, same-day slots are available across all 84+ neighbourhoods.",
+      "From Indiranagar to Whitefield, Jayanagar to Hebbal, our verified technicians reach every corner of Bengaluru within 45 to 60 minutes. Whether you're in Koramangala looking for Daikin AC repair near Koramangala, or in Marathahalli searching for AC gas refill in Marathahalli, same-day slots are available across all 85+ neighbourhoods.",
 
       "AC repair near me in Bengaluru",
       "Looking for AC repair near you? We serve all of Bengaluru. Here are some areas where we provide same-day AC repair:",
@@ -233,7 +233,7 @@ export const blogPosts: BlogPost[] = [
       "When you search for AC repair in Bengaluru, you'll come across three names — Urban Service Company, Urban Company, and Local Ramu. Here's an honest comparison to help you choose the right service for your air conditioner.",
       "Urban Company is a national home services platform with a well-designed app and broad service catalogue. Their AC repair service covers multiple brands. However, their technicians are generalists handling many appliance types — which means they may not carry AC-specific spare parts like capacitors, PCBs, fan motors, or refrigerant gas on the first visit. AC gas refill requires a manifold gauge, vacuum pump, and digital scale — not all generalist technicians carry this equipment. Their pricing includes a platform visit fee, and same-day slots during Bengaluru's peak summer (March-June) are often fully booked.",
       "Local Ramu is a Bengaluru-based repair provider. Being local, they know the city's areas and AC usage patterns. However, their technician pool is smaller — during peak summer when AC failures spike across Whitefield, Electronic City, and Koramangala, wait times can stretch. They also may not carry genuine brand-specific spare parts for all nine AC brands we service — Daikin, LG, Samsung, Voltas, Hitachi, Panasonic, Blue Star, Carrier, and O-General. Inverter AC PCB repair requires specialised diagnostic equipment that generalist technicians may not have.",
-      "Urban Service Company is Bengaluru-born, AC-specialist, and carries genuine spare parts and full gas refill equipment on every visit. Our technicians are trained specifically on AC diagnostics — manifold gauge pressure testing, nitrogen leak detection, vacuum pump evacuation, gas refill by weight, capacitor testing, PCB diagnosis, fan motor inspection, and coil cleaning with foam jet and power jet. Same-day slots are available across all 84+ neighbourhoods — even during peak summer. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
+      "Urban Service Company is Bengaluru-born, AC-specialist, and carries genuine spare parts and full gas refill equipment on every visit. Our technicians are trained specifically on AC diagnostics — manifold gauge pressure testing, nitrogen leak detection, vacuum pump evacuation, gas refill by weight, capacitor testing, PCB diagnosis, fan motor inspection, and coil cleaning with foam jet and power jet. Same-day slots are available across all 85+ neighbourhoods — even during peak summer. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
       "The choice depends on your priority. If you want a national app-based platform, Urban Company is an option. If you want a local generalist, Local Ramu is an option. If you want an AC specialist with genuine parts, full gas refill equipment, and same-day service across Bengaluru — Urban Service Company is the right choice.",
 
       "FAQs — AC repair in Bengaluru",
@@ -250,14 +250,14 @@ export const blogPosts: BlogPost[] = [
       "Final takeaway",
       "AC repair in Bengaluru doesn't have to be a frustrating experience. Understanding the common faults — low gas, capacitor failure, water leakage, PCB issues, fan motor noise, and dirty coils — helps you describe the problem accurately when you call.",
       "With the right technician, genuine spare parts, and a quality assured repair, your AC can be back to full cooling in 45-90 minutes. Regular servicing — twice a year — prevents most faults before they happen.",
-      "Call us for same-day AC repair across 84+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
+      "Call us for same-day AC repair across 85+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
     ],
   },
   {
     slug: "washing-machine-repair-bengaluru-complete-guide",
     title: "Washing Machine Repair in Bengaluru — Complete Diagnostic Guide 2026",
     excerpt:
-      "Washing machine not draining, not spinning, noisy drum, door jammed? This complete guide explains every common washing machine fault for Samsung, LG, IFB, Bosch, Whirlpool across 84+ Bengaluru neighbourhoods.",
+      "Washing machine not draining, not spinning, noisy drum, door jammed? This complete guide explains every common washing machine fault for Samsung, LG, IFB, Bosch, Whirlpool across 85+ Bengaluru neighbourhoods.",
     category: "Washing Machine",
     service: "washing-machine-repair",
     date: "2026-07-05",
@@ -339,7 +339,7 @@ export const blogPosts: BlogPost[] = [
       "How's the repair scene in Bengaluru?",
       "In Bengaluru, washing machine repair is one of our top three services. The city's busy IT workforce, concentrated in areas like Whitefield, Electronic City, and Koramangala, relies on washing machines to handle daily laundry efficiently.",
       "Bengaluru's water quality challenges — hard borewell water in some areas — causes faster scale buildup in washing machine drums and inlet valves. Areas like Marathahalli, HSR Layout, and BTM Layout experience more inlet valve clogs due to sediment in the water supply.",
-      "From Indiranagar to Whitefield, Jayanagar to Hebbal, our verified technicians reach every corner of Bengaluru within 45 to 60 minutes. Same-day slots are available across all 84+ neighbourhoods.",
+      "From Indiranagar to Whitefield, Jayanagar to Hebbal, our verified technicians reach every corner of Bengaluru within 45 to 60 minutes. Same-day slots are available across all 85+ neighbourhoods.",
 
       "Washing machine repair near me in Bengaluru",
       "Looking for washing machine repair near you? We serve all of Bengaluru:",
@@ -349,7 +349,7 @@ export const blogPosts: BlogPost[] = [
       "When you search for washing machine repair in Bengaluru, three names will appear — Urban Service Company, Urban Company, and Local Ramu. Here's an honest comparison to help you choose the right service for your washing machine.",
       "Urban Company is a national home services platform with a clean app experience. Their washing machine repair covers multiple brands. However, their technicians are generalists handling many appliance types — which means they may not carry washing machine-specific spare parts like drain pumps, drive belts, door locks, drum bearings, or inlet valves on the first visit. Drum bearing replacement is a complex repair requiring full drum dismantling — not all generalist technicians have the experience or tools for this. Their pricing includes a platform visit fee, and same-day slots during weekends (when most Bengaluru residents do laundry) are often fully booked.",
       "Local Ramu is a Bengaluru-based repair provider. Being local, they understand the city's water quality challenges — hard borewell water in Whitefield and Marathahalli causes faster scale buildup in washing machines. However, their technician pool is smaller, which means longer wait times during peak hours. They also may not carry genuine brand-specific spare parts for all seven brands we service — Samsung, LG, IFB, Bosch, Whirlpool, Godrej, and Haier. Front-load door lock replacement and control board diagnosis require specialised knowledge that generalist technicians may not have.",
-      "Urban Service Company is Bengaluru-born, washing machine-specialist, and carries genuine spare parts on every visit. Our technicians are trained specifically on washing machine diagnostics — drain pump inspection, drive belt replacement, drum bearing replacement (full dismantling), door lock repair, control board testing, inlet valve cleaning, and deep drum cleaning for mould and odour. Same-day slots are available across all 84+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
+      "Urban Service Company is Bengaluru-born, washing machine-specialist, and carries genuine spare parts on every visit. Our technicians are trained specifically on washing machine diagnostics — drain pump inspection, drive belt replacement, drum bearing replacement (full dismantling), door lock repair, control board testing, inlet valve cleaning, and deep drum cleaning for mould and odour. Same-day slots are available across all 85+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
       "The choice depends on your priority. If you want a national app-based platform, Urban Company is an option. If you want a local generalist, Local Ramu is an option. If you want a washing machine specialist with genuine parts, drum bearing expertise, and same-day service across Bengaluru — Urban Service Company is the right choice.",
 
       "FAQs — Washing machine repair in Bengaluru",
@@ -366,14 +366,14 @@ export const blogPosts: BlogPost[] = [
       "Final takeaway",
       "Washing machine repair in Bengaluru doesn't have to be stressful. Understanding common faults — not draining, not spinning, noisy drum, door jammed, not starting, inlet issues, foul smell, excess vibration — helps you describe the problem accurately.",
       "With the right technician, genuine spare parts, and a quality assured repair, your washing machine can be back to full working order in 45-90 minutes. Regular maintenance — cleaning the filter, leaving the door open, and monthly descaling — prevents most faults.",
-      "Call us for same-day washing machine repair across 84+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
+      "Call us for same-day washing machine repair across 85+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
     ],
   },
   {
     slug: "refrigerator-repair-bengaluru-complete-guide",
     title: "Refrigerator Repair in Bengaluru — Complete Diagnostic Guide 2026",
     excerpt:
-      "Refrigerator not cooling, frost buildup, water leakage, compressor noise, door seal? This complete guide explains every common fridge fault for Samsung, LG, Whirlpool, Godrej, Haier across 84+ Bengaluru neighbourhoods.",
+      "Refrigerator not cooling, frost buildup, water leakage, compressor noise, door seal? This complete guide explains every common fridge fault for Samsung, LG, Whirlpool, Godrej, Haier across 85+ Bengaluru neighbourhoods.",
     category: "Refrigerator",
     service: "refrigerator-repair",
     date: "2026-06-28",
@@ -442,7 +442,7 @@ export const blogPosts: BlogPost[] = [
 
       "How's the repair scene in Bengaluru?",
       "In Bengaluru, refrigerator repair is essential year-round due to the city's warm climate. Refrigerators work harder here than in cooler cities, accelerating component wear.",
-      "From Indiranagar to Whitefield, Jayanagar to Hebbal, our verified technicians reach every corner. Same-day slots are available across all 84+ neighbourhoods.",
+      "From Indiranagar to Whitefield, Jayanagar to Hebbal, our verified technicians reach every corner. Same-day slots are available across all 85+ neighbourhoods.",
 
       "Refrigerator repair near me in Bengaluru",
       "Looking for refrigerator repair near you? We serve all of Bengaluru:",
@@ -452,7 +452,7 @@ export const blogPosts: BlogPost[] = [
       "When you search for refrigerator repair in Bengaluru, you'll find three names — Urban Service Company, Urban Company, and Local Ramu. Here's an honest comparison to help you choose the right service for your fridge.",
       "Urban Company is a national home services platform with a clean app experience. Their refrigerator repair covers multiple brands. However, their technicians are generalists handling many appliance types — which means they may not carry fridge-specific spare parts like compressors, thermostats, relays, overload protectors, door gaskets, or fan motors on the first visit. Compressor testing requires electrical reading equipment, and gas leak detection requires nitrogen pressurisation — not all generalist technicians carry this. Their pricing includes a platform visit fee, and same-day slots during weekends are often fully booked.",
       "Local Ramu is a Bengaluru-based repair provider. Being local, they understand the city's warm climate and how hard fridges work here. However, their technician pool is smaller, which means longer wait times during peak hours. They also may not carry genuine brand-specific spare parts for all seven brands we service — Samsung, LG, Whirlpool, Godrej, Haier, Panasonic, and Bosch. Defrost system diagnosis — timer, heater, and sensor testing — requires specialised knowledge that generalist technicians may not have.",
-      "Urban Service Company is Bengaluru-born, refrigerator-specialist, and carries genuine spare parts on every visit. Our technicians are trained specifically on refrigerator diagnostics — compressor electrical testing, thermostat replacement, gas leak detection with nitrogen, defrost system diagnosis (timer, heater, sensor), door seal inspection and replacement, condenser coil cleaning, and control board testing. Same-day slots are available across all 84+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
+      "Urban Service Company is Bengaluru-born, refrigerator-specialist, and carries genuine spare parts on every visit. Our technicians are trained specifically on refrigerator diagnostics — compressor electrical testing, thermostat replacement, gas leak detection with nitrogen, defrost system diagnosis (timer, heater, sensor), door seal inspection and replacement, condenser coil cleaning, and control board testing. Same-day slots are available across all 85+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
       "The choice depends on your priority. If you want a national app-based platform, Urban Company is an option. If you want a local generalist, Local Ramu is an option. If you want a refrigerator specialist with genuine parts, compressor expertise, and same-day service across Bengaluru — Urban Service Company is the right choice.",
 
       "FAQs — Refrigerator repair in Bengaluru",
@@ -469,14 +469,14 @@ export const blogPosts: BlogPost[] = [
       "Final takeaway",
       "Refrigerator repair in Bengaluru is straightforward with the right technician. Understanding common faults — not cooling, frost buildup, water leakage, compressor noise, door seal damage, over-freezing, not starting — helps you describe the problem accurately.",
       "With genuine spare parts and quality assured repair, your fridge can be back to full cooling. Clean the condenser coils twice a year and check the door seal regularly to prevent most faults.",
-      "Call us for same-day refrigerator repair across 84+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
+      "Call us for same-day refrigerator repair across 85+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
     ],
   },
   {
     slug: "water-filter-ro-repair-bengaluru-complete-guide",
     title: "Water Filter & RO Repair in Bengaluru — Complete Purifier Guide 2026",
     excerpt:
-      "RO not purifying, low flow, leakage, bad taste, UV lamp, membrane replacement? Complete guide for Kent, Aquaguard, Pureit, Livpure water purifier repair across 84+ Bengaluru neighbourhoods.",
+      "RO not purifying, low flow, leakage, bad taste, UV lamp, membrane replacement? Complete guide for Kent, Aquaguard, Pureit, Livpure water purifier repair across 85+ Bengaluru neighbourhoods.",
     category: "Water Filter",
     service: "water-filter-repair",
     date: "2026-06-20",
@@ -543,7 +543,7 @@ export const blogPosts: BlogPost[] = [
 
       "How's the repair scene in Bengaluru?",
       "In Bengaluru, water purifier repair is essential due to the city's varying water quality. Hard borewell water in Whitefield, Marathahalli, and HSR Layout causes faster membrane and filter clogging. Areas with Cauvery water (Indiranagar, Jayanagar) have softer water but still need regular maintenance.",
-      "From Indiranagar to Whitefield, our verified technicians reach every corner. Same-day slots across all 84+ neighbourhoods.",
+      "From Indiranagar to Whitefield, our verified technicians reach every corner. Same-day slots across all 85+ neighbourhoods.",
 
       "Water filter repair near me in Bengaluru",
       "Looking for water filter repair near you? We serve all of Bengaluru:",
@@ -553,7 +553,7 @@ export const blogPosts: BlogPost[] = [
       "When you search for water filter or RO repair in Bengaluru, three names will come up — Urban Service Company, Urban Company, and Local Ramu. Here's an honest comparison to help you choose the right service for your water purifier.",
       "Urban Company is a national home services platform with a clean app. Their water purifier repair covers multiple brands. However, their technicians are generalists handling many appliance types — which means they may not carry water filter-specific spare parts like RO membranes, UV lamps, booster pumps, solenoid valves, or filter cartridges on the first visit. RO membrane replacement requires a TDS meter to verify rejection rate, and UV lamp replacement requires ballast testing — not all generalist technicians carry this equipment. Their pricing includes a platform visit fee, and same-day slots are often limited.",
       "Local Ramu is a Bengaluru-based repair provider. Being local, they understand the city's water quality challenges — hard borewell water in Whitefield and Marathahalli, softer Cauvery water in Indiranagar. However, their technician pool is smaller, which means longer wait times during peak hours. They also may not carry genuine brand-specific spare parts for all six brands we service — Kent, Aquaguard, Pureit, Livpure, Blue Mount, and Nasaka. RO membrane and UV lamp replacement requires specialised knowledge that generalist technicians may not have.",
-      "Urban Service Company is Bengaluru-born, water purifier-specialist, and carries genuine spare parts on every visit. Our technicians are trained specifically on water filter diagnostics — TDS meter testing, RO membrane rejection rate verification, UV lamp and ballast testing, booster pump pressure testing, solenoid valve inspection, filter cartridge replacement, float valve and water level sensor repair, and full system sanitisation. Same-day slots are available across all 84+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
+      "Urban Service Company is Bengaluru-born, water purifier-specialist, and carries genuine spare parts on every visit. Our technicians are trained specifically on water filter diagnostics — TDS meter testing, RO membrane rejection rate verification, UV lamp and ballast testing, booster pump pressure testing, solenoid valve inspection, filter cartridge replacement, float valve and water level sensor repair, and full system sanitisation. Same-day slots are available across all 85+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
       "The choice depends on your priority. If you want a national app-based platform, Urban Company is an option. If you want a local generalist, Local Ramu is an option. If you want a water purifier specialist with genuine parts, TDS meter testing, and same-day service across Bengaluru — Urban Service Company is the right choice.",
 
       "FAQs — Water filter repair in Bengaluru",
@@ -569,14 +569,14 @@ export const blogPosts: BlogPost[] = [
       "Final takeaway",
       "Water filter and RO repair in Bengaluru is critical for safe drinking water. Understanding common faults — not purifying, low flow, leakage, bad taste, UV lamp failure, membrane aging, pump failure, auto shut-off issues — helps you describe the problem accurately.",
       "With genuine spare parts and quality assured repair, your water purifier can be back to full performance. Replace pre-filters every 6 months, the RO membrane every 1-2 years, and the UV lamp annually.",
-      "Call us for same-day water filter repair across 84+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
+      "Call us for same-day water filter repair across 85+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
     ],
   },
   {
     slug: "kitchen-chimney-repair-bengaluru-complete-guide",
     title: "Kitchen Chimney Repair in Bengaluru — Complete Service Guide 2026",
     excerpt:
-      "Chimney not sucking smoke, noisy motor, low suction, touch panel dead, filter cleaning? Complete guide for Faber, Elica, Bosch, Hindware, Glen, Kaff chimney repair across 84+ Bengaluru neighbourhoods.",
+      "Chimney not sucking smoke, noisy motor, low suction, touch panel dead, filter cleaning? Complete guide for Faber, Elica, Bosch, Hindware, Glen, Kaff chimney repair across 85+ Bengaluru neighbourhoods.",
     category: "Chimney",
     service: "chimney-repair",
     date: "2026-06-15",
@@ -647,7 +647,7 @@ export const blogPosts: BlogPost[] = [
 
       "How's the repair scene in Bengaluru?",
       "In Bengaluru, kitchen chimney repair is growing as more homes install chimneys for smoke-free cooking. Indian cooking — with tempering (tadka), deep-frying, and high-heat roasting — produces heavy oil and smoke that strains chimneys.",
-      "From Indiranagar to Whitefield, our verified technicians reach every corner. Same-day slots across all 84+ neighbourhoods.",
+      "From Indiranagar to Whitefield, our verified technicians reach every corner. Same-day slots across all 85+ neighbourhoods.",
 
       "Chimney repair near me in Bengaluru",
       "Looking for chimney repair near you? We serve all of Bengaluru:",
@@ -657,7 +657,7 @@ export const blogPosts: BlogPost[] = [
       "When you search for kitchen chimney repair in Bengaluru, three names will appear — Urban Service Company, Urban Company, and Local Ramu. Here's an honest comparison to help you choose the right service for your chimney.",
       "Urban Company is a national home services platform with a clean app. Their chimney repair covers multiple brands. However, their technicians are generalists handling many appliance types — which means they may not carry chimney-specific spare parts like suction motors, blowers, control panels, capacitors, or LED lights on the first visit. Chimney motor replacement requires electrical winding testing, and touch panel diagnosis requires control board and ribbon cable inspection — not all generalist technicians have experience with chimney internals. Their pricing includes a platform visit fee, and same-day slots during weekends (when most Bengaluru residents cook heavily) are often fully booked.",
       "Local Ramu is a Bengaluru-based repair provider. Being local, they understand Indian cooking patterns — tempering (tadka), deep-frying, and high-heat roasting that produce heavy oil and smoke. However, their technician pool is smaller, which means longer wait times during peak hours. They also may not carry genuine brand-specific spare parts for all seven brands we service — Faber, Elica, Bosch, Hindware, Glen, Kaff, and Crompton. Deep chimney service (full dismantling, motor and blower cleaning, duct clearing) requires specialised tools and experience that generalist technicians may not have.",
-      "Urban Service Company is Bengaluru-born, chimney-specialist, and carries genuine spare parts on every visit. Our technicians are trained specifically on chimney diagnostics — suction motor testing, blower inspection, baffle filter deep cleaning, touch control board and ribbon cable diagnosis, capacitor replacement, LED light repair, and full deep chimney service with dismantling. Same-day slots are available across all 84+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
+      "Urban Service Company is Bengaluru-born, chimney-specialist, and carries genuine spare parts on every visit. Our technicians are trained specifically on chimney diagnostics — suction motor testing, blower inspection, baffle filter deep cleaning, touch control board and ribbon cable diagnosis, capacitor replacement, LED light repair, and full deep chimney service with dismantling. Same-day slots are available across all 85+ neighbourhoods. No platform fee. Free diagnosis. Genuine parts. Quality assured.",
       "The choice depends on your priority. If you want a national app-based platform, Urban Company is an option. If you want a local generalist, Local Ramu is an option. If you want a chimney specialist with genuine parts, deep service expertise, and same-day service across Bengaluru — Urban Service Company is the right choice.",
 
       "FAQs — Chimney repair in Bengaluru",
@@ -674,7 +674,7 @@ export const blogPosts: BlogPost[] = [
       "Final takeaway",
       "Kitchen chimney repair in Bengaluru keeps your kitchen smoke-free and your family healthy. Understanding common faults — not sucking smoke, noise, low suction, LED light, motor failure, touch panel, filter cleaning — helps you describe the problem accurately.",
       "With genuine spare parts and quality assured repair, your chimney can be back to full suction. Clean baffle filters every 2 weeks and get a professional deep clean every 3 months.",
-      "Call us for same-day chimney repair across 84+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
+      "Call us for same-day chimney repair across 85+ neighbourhoods in Bengaluru. Free diagnosis. Genuine parts. Quality assured.",
     ],
   },
 ];

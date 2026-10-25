@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { collectTelemetry } from "@/app/(server-lib)/telemetry";
 import { generateFingerprint } from "@/app/(server-lib)/fingerprint";
-import { sendEventNotification } from "@/app/(server-lib)/telegram";
 import { supabase } from "@/app/(server-lib)/supabase";
 
 export async function POST(req: Request) {
@@ -16,6 +15,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false }, { status: 422 });
   }
 
+  // Only direct contact actions are stored, and only as leads:
+  // 1. WhatsApp tap (wa.me link)
+  // 2. Phone call tap (tel: link, excluding the post-submit "diagnostic-done" one to avoid duplicates)
+  // Every other interaction is analytics-only (GA4/GTM) and is not recorded here.
+  const isDirectCall = body.event === "tel_click" && body.source !== "diagnostic-done";
+  const isWhatsApp = body.event === "whatsapp_click";
+  if (!isDirectCall && !isWhatsApp) return NextResponse.json({ ok: true });
+
   const srv = await collectTelemetry(req.headers);
   const ct = body.telemetry || {};
   const fingerprint = generateFingerprint({
@@ -28,86 +35,62 @@ export async function POST(req: Request) {
     deviceType: (ct.device_type as string) || srv.deviceType,
   });
 
-  const eventId = `evt_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+  const leadId = `${isWhatsApp ? "wa" : "call"}_${Date.now().toString(36)}`;
+  const now = new Date().toISOString();
 
-  await supabase.from("events").insert({
-    event_id: eventId,
-    received_at: new Date().toISOString(),
-    session_id: (ct.session_id as string) || "",
-    event_type: body.event,
-    event_source: body.source || "",
-    page_url: (ct.page_url as string) || "",
-    page_title: (ct.page_title as string) || "",
-    ip_address: srv.ipAddress,
-    city: srv.city,
-    country: srv.country,
-    isp: srv.isp,
-    browser: srv.browser,
-    os: srv.os,
-    device_type: srv.deviceType,
-    traffic_category: (ct.traffic_category as string) || "",
-    time_on_page: (ct.time_on_page as number) || 0,
-    fingerprint,
-    extra: body.extra || {},
-  });
-
-  if (body.event === "click_to_call" || body.event === "whatsapp_click" || body.event === "tel_click") {
-    const leadId = `${body.event}_${Date.now().toString(36)}`;
-    const now = new Date().toISOString();
-
-    await supabase.from("leads").insert({
-      id: leadId,
-      received_at: now,
-      appliance: "",
-      issue: "",
-      name: "",
-      phone: "",
-      phone_hash: "",
-      phone_last4: "",
-      source: `${body.event}:${body.source || "unknown"}`,
-      page_url: (ct.page_url as string) || "",
-      user_agent: srv.userAgent,
-      ip_address: srv.ipAddress,
-      city: srv.city,
-      region: srv.region,
-      country: srv.country,
-      isp: srv.isp,
-      asn: srv.asn,
-      browser: srv.browser,
-      browser_version: srv.browserVersion,
-      os: srv.os,
-      os_version: srv.osVersion,
-      device_type: srv.deviceType,
-      device_model: srv.deviceModel,
-      device_vendor: srv.deviceVendor,
-      session_id: (ct.session_id as string) || "",
-      time_on_page: (ct.time_on_page as number) || 0,
-      screen_resolution: (ct.screen_resolution as string) || "",
-      viewport: (ct.viewport as string) || "",
-      language: (ct.language as string) || "",
-      referrer: (ct.referrer as string) || "",
-      traffic_source: (ct.traffic_source as string) || "",
-      traffic_medium: (ct.traffic_medium as string) || "",
-      traffic_category: (ct.traffic_category as string) || "",
-      traffic_campaign: (ct.traffic_campaign as string) || "",
-      gclid: (ct.gclid as string) || "",
-      fingerprint,
-    });
-
-    await sendEventNotification({
-      event: body.event,
-      source: body.source || "unknown",
-      city: srv.city,
-      isp: srv.isp,
-      browser: srv.browser,
-      os: srv.os,
-      deviceType: srv.deviceType,
-      trafficCategory: (ct.traffic_category as string) || "",
-      timeOnPage: (ct.time_on_page as number) || 0,
-      fingerprint,
-      pageUrl: (ct.page_url as string) || "",
-    });
+  // Infer appliance from URL or extra metadata
+  let appliance = (body.extra?.service as string) || "";
+  const pageUrl = (ct.page_url as string) || "";
+  if (!appliance && pageUrl) {
+    if (pageUrl.includes("microwave")) appliance = "microwave-repair";
+    else if (pageUrl.includes("washing-machine")) appliance = "washing-machine-repair";
+    else if (pageUrl.includes("refrigerator") || pageUrl.includes("fridge")) appliance = "refrigerator-repair";
+    else if (pageUrl.includes("ac-") || pageUrl.includes("air-conditioner")) appliance = "ac-repair";
+    else if (pageUrl.includes("water-filter") || pageUrl.includes("water-purifier") || pageUrl.includes("ro-")) appliance = "water-filter-repair";
+    else if (pageUrl.includes("chimney")) appliance = "chimney-repair";
   }
 
-  return NextResponse.json({ ok: true, id: eventId });
+  const cleanSource = isWhatsApp ? "whatsapp-now" : "call-now";
+  const defaultIssue = isWhatsApp ? "WhatsApp Inquiry" : "Direct Phone Call";
+
+  await supabase.from("leads").insert({
+    id: leadId,
+    received_at: now,
+    appliance: appliance || "general",
+    issue: defaultIssue,
+    name: "",
+    phone: "",
+    phone_hash: "",
+    phone_last4: "",
+    source: cleanSource,
+    page_url: pageUrl,
+    user_agent: srv.userAgent,
+    ip_address: srv.ipAddress,
+    city: srv.city,
+    region: srv.region,
+    country: srv.country,
+    isp: srv.isp,
+    asn: srv.asn,
+    browser: srv.browser,
+    browser_version: srv.browserVersion,
+    os: srv.os,
+    os_version: srv.osVersion,
+    device_type: srv.deviceType,
+    device_model: srv.deviceModel,
+    device_vendor: srv.deviceVendor,
+    session_id: (ct.session_id as string) || "",
+    time_on_page: (ct.time_on_page as number) || 0,
+    screen_resolution: (ct.screen_resolution as string) || "",
+    viewport: (ct.viewport as string) || "",
+    language: (ct.language as string) || "",
+    referrer: (ct.referrer as string) || "",
+    traffic_source: (ct.traffic_source as string) || "",
+    traffic_medium: (ct.traffic_medium as string) || "",
+    traffic_category: (ct.traffic_category as string) || "",
+    traffic_campaign: (ct.traffic_campaign as string) || "",
+    gclid: (ct.gclid as string) || "",
+    fingerprint,
+  });
+
+  return NextResponse.json({ ok: true });
 }

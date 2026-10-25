@@ -4,8 +4,10 @@ import { insertLead } from "@/app/(server-lib)/supabase";
 import { collectTelemetry } from "@/app/(server-lib)/telemetry";
 import { generateFingerprint } from "@/app/(server-lib)/fingerprint";
 import { sendLeadNotification } from "@/app/(server-lib)/telegram";
-
-const PHONE_RE = /^[6-9]\d{9}$/;
+import {
+  normalizePhone,
+  getPhoneValidationError,
+} from "@/app/(common-lib)/validation";
 
 export async function POST(req: Request) {
   let body: LeadInput;
@@ -18,7 +20,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const phone = (body.phone || "").replace(/\D/g, "").slice(-10);
+  const phone = normalizePhone(body.phone || "");
 
   if (!body.appliance) {
     return NextResponse.json(
@@ -26,9 +28,11 @@ export async function POST(req: Request) {
       { status: 422 },
     );
   }
-  if (!PHONE_RE.test(phone)) {
+
+  const phoneError = getPhoneValidationError(phone);
+  if (phoneError) {
     return NextResponse.json(
-      { ok: false, error: "Enter a valid 10-digit Indian mobile number." },
+      { ok: false, error: phoneError },
       { status: 422 },
     );
   }
@@ -86,25 +90,18 @@ export async function POST(req: Request) {
   });
 
   await sendLeadNotification({
-    leadId,
     appliance: body.appliance,
     issue: body.issue || "",
     name: body.name || "",
     phone: phone,
-    source: body.source || "unknown",
     city: srv.city,
     region: srv.region,
+    country: srv.country,
+    ipAddress: srv.ipAddress,
     isp: srv.isp,
+    deviceType: srv.deviceType,
     browser: srv.browser,
     os: srv.os,
-    deviceType: srv.deviceType,
-    screenResolution: ct.screen_resolution || "",
-    trafficSource: ct.traffic_source || "",
-    trafficMedium: ct.traffic_medium || "",
-    trafficCategory: ct.traffic_category || "",
-    timeOnPage: ct.time_on_page || 0,
-    fingerprint,
-    pageUrl: ct.page_url || "",
   });
 
   return NextResponse.json({ ok: true, id: leadId });

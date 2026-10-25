@@ -1,7 +1,5 @@
-import { ConnectionTester } from "./connection-tester";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export default function TestPage() {
-  return <ConnectionTester />;
+export default function AdminTestRedirect() {
+  redirect("/admin/settings");
 }

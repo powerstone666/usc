@@ -7,7 +7,6 @@ export const site = {
   domain: "urbanservicecompany.in",
   url: "https://urbanservicecompany.in",
   city: "Bengaluru",
-  // TODO(replace-before-launch): swap placeholder phone + WhatsApp number
   phone: "+919019349170",
   phoneDisplay: "+91 9019349170",
   whatsapp: "+919019349170",
@@ -15,8 +14,10 @@ export const site = {
   hours: "8 AM – 9 PM · all days",
   warranty: "Quality assured repair",
   damageCover: "Service you can trust",
+  // Date of the last real content review. Drives "Last updated", dateModified and sitemap lastmod.
+  contentUpdated: "2026-10-25",
   address: {
-    streetAddress: "Indiranagar",
+    streetAddress: "100 Feet Road, Indiranagar",
     addressLocality: "Bengaluru",
     addressRegion: "Karnataka",
     postalCode: "560038",
@@ -97,6 +98,13 @@ export const nav = [
   { label: "Refrigerator", href: "/services/refrigerator-repair" },
   { label: "Water Filter", href: "/services/water-filter-repair" },
   { label: "Chimney", href: "/services/chimney-repair" },
+];
+
+export const secondaryNav = [
+  { label: "Blog", href: "/blog" },
+  { label: "About", href: "/about" },
+  { label: "Reviews", href: "/reviews" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export type TrustBadge = {

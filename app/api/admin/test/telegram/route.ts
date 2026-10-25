@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { isTelegramConfigured } from "@/app/(server-lib)/telegram";
 
 export async function GET() {
   const token = process.env.TELEGRAM_BOT_TOKEN;

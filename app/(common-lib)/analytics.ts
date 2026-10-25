@@ -18,10 +18,24 @@ type TrafficSource = {
   category: string;
 };
 
+const AI_DOMAINS = [
+  "chatgpt.com", "chat.openai.com", "openai.com", "perplexity.ai",
+  "claude.ai", "anthropic.com", "copilot.microsoft.com", "gemini.google.com",
+  "poe.com", "you.com",
+];
+
+const MAPS_DOMAINS = [
+  "maps.google.com", "maps.app.goo.gl", "google.com/maps", "maps.apple.com",
+];
+
 const SOCIAL_DOMAINS = [
-  "facebook.com", "fb.com", "instagram.com", "twitter.com", "x.com",
-  "linkedin.com", "youtube.com", "pinterest.com", "reddit.com",
-  "t.co", "wa.me", "whatsapp.com", "telegram.org",
+  "facebook.com", "fb.com", "m.facebook.com", "l.facebook.com", "lm.facebook.com",
+  "instagram.com", "l.instagram.com",
+  "twitter.com", "x.com", "t.co",
+  "linkedin.com", "lnkd.in",
+  "youtube.com", "youtu.be",
+  "pinterest.com", "reddit.com",
+  "telegram.org", "t.me",
 ];
 
 const SEARCH_DOMAINS = [
@@ -44,14 +58,25 @@ function detectTrafficSource(): TrafficSource {
   const referrer = document.referrer || "";
 
   if (utmSource || utmMedium || gclid) {
+    let cat = "utm";
+    const srcLower = utmSource.toLowerCase();
+    if (srcLower.includes("chatgpt") || srcLower.includes("perplexity") || srcLower.includes("claude") || srcLower.includes("ai")) {
+      cat = "ai-search";
+    } else if (srcLower.includes("maps") || srcLower.includes("gmb") || srcLower.includes("local")) {
+      cat = "google-maps";
+    } else if (srcLower.includes("facebook") || srcLower.includes("fb") || srcLower.includes("instagram") || srcLower.includes("meta")) {
+      cat = "social";
+    } else if (gclid || utmMedium === "cpc" || utmMedium === "ppc") {
+      cat = "ppc";
+    }
     return {
       source: utmSource,
-      medium: utmMedium,
+      medium: utmMedium || (gclid ? "ppc" : "campaign"),
       campaign: utmCampaign,
       term: utmTerm,
       content: utmContent,
       gclid,
-      category: "utm",
+      category: cat,
     };
   }
 
@@ -68,7 +93,7 @@ function detectTrafficSource(): TrafficSource {
   }
 
   if (!referrer) {
-    return { source: "", medium: "", campaign: "", term: "", content: "", gclid: "", category: "direct" };
+    return { source: "direct", medium: "none", campaign: "", term: "", content: "", gclid: "", category: "direct" };
   }
 
   let refHost = "";
@@ -78,22 +103,42 @@ function detectTrafficSource(): TrafficSource {
     refHost = referrer;
   }
 
-  if (SEARCH_DOMAINS.some((d) => refHost.includes(d))) {
+  // 1. AI Search / ChatGPT / Perplexity / Claude
+  if (AI_DOMAINS.some((d) => refHost.includes(d) || referrer.includes(d))) {
+    let aiName = "chatgpt";
+    if (refHost.includes("perplexity")) aiName = "perplexity";
+    else if (refHost.includes("claude") || refHost.includes("anthropic")) aiName = "claude";
+    else if (refHost.includes("copilot")) aiName = "copilot";
+    else if (refHost.includes("gemini")) aiName = "gemini";
     return {
-      source: refHost,
-      medium: "organic",
+      source: aiName,
+      medium: "ai-referral",
       campaign: "",
       term: "",
       content: "",
       gclid: "",
-      category: "organic-search",
+      category: "ai-search",
     };
   }
 
+  // 2. Google Maps / Local SEO
+  if (MAPS_DOMAINS.some((d) => refHost.includes(d) || referrer.includes(d))) {
+    return {
+      source: "google-maps",
+      medium: "local-seo",
+      campaign: "",
+      term: "",
+      content: "",
+      gclid: "",
+      category: "google-maps",
+    };
+  }
+
+  // 3. WhatsApp Direct
   if (refHost.includes("whatsapp.com") || refHost.includes("wa.me")) {
     return {
       source: "whatsapp",
-      medium: "social",
+      medium: "chat",
       campaign: "",
       term: "",
       content: "",
@@ -102,15 +147,37 @@ function detectTrafficSource(): TrafficSource {
     };
   }
 
+  // 4. Social Media (Facebook, Instagram, etc.)
   if (SOCIAL_DOMAINS.some((d) => refHost.includes(d))) {
+    let socName = "facebook";
+    if (refHost.includes("instagram")) socName = "instagram";
+    else if (refHost.includes("t.co") || refHost.includes("twitter") || refHost.includes("x.com")) socName = "x";
+    else if (refHost.includes("linkedin")) socName = "linkedin";
+    else if (refHost.includes("youtube")) socName = "youtube";
     return {
-      source: refHost,
+      source: socName,
       medium: "social",
       campaign: "",
       term: "",
       content: "",
       gclid: "",
       category: "social",
+    };
+  }
+
+  // 5. Organic Search (Google, Bing)
+  if (SEARCH_DOMAINS.some((d) => refHost.includes(d))) {
+    let searchName = "google";
+    if (refHost.includes("bing")) searchName = "bing";
+    else if (refHost.includes("duckduckgo")) searchName = "duckduckgo";
+    return {
+      source: searchName,
+      medium: "organic",
+      campaign: "",
+      term: "",
+      content: "",
+      gclid: "",
+      category: "organic-search",
     };
   }
 
@@ -201,8 +268,15 @@ class Analytics {
     if (typeof window === "undefined") return;
     if (!this.sessionStartPushed) {
       this.sessionStartPushed = true;
-      this.push("session_start");
-      this.sendPageViewBeacon();
+      const sendInitial = () => {
+        this.push("session_start");
+        this.sendPageViewBeacon();
+      };
+      if (typeof window.requestIdleCallback === "function") {
+        window.requestIdleCallback(sendInitial);
+      } else {
+        setTimeout(sendInitial, 150);
+      }
     }
     if (!this.scrollInit) {
       this.scrollInit = true;
@@ -227,7 +301,10 @@ class Analytics {
     navigator.sendBeacon("/api/track", blob);
   }
 
+  // Only taps that create a lead need the server. Every other interaction goes to GA4/GTM
+  // through the dataLayer (see push) and is not stored in our database.
   private sendEventBeacon(event: string, source: string, extra?: Record<string, unknown>) {
+    if (event !== "tel_click" && event !== "whatsapp_click") return;
     if (typeof window === "undefined") return;
     if (!navigator.sendBeacon) return;
     const payload: Record<string, unknown> = { event, source, telemetry: this.getTelemetry() };

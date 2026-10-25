@@ -3,21 +3,22 @@ import { site } from "@/app/(config)/site";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: `Terms of service for ${site.name}.`,
+  description:
+    "Terms of service for Urban Service Company. Understand our doorstep inspection process, upfront quotes, repair warranty terms, and service coverage in Bengaluru.",
   alternates: { canonical: "/terms" },
 };
 
 export default function Page() {
   return (
     <div className="flex flex-col">
-      <section className="bg-surface-variant pb-14 pt-28 lg:pb-20 lg:pt-32">
+      <section className="bg-surface-variant pb-12 pt-28 min-[360px]:pt-24 lg:pb-16 lg:pt-28">
         <div className="mx-auto max-w-3xl px-4">
           <h1 className="text-3xl font-extrabold tracking-tight text-on-surface sm:text-4xl">
             Terms of Service
           </h1>
         </div>
       </section>
-      <section className="py-14 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-3xl px-4 text-sm leading-7 text-on-surface-variant">
           <p>
             These terms govern your use of {site.name} ({site.url}) and the

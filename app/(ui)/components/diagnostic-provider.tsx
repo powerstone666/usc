@@ -1,8 +1,16 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
-import { DiagnosticFlow } from "@/app/(ui)/components/diagnostic-flow";
+import dynamic from "next/dynamic";
 import { analytics } from "@/app/(common-lib)/analytics";
+
+const DiagnosticFlow = dynamic(
+  () =>
+    import("@/app/(ui)/components/diagnostic-flow").then(
+      (m) => m.DiagnosticFlow
+    ),
+  { ssr: false }
+);
 
 const DiagnosticContext = createContext<{ openDiagnostic: () => void }>({
   openDiagnostic: () => {},
@@ -27,7 +35,7 @@ export function DiagnosticProvider({ children }: { children: ReactNode }) {
   return (
     <DiagnosticContext.Provider value={{ openDiagnostic }}>
       {children}
-      <DiagnosticFlow open={open} onClose={() => setOpen(false)} />
+      {open && <DiagnosticFlow open={open} onClose={() => setOpen(false)} />}
     </DiagnosticContext.Provider>
   );
 }

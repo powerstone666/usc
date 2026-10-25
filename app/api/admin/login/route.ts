@@ -5,7 +5,14 @@ export async function POST(req: Request) {
   const { username, password } = await req.json();
 
   const adminUser = process.env.ADMIN_USERNAME || "admin";
-  const adminPass = process.env.ADMIN_PASSWORD || "";
+  const adminPass = process.env.ADMIN_PASSWORD;
+
+  if (!adminPass) {
+    return NextResponse.json(
+      { ok: false, error: "Admin login is not configured" },
+      { status: 503 },
+    );
+  }
 
   if (username !== adminUser || password !== adminPass) {
     return NextResponse.json(

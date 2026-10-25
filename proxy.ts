@@ -18,10 +18,11 @@ export async function proxy(req: NextRequest) {
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     const token = req.cookies.get("admin_token")?.value;
     const username = process.env.ADMIN_USERNAME || "admin";
-    const password = process.env.ADMIN_PASSWORD || "";
-    const expected = await sha256(`${username}:${password}`);
+    const password = process.env.ADMIN_PASSWORD;
+    // Fail closed: with no password configured, nobody gets in.
+    const expected = password ? await sha256(`${username}:${password}`) : null;
 
-    if (token !== expected) {
+    if (!expected || token !== expected) {
       const loginUrl = new URL("/admin/login", req.url);
       return NextResponse.redirect(loginUrl);
     }

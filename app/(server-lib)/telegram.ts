@@ -1,7 +1,7 @@
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-export function isTelegramConfigured(): boolean {
+function isTelegramConfigured(): boolean {
   return Boolean(BOT_TOKEN && CHAT_ID);
 }
 
@@ -30,92 +30,56 @@ async function send(message: string): Promise<boolean> {
   }
 }
 
+const applianceNames: Record<string, string> = {
+  "microwave-repair": "Microwave Oven Repair",
+  "ac-repair": "AC Repair & Service",
+  "washing-machine-repair": "Washing Machine Repair",
+  "refrigerator-repair": "Refrigerator Repair",
+  "water-filter-repair": "Water Purifier / RO Repair",
+  "chimney-repair": "Kitchen Chimney Repair",
+  general: "General Appliance Repair",
+};
+
 export type LeadNotification = {
-  leadId: string;
+  leadId?: string;
   appliance: string;
-  issue: string;
-  name: string;
+  issue?: string;
+  name?: string;
   phone: string;
-  source: string;
-  city: string;
-  region: string;
-  isp: string;
-  browser: string;
-  os: string;
-  deviceType: string;
-  screenResolution: string;
-  trafficSource: string;
-  trafficMedium: string;
-  trafficCategory: string;
-  timeOnPage: number;
-  fingerprint: string;
-  pageUrl: string;
+  city?: string;
+  region?: string;
+  country?: string;
+  ipAddress?: string;
+  isp?: string;
+  deviceType?: string;
+  browser?: string;
+  os?: string;
 };
 
 export async function sendLeadNotification(lead: LeadNotification): Promise<boolean> {
+  const applianceDisplay =
+    applianceNames[lead.appliance] || lead.appliance || "Appliance Repair";
+
+  const locationParts = [lead.city, lead.region, lead.country].filter(Boolean);
+  const locationStr = locationParts.length > 0 ? locationParts.join(", ") : "—";
+
+  const deviceParts = [lead.deviceType, lead.os, lead.browser].filter(Boolean);
+  const deviceStr = deviceParts.length > 0 ? deviceParts.join(" · ") : "—";
+
   const lines = [
-    "<b>NEW LEAD</b>",
+    "🔔 <b>NEW SERVICE REQUEST</b>",
     "",
-    `<b>Appliance:</b> ${lead.appliance}`,
-    lead.issue ? `<b>Issue:</b> ${lead.issue}` : "",
-    lead.name ? `<b>Name:</b> ${lead.name}` : "",
-    `<b>Phone:</b> ${lead.phone}`,
-    `<b>Source:</b> ${lead.source}`,
+    `📞 <b>Phone:</b> <a href="tel:+91${lead.phone}">+91 ${lead.phone}</a>`,
+    `👤 <b>Name:</b> ${lead.name || "Not provided"}`,
+    `🔧 <b>Appliance:</b> ${applianceDisplay}`,
+    lead.issue ? `⚠️ <b>User Query:</b> ${lead.issue}` : "",
     "",
-    "<b>--- Location ---</b>",
-    `<b>City:</b> ${lead.city || "—"}`,
-    `<b>Region:</b> ${lead.region || "—"}`,
-    `<b>ISP:</b> ${lead.isp || "—"}`,
-    "",
-    "<b>--- Device ---</b>",
-    `<b>Browser:</b> ${lead.browser || "—"}`,
-    `<b>OS:</b> ${lead.os || "—"}`,
-    `<b>Device:</b> ${lead.deviceType}`,
-    `<b>Screen:</b> ${lead.screenResolution || "—"}`,
-    "",
-    "<b>--- Traffic ---</b>",
-    `<b>Source:</b> ${lead.trafficSource || "—"}`,
-    `<b>Medium:</b> ${lead.trafficMedium || "—"}`,
-    `<b>Category:</b> ${lead.trafficCategory || "—"}`,
-    "",
-    "<b>--- Engagement ---</b>",
-    `<b>Time on page:</b> ${lead.timeOnPage > 0 ? Math.round(lead.timeOnPage / 1000) + "s" : "—"}`,
-    `<b>Fingerprint:</b> <code>${lead.fingerprint || "—"}</code>`,
-    `<b>Page:</b> ${lead.pageUrl || "—"}`,
-    "",
-    `<b>Lead ID:</b> <code>${lead.leadId}</code>`,
+    "<b>── User Info ──</b>",
+    `📍 <b>Location:</b> ${locationStr}`,
+    `🌐 <b>IP Address:</b> <code>${lead.ipAddress || "—"}</code>`,
+    `🏢 <b>ISP:</b> ${lead.isp || "—"}`,
+    `📱 <b>Device:</b> ${deviceStr}`,
   ].filter(Boolean);
-
-  return send(lines.join("\n"));
-}
-
-export type EventNotification = {
-  event: string;
-  source: string;
-  city: string;
-  isp: string;
-  browser: string;
-  os: string;
-  deviceType: string;
-  trafficCategory: string;
-  timeOnPage: number;
-  fingerprint: string;
-  pageUrl: string;
-};
-
-export async function sendEventNotification(evt: EventNotification): Promise<boolean> {
-  const lines = [
-    `<b>${evt.event.toUpperCase()}</b>`,
-    "",
-    `<b>Source:</b> ${evt.source}`,
-    `<b>City:</b> ${evt.city || "—"}`,
-    `<b>ISP:</b> ${evt.isp || "—"}`,
-    `<b>Device:</b> ${evt.deviceType} / ${evt.browser || "—"} / ${evt.os || "—"}`,
-    `<b>Traffic:</b> ${evt.trafficCategory || "—"}`,
-    `<b>Time on page:</b> ${evt.timeOnPage > 0 ? Math.round(evt.timeOnPage / 1000) + "s" : "—"}`,
-    `<b>Fingerprint:</b> <code>${evt.fingerprint || "—"}</code>`,
-    `<b>Page:</b> ${evt.pageUrl || "—"}`,
-  ];
 
   return send(lines.join("\n"));
 }

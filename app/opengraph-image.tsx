@@ -46,10 +46,10 @@ export default function OpengraphImage() {
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontSize: "52px", fontWeight: 900, color: "#ffffff" }}>
-              Urban Service Company
+              {site.name}
             </div>
             <div style={{ fontSize: "28px", fontWeight: 600, color: "#bbdefb", marginTop: "4px" }}>
-              Appliance Repair in Bengaluru
+              {`Appliance Repair in ${site.city}`}
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function OpengraphImage() {
             color: "rgba(255,255,255,0.8)",
           }}
         >
-          Same-day slots · Verified technicians · 84+ neighbourhoods
+          Same-day slots · Verified technicians · 85+ neighbourhoods
         </div>
       </div>
     ),

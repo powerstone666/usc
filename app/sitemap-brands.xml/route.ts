@@ -3,24 +3,26 @@ export const revalidate = 86400;
 
 import { NextResponse } from "next/server";
 import { brands } from "@/app/(config)/content";
-import { services, site } from "@/app/(config)/site";
+import { site } from "@/app/(config)/site";
 import { slugify } from "@/app/(common-lib)/slugify";
 import { url, buildSitemap } from "@/app/(config)/sitemap-helpers";
 
+const lowProfileBrands = new Set([
+  "Mi",
+  "AmazonBasics",
+  "Videocon",
+  "Onida",
+  "Sansui",
+  "Cello",
+]);
+
 export function GET() {
-  const now = new Date().toISOString();
   const base = site.url;
 
-  const urls = [
-    ...brands.map((b) =>
-      url(`${base}/brands/${slugify(b)}`, now, "daily", "0.6"),
-    ),
-    ...brands.flatMap((brand) =>
-      services.map((service) =>
-        url(`${base}/brands/${slugify(brand)}/${service.slug}`, now, "daily", "0.5"),
-      ),
-    ),
-  ];
+  const activeBrands = brands.filter((b) => !lowProfileBrands.has(b));
+  const urls = activeBrands.map((b) =>
+    url(`${base}/brands/${slugify(b)}`),
+  );
 
   return new NextResponse(buildSitemap(urls), {
     headers: { "Content-Type": "application/xml" },

@@ -1,8 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 export function LoginForm() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +22,8 @@ export function LoginForm() {
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || "Login failed");
-      window.location.href = "/admin";
+      router.replace("/admin");
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -28,43 +31,37 @@ export function LoginForm() {
     }
   }
 
+  const input =
+    "min-h-12 w-full rounded-xl border border-outline bg-background px-4 py-3 text-base text-on-surface outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20";
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a1929] px-4">
-      <form
-        onSubmit={submit}
-        className="w-full max-w-sm rounded-3xl border border-white/10 bg-[#0d2843] p-8"
-      >
+    <div className="flex min-h-screen items-center justify-center bg-surface-variant/50 px-4">
+      <form onSubmit={submit} className="w-full max-w-sm rounded-2xl bg-surface p-6 shadow-lg shadow-black/5 ring-1 ring-outline-variant sm:p-8">
         <div className="mb-6 text-center">
-          <h1 className="text-xl font-extrabold text-white">Urban Service Company</h1>
-          <p className="mt-1 text-xs text-white/50">Admin Dashboard</p>
+          <h1 className="text-2xl font-extrabold tracking-tight text-primary">USC Admin</h1>
+          <p className="mt-1 text-sm text-muted">Urban Service Company · leads &amp; traffic</p>
         </div>
         <div className="flex flex-col gap-4">
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs font-medium text-white/70">Username</span>
-            <input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              autoComplete="username"
-              className="rounded-xl border border-white/10 bg-[#0a1929] px-4 py-3 text-sm text-white outline-none focus:border-[#0d47a1]"
-            />
+            <span className="text-sm font-bold text-on-surface">Username</span>
+            <input value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" className={input} />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs font-medium text-white/70">Password</span>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-              className="rounded-xl border border-white/10 bg-[#0a1929] px-4 py-3 text-sm text-white outline-none focus:border-[#0d47a1]"
-            />
+            <span className="text-sm font-bold text-on-surface">Password</span>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" className={input} />
           </label>
-          {error && <p className="text-sm text-red-400">{error}</p>}
+          {error && (
+            <p role="alert" className="text-sm font-medium text-error">
+              {error}
+            </p>
+          )}
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 rounded-xl bg-[#0d47a1] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-[#1565c0] disabled:opacity-60"
+            aria-busy={loading}
+            className="btn-zoom mt-1 min-h-12 rounded-xl bg-primary px-4 py-3 text-base font-bold text-on-primary hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "Signing in…" : "Sign in"}
           </button>
         </div>
       </form>

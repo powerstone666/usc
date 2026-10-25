@@ -8,9 +8,8 @@ import { Icon } from "@/app/(ui)/components/icons";
 export const metadata: Metadata = {
   title: "Page Not Found — Appliance Repair in Bengaluru",
   description:
-    "The page you're looking for doesn't exist. Find microwave repair, AC repair, washing machine repair, refrigerator repair, water filter repair and chimney repair services across 84+ Bengaluru neighbourhoods.",
+    "The page you're looking for doesn't exist. Find microwave repair, AC repair, washing machine repair, refrigerator repair, water filter repair and chimney repair services across 85+ Bengaluru neighbourhoods.",
   robots: { index: false, follow: true },
-  alternates: { canonical: site.url + "/404" },
 };
 
 const popularAreas = [
@@ -51,14 +50,14 @@ export default function NotFound() {
             Oops! This page broke down
           </h1>
           <p className="mt-3 max-w-lg mx-auto text-sm text-on-primary/80">
-            But your appliance doesn't have to. We fix microwaves, ACs, washing machines,
+            But your appliance doesn&apos;t have to. We fix microwaves, ACs, washing machines,
             refrigerators, water filters and chimneys across {site.city} — same day.
           </p>
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <CallButton variant="dark"  />
+            <CallButton variant="light" />
             <Link
               href="/"
-              className="inline-flex items-center gap-2 rounded-lg border-2 border-white/40 px-5 py-3 text-sm font-bold text-on-primary hover:bg-white/10"
+              className="btn-zoom btn-outline-light"
             >
               <Icon name="arrow" className="h-4 w-4 rotate-180" />
               Go Home
@@ -71,9 +70,9 @@ export default function NotFound() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="text-center">
             <h2 className="text-xl font-extrabold text-on-surface lg:text-2xl">
-              Find what you're looking for
+              Find what you&apos;re looking for
             </h2>
-            <p className="mt-2 text-sm text-on-surface-variant">
+            <p className="mt-2 text-base text-on-surface-variant">
               Same-day repair services across {site.city}
             </p>
           </div>
@@ -83,7 +82,7 @@ export default function NotFound() {
               <Link
                 key={s.slug}
                 href={`/services/${s.slug}`}
-                className="card-zoom flex flex-col gap-2 rounded-3xl border border-outline-variant bg-surface p-6"
+                className="card-zoom flex flex-col gap-2 rounded-2xl border border-outline-variant bg-surface p-6"
               >
                 <div className="flex items-center gap-3">
                   <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-container">
@@ -91,11 +90,11 @@ export default function NotFound() {
                   </span>
                   <div>
                     <h3 className="text-sm font-extrabold text-on-surface">{s.name}</h3>
-                    <p className="text-xs text-on-surface-variant">{s.short} repair</p>
+                    <p className="text-sm text-on-surface-variant">{s.short} repair</p>
                   </div>
                 </div>
-                <p className="text-xs leading-6 text-on-surface-variant">{s.blurb}</p>
-                <span className="mt-auto inline-flex items-center gap-1 pt-2 text-xs font-bold text-primary">
+                <p className="text-sm leading-6 text-on-surface-variant">{s.blurb}</p>
+                <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-bold text-primary">
                   Book now <Icon name="arrow" className="h-3 w-3" />
                 </span>
               </Link>
@@ -109,7 +108,7 @@ export default function NotFound() {
           <h2 className="text-center text-lg font-extrabold text-on-surface">
             Popular areas we serve
           </h2>
-          <p className="mt-1 text-center text-xs text-on-surface-variant">
+          <p className="mt-1 text-center text-sm text-on-surface-variant">
             Same-day repair in {areas.length}+ Bengaluru neighbourhoods
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -117,7 +116,7 @@ export default function NotFound() {
               <Link
                 key={area}
                 href={`/areas/${slugify(area)}`}
-                className="rounded-lg border border-outline-variant bg-surface px-3 py-1.5 text-xs font-medium text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
+                className="rounded-xl border border-outline-variant bg-surface px-3 py-1.5 text-sm font-medium text-on-surface-variant transition-colors hover:border-primary hover:text-primary"
               >
                 {area}
               </Link>
@@ -126,7 +125,7 @@ export default function NotFound() {
           <div className="mt-4 text-center">
             <Link
               href="/coverage"
-              className="text-xs font-bold text-primary hover:underline"
+              className="text-sm font-bold text-primary hover:underline"
             >
               View all {areas.length}+ areas
             </Link>
@@ -156,7 +155,7 @@ export default function NotFound() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-lg bg-primary-container px-3 py-1.5 text-xs font-medium text-on-primary-container transition-colors hover:opacity-80"
+                className="rounded-xl bg-primary-container px-3 py-1.5 text-sm font-medium text-on-primary-container transition-colors hover:opacity-80"
               >
                 {link.label}
               </Link>
@@ -167,10 +166,10 @@ export default function NotFound() {
 
       <section className="border-t border-outline-variant bg-surface py-8">
         <div className="mx-auto max-w-4xl px-4">
-          <p className="text-center text-[10px] leading-5 text-muted">
+          <p className="text-center text-sm leading-6 text-muted">
             {keywords.join(" · ")}
           </p>
-          <p className="mt-4 text-center text-xs text-on-surface-variant">
+          <p className="mt-4 text-center text-sm text-on-surface-variant">
             {site.name} ·  · {site.email} · {site.hours} · {site.city}
           </p>
         </div>

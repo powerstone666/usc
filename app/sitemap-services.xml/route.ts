@@ -6,17 +6,11 @@ import { services, site } from "@/app/(config)/site";
 import { url, buildSitemap } from "@/app/(config)/sitemap-helpers";
 
 export function GET() {
-  const now = new Date().toISOString();
   const base = site.url;
 
-  const urls = [
-    ...services.map((s) =>
-      url(`${base}/services/${s.slug}`, now, "daily", "0.8"),
-    ),
-    ...services.map((s) =>
-      url(`${base}/near-me/${s.slug}`, now, "daily", "0.7"),
-    ),
-  ];
+  const urls = services.map((s) =>
+    url(`${base}/services/${s.slug}`),
+  );
 
   return new NextResponse(buildSitemap(urls), {
     headers: { "Content-Type": "application/xml" },

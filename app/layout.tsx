@@ -21,26 +21,6 @@ export const metadata: Metadata = {
   },
   description:
     "Same-day microwave, AC, washing machine, refrigerator, water filter and chimney repair in Bengaluru. Verified technicians, transparent quotes, genuine parts, quality assured. Call to book.",
-  keywords: [
-    "appliance repair bengaluru",
-    "microwave repair bengaluru",
-    "microwave repair near me",
-    "ac repair bangalore",
-    "ac service near me",
-    "ac repair near me",
-    "washing machine repair bengaluru",
-    "washing machine repair near me",
-    "refrigerator repair bengaluru",
-    "refrigerator repair near me",
-    "fridge repair near me",
-    "water filter repair bengaluru",
-    "water filter repair near me",
-    "ro purifier repair bengaluru",
-    "chimney repair bengaluru",
-    "chimney repair near me",
-    "kitchen chimney repair bengaluru",
-    "urbanservicecompany",
-  ],
   alternates: { canonical: site.url + "/" },
   openGraph: {
     type: "website",
@@ -92,18 +72,22 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sora.variable} h-full antialiased`}>
+    <html lang="en-IN" className={`${sora.variable} h-full antialiased`}>
       <body className="min-h-full bg-background text-on-surface">
         <AnalyticsNoscript />
         <JsonLd
           data={{
             "@context": "https://schema.org",
-            "@type": "Organization",
+            "@type": "HomeAndConstructionBusiness",
+            "@id": `${site.url}/#business`,
             name: site.name,
             url: site.url,
             logo: `${site.url}/favicon-192x192.png`,
+            image: `${site.url}/hero.png`,
             description:
               "Same-day microwave, AC, washing machine, refrigerator, water filter and chimney repair in Bengaluru. Verified technicians, genuine parts, quality assured.",
+            telephone: site.phone,
+            email: site.email,
             address: {
               "@type": "PostalAddress",
               streetAddress: site.address.streetAddress,
@@ -112,9 +96,31 @@ export default function RootLayout({
               postalCode: site.address.postalCode,
               addressCountry: site.address.addressCountry,
             },
-            telephone: site.phone,
-            email: site.email,
-            sameAs: [],
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: 12.9784,
+              longitude: 77.6408,
+            },
+            areaServed: {
+              "@type": "City",
+              name: site.city,
+            },
+            openingHoursSpecification: [
+              {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                  "Sunday",
+                ],
+                opens: "08:00",
+                closes: "21:00",
+              },
+            ],
           }}
         />
         {children}

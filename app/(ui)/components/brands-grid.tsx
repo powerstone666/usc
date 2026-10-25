@@ -4,63 +4,42 @@ import { useState } from "react";
 import Link from "next/link";
 import { brands } from "@/app/(config)/content";
 import { slugify } from "@/app/(common-lib)/slugify";
-import { Reveal } from "@/app/(ui)/components/reveal";
+import { SectionHeading } from "@/app/(ui)/components/section-heading";
+
+const PREVIEW_COUNT = 8;
 
 export function BrandsGrid() {
   const [expanded, setExpanded] = useState(false);
-  const previewCount = 8;
-  const shown = expanded ? brands : brands.slice(0, previewCount);
-  const remaining = brands.length - previewCount;
+  const remaining = brands.length - PREVIEW_COUNT;
 
   return (
-    <section className="py-14 lg:py-20">
+    <section className="content-auto py-12 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-6xl px-4">
-        <Reveal>
-          <h2 className="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
-            Brands we service
-          </h2>
-          <p className="mt-1 text-sm text-on-surface-variant">
-            Genuine spare parts for every major appliance brand.
-          </p>
-        </Reveal>
+        <SectionHeading
+          title="Brands we service"
+          subtitle="Genuine spare parts for every major appliance brand."
+        />
+        {/* All links stay in the HTML; extras are only hidden visually. */}
         <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {shown.map((b, i) => (
-            <li key={b}>
+          {brands.map((b, i) => (
+            <li key={b} className={!expanded && i >= PREVIEW_COUNT ? "hidden" : undefined}>
               <Link
                 href={`/brands/${slugify(b)}`}
-                className="group relative flex h-20 items-center justify-center overflow-hidden card-zoom rounded-2xl border border-outline-variant bg-surface px-4 transition-colors hover:border-primary hover:bg-primary-container"
+                className="card-zoom flex min-h-14 items-center justify-center rounded-xl border border-outline-variant bg-surface px-4 py-3 text-center text-base font-bold text-on-surface hover:text-primary"
               >
-                <span
-                  className="water-fill"
-                  style={{
-                    animation: `waterFill 32s ease-in-out infinite`,
-                    animationDelay: `${-32 + (i * 32 / shown.length)}s`,
-                  }}
-                  aria-hidden="true"
-                />
-                <span className="relative text-base font-extrabold tracking-tight text-on-surface transition-colors group-hover:text-primary">
-                  {b}
-                </span>
+                {b}
               </Link>
             </li>
           ))}
         </ul>
-        {!expanded && remaining > 0 && (
+        {remaining > 0 && (
           <button
             type="button"
-            onClick={() => setExpanded(true)}
-            className="mt-4 inline-flex items-center gap-1 btn-zoom rounded-lg bg-primary px-4 py-2 text-sm font-bold text-on-primary transition-transform hover:scale-[1.02] active:scale-95"
+            onClick={() => setExpanded((v) => !v)}
+            aria-expanded={expanded}
+            className="btn-tonal mt-4"
           >
-            Show all {brands.length} brands
-          </button>
-        )}
-        {expanded && (
-          <button
-            type="button"
-            onClick={() => setExpanded(false)}
-            className="mt-4 inline-flex items-center gap-1 btn-zoom rounded-lg bg-primary px-4 py-2 text-sm font-bold text-on-primary transition-transform hover:scale-[1.02] active:scale-95"
-          >
-            Show less
+            {expanded ? "Show fewer brands" : `Show all ${brands.length} brands`}
           </button>
         )}
       </div>
