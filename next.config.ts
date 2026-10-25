@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
+  // IndexNow key file at /<key>.txt (the key lives in an env var, so it cannot be a static file).
+  // Files in /public win over this rewrite, so llms-full.txt and friends are unaffected.
+  async rewrites() {
+    return [{ source: "/:key([A-Za-z0-9-]{8,128}).txt", destination: "/api/indexnow-key?key=:key" }];
+  },
   async headers() {
     return [
       {

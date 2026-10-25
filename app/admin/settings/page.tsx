@@ -5,6 +5,8 @@ import { isDemo } from "@/app/(server-lib)/admin-data";
 import { PageHeader, Panel } from "../_ui/parts";
 import { ConnectionTester } from "../test/connection-tester";
 import { DataTools } from "./data-tools";
+import { IndexNowPanel } from "./indexnow-panel";
+import { indexNowKey } from "@/app/(server-lib)/indexnow";
 
 export default function AdminSettings() {
   return (
@@ -12,6 +14,9 @@ export default function AdminSettings() {
       <PageHeader title="Settings" subtitle="Check that tracking and integrations work, and clean up test data." />
       <Panel title="Keyword pages" hint="Review real Google searches that could become their own pages. Kept separate from your main pages.">
         <Link href="/admin/keywords" className="btn-tonal">Open keyword pages</Link>
+      </Panel>
+      <Panel title="Search engines (IndexNow)" hint="New keyword pages are sent to Bing and other search engines automatically. Use this to send every page again, for example after a big update.">
+        <IndexNowPanel enabled={indexNowKey() !== null} demo={isDemo()} />
       </Panel>
       <Panel title="Connection checks" hint="Confirms analytics, the database, lead alerts and tracking are all working.">
         <ConnectionTester />

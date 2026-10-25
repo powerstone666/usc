@@ -5,10 +5,12 @@
 // The owner can unpublish any page afterwards. Main pages are never touched.
 import { createSign } from "node:crypto";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import type { ServiceSlug } from "@/app/(common-lib)/types";
 import { keywords as staticKeywords } from "@/app/(config)/keywords";
 import { brands, serviceProblems } from "@/app/(config)/content";
 import { areas, site } from "@/app/(config)/site";
+import { submitUrls } from "@/app/(server-lib)/indexnow";
 import { supabase } from "@/app/(server-lib)/supabase";
 import { evaluateCandidate, keyOf, SKIP_LABELS, type Candidate, type RuleContext, type SkipReason } from "@/app/(server-lib)/keyword-rules";
 
@@ -262,6 +264,10 @@ export function refreshTopicPaths(slugs: string[]) {
   revalidatePath("/topics");
   revalidatePath("/sitemap-topics.xml");
   revalidatePath("/sitemap.xml");
+  // Tell search engines (IndexNow) about the new or removed pages once the response has been sent.
+  after(async () => {
+    await submitUrls([...slugs.map((slug) => `${site.url}/topics/${slug}`), `${site.url}/topics`]).catch(() => {});
+  });
 }
 
 function demoAutocomplete(): Candidate[] {
