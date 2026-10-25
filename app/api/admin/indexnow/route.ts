@@ -5,7 +5,7 @@ import { collectSitemapUrls, indexNowKey, submitUrls } from "@/app/(server-lib)/
 export async function POST() {
   if (!indexNowKey()) return NextResponse.json({ ok: false, error: "IndexNow is off. Set INDEXNOW_KEY (see .env.local.example)." }, { status: 400 });
   const urls = await collectSitemapUrls();
-  if ("error" in urls) return NextResponse.json({ ok: false, error: urls.error }, { status: 502 });
+  if ("error" in urls) return NextResponse.json({ ok: false, error: urls.error });
   const result = await submitUrls(urls);
-  return NextResponse.json(result, { status: result.ok ? 200 : 502 });
+  return NextResponse.json(result);
 }

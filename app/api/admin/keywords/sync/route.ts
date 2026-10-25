@@ -5,5 +5,6 @@ import { refreshTopicPaths, syncKeywords } from "@/app/(server-lib)/keyword-sync
 export async function POST() {
   const result = await syncKeywords();
   if (result.added > 0) refreshTopicPaths(result.pages.map((p) => p.slug));
-  return NextResponse.json(result, { status: result.ok ? 200 : 502 });
+  // Failures are reported in the body (ok: false, error) so the screen can show them; a 5xx would only add console noise.
+  return NextResponse.json(result);
 }
