@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [{ source: "/:key([A-Za-z0-9-]{8,128}).txt", destination: "/api/indexnow-key?key=:key" }];
   },
+  // One address per page: www redirects to the bare domain, which is what every canonical tag uses.
+  async redirects() {
+    return [{ source: "/:path*", has: [{ type: "host", value: "www.urbanservicecompany.in" }], destination: "https://urbanservicecompany.in/:path*", permanent: true }];
+  },
   async headers() {
     return [
       {
