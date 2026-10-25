@@ -132,4 +132,10 @@ test("near-identical phrases count as one page (filler words ignored)", () => {
   assert.notEqual(keyOf("microwave not heating"), keyOf("microwave not working"));
 });
 
+test("'micro oven' (a common spelling in real searches) is a microwave; competitor-brand searches stay out", () => {
+  assert.equal(detectService("micro oven repair"), "microwave-repair");
+  assert.equal(ev("micro oven repair bangalore").ok, true);
+  for (const q of ["urban company hebbal", "urban company washing machine repair", "urban company phone number", "urban company ac service"]) assert.equal(ev(q).ok, false, q);
+});
+
 console.log(`\n${n} tests passed`);

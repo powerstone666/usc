@@ -47,7 +47,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").replace(
 
 // Word-boundary patterns: "carrier" must not match "car", "automatic" must not match "auto".
 const SERVICE_PATTERNS: [ServiceSlug, RegExp][] = [
-  ["microwave-repair", /\b(microwaves?|mw oven|convection oven|grill oven|solo oven)\b/],
+  ["microwave-repair", /\b(microwaves?|micro ?oven|mw oven|convection oven|grill oven|solo oven)\b/],
   ["ac-repair", /\b(ac|air conditioners?|air conditioning|split ac|window ac|inverter ac)\b/],
   ["washing-machine-repair", /\b(washing machines?|washers?|front load|top load|semi automatic)\b/],
   ["refrigerator-repair", /\b(fridges?|refrigerators?|freezers?)\b/],

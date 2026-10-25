@@ -14,6 +14,7 @@ export function GET() {
     url(`${base}/contact`),
     url(`${base}/coverage`),
     url(`${base}/reviews`),
+    url(`${base}/urban-company-alternative`),
     url(`${base}/blog`),
     url(`${base}/terms`),
     url(`${base}/privacy`),
